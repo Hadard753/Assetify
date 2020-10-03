@@ -20,7 +20,7 @@ namespace Assetify.Data
                 new Address{City="Holon",Street="Emek Dotan", Building="3", Full="Emek Dotan 3, Holon", IsPublic=false, Neighborhood="Kiryat sharet", Latitude=222, Longitude=222 },
                 new Address{City="Maor",Street="Azait", Building="101", Full="Azait 101, Moshav Maor", IsPublic=true, Neighborhood="", Latitude=111, Longitude=111 },
                 new Address{City="Tel Aviv",Street="Begin Road", Building="150", Full="", IsPublic=false, Neighborhood="", Latitude=444, Longitude=444 },
-                new Address{City="Bat Yam",Street="Hahazmaot", Building="150", Full="", IsPublic=false, Neighborhood="", Latitude=777, Longitude=777 },
+                new Address{City="Bat Yam",Street="Hahazmaot", Building="150", Full="Hahazmaot 150, Bat Yam", IsPublic=false, Neighborhood="", Latitude=777, Longitude=777 },
                 new Address{City="Harish",Street="Turkiz", Building="9", Full="", IsPublic=true, Neighborhood="Avnei Hen", Latitude=999, Longitude=999 },
                 new Address{City="Holon",Street="Harokmim", Building="26", Full="", IsPublic=true, Neighborhood="", Latitude=555, Longitude=555 },
                 new Address{City="Tibiria",Street="Oranim", Building="1", Full="Oranim 1, Tibiria", IsPublic=false, Neighborhood="Ramot Tibiria", Latitude=333, Longitude=333 }

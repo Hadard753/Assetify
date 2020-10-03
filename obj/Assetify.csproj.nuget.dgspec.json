@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hdayan\\Desktop\\study\\final\\Assetify\\Assetify.csproj": {}
+    "C:\\Users\\stavb\\source\\repos\\Assetify\\Assetify.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hdayan\\Desktop\\study\\final\\Assetify\\Assetify.csproj": {
+    "C:\\Users\\stavb\\source\\repos\\Assetify\\Assetify.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hdayan\\Desktop\\study\\final\\Assetify\\Assetify.csproj",
+        "projectUniqueName": "C:\\Users\\stavb\\source\\repos\\Assetify\\Assetify.csproj",
         "projectName": "Assetify",
-        "projectPath": "C:\\Users\\hdayan\\Desktop\\study\\final\\Assetify\\Assetify.csproj",
-        "packagesPath": "C:\\Users\\hdayan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hdayan\\Desktop\\study\\final\\Assetify\\obj\\",
+        "projectPath": "C:\\Users\\stavb\\source\\repos\\Assetify\\Assetify.csproj",
+        "packagesPath": "C:\\Users\\stavb\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\stavb\\source\\repos\\Assetify\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\hdayan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\stavb\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
