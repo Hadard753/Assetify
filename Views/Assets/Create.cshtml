@@ -1,0 +1,222 @@
+﻿@model Assetify.Models.Asset
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Asset</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AddressID" class="control-label"></label>
+                <select asp-for="AddressID" class ="form-control" asp-items="ViewBag.AddressID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedPrice" class="control-label"></label>
+                <input asp-for="EstimatedPrice" class="form-control" />
+                <span asp-validation-for="EstimatedPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Furnished" class="control-label"></label>
+                <select asp-for="Furnished" class="form-control"></select>
+                <span asp-validation-for="Furnished" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TypeId" class="control-label"></label>
+                <select asp-for="TypeId" class="form-control"></select>
+                <span asp-validation-for="TypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Condition" class="control-label"></label>
+                <select asp-for="Condition" class="form-control"></select>
+                <span asp-validation-for="Condition" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GardenSize" class="control-label"></label>
+                <input asp-for="GardenSize" class="form-control" />
+                <span asp-validation-for="GardenSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BalconySize" class="control-label"></label>
+                <input asp-for="BalconySize" class="form-control" />
+                <span asp-validation-for="BalconySize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rooms" class="control-label"></label>
+                <input asp-for="Rooms" class="form-control" />
+                <span asp-validation-for="Rooms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Floor" class="control-label"></label>
+                <input asp-for="Floor" class="form-control" />
+                <span asp-validation-for="Floor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalFloor" class="control-label"></label>
+                <input asp-for="TotalFloor" class="form-control" />
+                <span asp-validation-for="TotalFloor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumOfParking" class="control-label"></label>
+                <input asp-for="NumOfParking" class="form-control" />
+                <span asp-validation-for="NumOfParking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EntryDate" class="control-label"></label>
+                <input asp-for="EntryDate" class="form-control" />
+                <span asp-validation-for="EntryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedAt" class="control-label"></label>
+                <input asp-for="CreatedAt" class="form-control" />
+                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsElevator" /> @Html.DisplayNameFor(model => model.IsElevator)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsBalcony" /> @Html.DisplayNameFor(model => model.IsBalcony)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsTerrace" /> @Html.DisplayNameFor(model => model.IsTerrace)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsStorage" /> @Html.DisplayNameFor(model => model.IsStorage)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsRenovated" /> @Html.DisplayNameFor(model => model.IsRenovated)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsRealtyCommission" /> @Html.DisplayNameFor(model => model.IsRealtyCommission)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsAircondition" /> @Html.DisplayNameFor(model => model.IsAircondition)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsMamad" /> @Html.DisplayNameFor(model => model.IsMamad)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsPandorDoors" /> @Html.DisplayNameFor(model => model.IsPandorDoors)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsAccessible" /> @Html.DisplayNameFor(model => model.IsAccessible)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsKosherKitchen" /> @Html.DisplayNameFor(model => model.IsKosherKitchen)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsKosherBoiler" /> @Html.DisplayNameFor(model => model.IsKosherBoiler)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsOnPillars" /> @Html.DisplayNameFor(model => model.IsOnPillars)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsBars" /> @Html.DisplayNameFor(model => model.IsBars)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsForSell" /> @Html.DisplayNameFor(model => model.IsForSell)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsCommercial" /> @Html.DisplayNameFor(model => model.IsCommercial)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsRoomates" /> @Html.DisplayNameFor(model => model.IsRoomates)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsImmediate" /> @Html.DisplayNameFor(model => model.IsImmediate)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsNearTrainStation" /> @Html.DisplayNameFor(model => model.IsNearTrainStation)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsNearLightTrainStation" /> @Html.DisplayNameFor(model => model.IsNearLightTrainStation)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsNearBeach" /> @Html.DisplayNameFor(model => model.IsNearBeach)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="RemovedReason" class="control-label"></label>
+                <input asp-for="RemovedReason" class="form-control" />
+                <span asp-validation-for="RemovedReason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
