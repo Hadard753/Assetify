@@ -24,56 +24,15 @@ a {
   border-color: #1861ac;
 }
 
-/* Search button modifications 
--------------------------------------------------- */
-.form-group {
-    margin: 0;
-    padding: 20px;
-    &:first-child
-    {
-        border-color: transparent;
-    }
-}
 
-.form-control {
-    padding: 0px 100px 0 20px;
-    margin-top: 10px;
-    color: #333;
-    font-size: 15px;
-    border: 1px solid #777;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    min-height: 60px;
-    height: auto;
-    border-radius: 22px 0 0 22px !important;
-}
-
-    .form-control :focus {
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        border-color: transparent;
-    }
-
-#searchbtn {
-    border: 0;
-    padding: 0px 10px;
-    margin-top: 10px;
+.create-btn a {
     color: #fff;
-    background: #6666ff;
-    font-size: 12px;
-    border: 1px solid #777;
-    border-left: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    min-height: 60px;
-    height: auto;
-    border-radius: 0 22px 22px 0 !important;
 }
-
-form.search-button::after {
-    content: "";
-    clear: both;
-    display: table;
+/* Search modifications 
+-------------------------------------------------- */
+.active-cyan input.form-control[type=text] {
+    border-bottom: 1px solid #4dd0e1;
+    box-shadow: 0 1px 0 0 #4dd0e1;
 }
 
 /* Card modifications 
