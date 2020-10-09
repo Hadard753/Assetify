@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Assetify.Models;
+using Assetify.ViewsModels;
 
 namespace Assetify.Controllers
 {
@@ -20,7 +21,17 @@ namespace Assetify.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            // populate here the real statistics data
+            var bla = new[] {
+                new DataPoint { name = "Doron", value = 26 },
+                new DataPoint { name = "Moshe", value = 25 },
+                new DataPoint { name = "Leon", value = 18 },
+                new DataPoint { name = "Daniala", value = 19 },
+                new DataPoint { name = "Bla", value = 23 },
+                new DataPoint { name = "Vova", value = 30 },
+            };
+            var model = new StatisticsViewModel { dataPoints = bla };
+            return View(model);
         }
 
         public IActionResult Privacy()
