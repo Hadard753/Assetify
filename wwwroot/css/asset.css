@@ -6,9 +6,17 @@
 /* Search modifications 
 -------------------------------------------------- */
 .active-cyan input.form-control[type=text] {
-    border-bottom: 1px solid #4dd0e1;
-    box-shadow: 0 1px 0 0 #4dd0e1;
+    border-color: transparent transparent #4dd0e1 transparent;
 }
+
+.active-cyan-2 input.form-control[type=text]:focus:not([readonly]) {
+    /*border-bottom: 1px solid #4dd0e1;*/
+    border: 1px solid;
+    border-color: transparent transparent #4dd0e1 transparent;
+    box-shadow: 0 0 0 0 #4dd0e1;
+    
+}
+
 
 /* Card modifications 
 -------------------------------------------------- */
