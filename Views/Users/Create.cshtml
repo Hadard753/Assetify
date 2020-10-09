@@ -4,24 +4,15 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>User</h4>
+<h1>Create new user acccount</h1>
+<div>
+    <a asp-action="Login">Already a member?</a>
+</div>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -33,29 +24,29 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="comparePassword" class="control-label"></label>
+            <input asp-for="comparePassword" class="form-control" />
+            <span asp-validation-for="comparePassword" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
                 <label asp-for="Phone" class="control-label"></label>
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsVerified" /> @Html.DisplayNameFor(model => model.IsVerified)
-                </label>
             </div>
             <div class="form-group">
                 <label asp-for="ProfileImgPath" class="control-label"></label>
                 <input asp-for="ProfileImgPath" class="form-control" />
                 <span asp-validation-for="ProfileImgPath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastSeenFavorite" class="control-label"></label>
-                <input asp-for="LastSeenFavorite" class="form-control" />
-                <span asp-validation-for="LastSeenFavorite" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastSeenMessages" class="control-label"></label>
-                <input asp-for="LastSeenMessages" class="form-control" />
-                <span asp-validation-for="LastSeenMessages" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

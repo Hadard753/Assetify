@@ -7,11 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assetify.Data;
 using Assetify.Models;
+using Microsoft.AspNetCore.Http;
+using Assetify.Service;
 
 namespace Assetify.Controllers
 {
     public class AssetsController : Controller
     {
+        
         private readonly AssetifyContext _context;
 
         public AssetsController(AssetifyContext context)
@@ -48,6 +51,13 @@ namespace Assetify.Controllers
         // GET: Assets/Create
         public IActionResult Create()
         {
+            var userContext = UserContextService.GetUserContext(HttpContext);
+            //Can't create if not logged in
+            if ((userContext.userSessionID == null))
+            {
+                return RedirectToAction("Login", "Users");
+            }
+
             ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID");
             return View();
         }
@@ -57,10 +67,24 @@ namespace Assetify.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AssetID,AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,CreatedAt,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
+        public async Task<IActionResult> Create([Bind("AssetID,AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
         {
+            var userContext = UserContextService.GetUserContext(HttpContext);
+
             if (ModelState.IsValid)
             {
+                asset.CreatedAt = DateTime.Now;
+                UserAsset user_asset = new UserAsset { UserID = int.Parse(userContext.userSessionID), AssetID = asset.AssetID, ActionTime = DateTime.Now, Action = ActionType.PUBLISH , Asset = asset};
+                foreach(var user in _context.Users)
+                {
+                    if (user.UserID == int.Parse(userContext.userSessionID))
+                    {
+                        user_asset.User = user;
+                        break;
+                    }
+                }
+
+                _context.Add(user_asset);
                 _context.Add(asset);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -69,9 +93,30 @@ namespace Assetify.Controllers
             return View(asset);
         }
 
+
         // GET: Assets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            bool isValid = false;
+            var userContext = UserContextService.GetUserContext(HttpContext);
+
+            //Check if the user is the Publisher
+            if (id != null)
+            {
+                foreach (var user_asset in _context.UserAsset)
+                {
+                    if (user_asset.UserID == int.Parse(userContext.userSessionID) && user_asset.Action == ActionType.PUBLISH)
+                    {
+                        isValid = true;
+                        break;
+                    }
+                }
+            }
+            //Can't if not logged in admin
+            if ((userContext.adminSessionID == null) && !isValid)
+            {
+                return RedirectToAction("Login", "Users");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -82,6 +127,7 @@ namespace Assetify.Controllers
             {
                 return NotFound();
             }
+
             ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
             return View(asset);
         }
@@ -93,7 +139,7 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AssetID,AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,CreatedAt,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
         {
-            if (id != asset.AssetID)
+           if (id != asset.AssetID)
             {
                 return NotFound();
             }

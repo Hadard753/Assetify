@@ -52,6 +52,7 @@ namespace Assetify.Models
 
         [Display(Name = "Furnished")]
         public FurnishedType Furnished { get; set; }
+        [Display(Name = "Asset Type")]
         public AssetType TypeId { get; set; }
 
         public AssetCondition Condition { get; set; }
@@ -80,6 +81,7 @@ namespace Assetify.Models
         [DataType(DataType.Date)]
         [Display(Name = "Entry Date")]
         public DateTime EntryDate { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
 

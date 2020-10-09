@@ -28,6 +28,15 @@ namespace Assetify
             services.AddDbContext<AssetifyContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
             services.AddControllersWithViews();
+
+            //session try
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(3600);
+            });
+            //finish session try
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +56,9 @@ namespace Assetify
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            //session try
+            app.UseSession();
 
             app.UseAuthorization();
 

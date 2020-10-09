@@ -28,6 +28,11 @@ namespace Assetify.Controllers
             return View();
         }
 
+        public IActionResult Login()
+        {
+            return RedirectToAction("Login", "Users");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -5,6 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201008151359_Initialize.cs" />
+    <Compile Remove="Migrations\20201008151359_Initialize.Designer.cs" />
+    <Compile Remove="Migrations\20201008151514_AddedIsAdminInUsers.cs" />
+    <Compile Remove="Migrations\20201008151514_AddedIsAdminInUsers.Designer.cs" />
+    <Compile Remove="Migrations\20201008153125_Initialize.cs" />
+    <Compile Remove="Migrations\20201008153125_Initialize.Designer.cs" />
+    <Compile Remove="Migrations\20201008153602_AddIsAdmin.cs" />
+    <Compile Remove="Migrations\20201008153602_AddIsAdmin.Designer.cs" />
+    <Compile Remove="Migrations\20201008154200_Init.cs" />
+    <Compile Remove="Migrations\20201008154200_Init.Designer.cs" />
+    <Compile Remove="Migrations\20201008154350_admin.cs" />
+    <Compile Remove="Migrations\20201008154350_admin.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">

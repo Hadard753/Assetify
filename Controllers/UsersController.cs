@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assetify.Data;
 using Assetify.Models;
+using System.Web;
+using System.Diagnostics.Eventing.Reader;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using Assetify.Service;
 
 namespace Assetify.Controllers
 {
@@ -17,6 +22,28 @@ namespace Assetify.Controllers
         public UsersController(AssetifyContext context)
         {
             _context = context;
+        }
+
+        public ActionResult Login(String FirstName, String Password)
+
+        {
+            if (FirstName == null && Password == null)
+
+            { return View(); }
+            foreach (var u in _context.Users)
+            {
+                if (u.FirstName == FirstName && u.Password == Password)
+                {
+                    if (u.IsAdmin)
+                        HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
+
+                    HttpContext.Session.SetString("UserIDSession", u.UserID.ToString());
+                    
+                    return RedirectToAction("Index", "home");
+                }
+            }
+            ViewBag.Error = "Login failed, name or password is incorrect!";
+            return View();
         }
 
         // GET: Users
@@ -68,6 +95,12 @@ namespace Assetify.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var userContext = UserContextService.GetUserContext(HttpContext);
+            //Check that this is an Admin or the user signed in
+            if (userContext.adminSessionID == null && id.ToString()!= userContext.userSessionID)
+            {
+                return RedirectToAction("Details", "Users");
+            }
             if (id == null)
             {
                 return NotFound();

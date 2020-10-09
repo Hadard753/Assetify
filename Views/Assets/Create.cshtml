@@ -8,13 +8,15 @@
 
 <h4>Asset</h4>
 <hr />
+@using (Html.BeginForm())
+{
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="AddressID" class="control-label"></label>
-                <select asp-for="AddressID" class ="form-control" asp-items="ViewBag.AddressID"></select>
+                <select asp-for="AddressID" class="form-control" asp-items="ViewBag.AddressID"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
@@ -27,19 +29,25 @@
                 <span asp-validation-for="EstimatedPrice" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Furnished" class="control-label"></label>
-                <select asp-for="Furnished" class="form-control"></select>
-                <span asp-validation-for="Furnished" class="text-danger"></span>
+                @Html.LabelFor(model => model.Furnished, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Furnished, new SelectList(FurnishedType.GetValues(typeof(FurnishedType))))
+                    @Html.ValidationMessageFor(model => model.Furnished, "", new { @class = "text-danger" })
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="TypeId" class="control-label"></label>
-                <select asp-for="TypeId" class="form-control"></select>
-                <span asp-validation-for="TypeId" class="text-danger"></span>
+                @Html.LabelFor(model => model.TypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.TypeId, new SelectList(AssetType.GetValues(typeof(AssetType))))
+                    @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Condition" class="control-label"></label>
-                <select asp-for="Condition" class="form-control"></select>
-                <span asp-validation-for="Condition" class="text-danger"></span>
+                @Html.LabelFor(model => model.Condition, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Condition, new SelectList(AssetCondition.GetValues(typeof(AssetCondition))))
+                    @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Size" class="control-label"></label>
@@ -85,11 +93,6 @@
                 <label asp-for="EntryDate" class="control-label"></label>
                 <input asp-for="EntryDate" class="form-control" />
                 <span asp-validation-for="EntryDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -212,6 +215,8 @@
         </form>
     </div>
 </div>
+}
+
 
 <div>
     <a asp-action="Index">Back to List</a>
