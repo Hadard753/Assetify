@@ -6,10 +6,11 @@
 @section Scripts {
     <script src="~/lib/d3.min.js"></script>
     <script>
+        // Bar Chart code
         const margin = ({ top: 20, right: 0, bottom: 30, left: 40 });
         const width = 500;
         const height = 300;
-        const data = @Json.Serialize(Model.dataPoints);
+        const data = @Json.Serialize(Model.barChart.dataPoints);
 
         const yAxis = g => g
             .attr("transform", `translate(${margin.left},0)`)
@@ -27,7 +28,7 @@
             .padding(0.1);
 
 
-        const chartSvg = d3.select("svg.js-statistics-contatiner")
+        const chartSvg = d3.select("svg.js-statistics-bar-chart")
             .attr("viewBox", [0, 0, width, height]);
         const bar = chartSvg.append("g")
             .attr("fill", "steelblue")
@@ -46,11 +47,11 @@
             .call(yAxis);
 
 
-        const chart = Object.assign(chartSvg.node(), {
+        const barChart = Object.assign(chartSvg.node(), {
             update(order) {
                 x.domain(data.sort(order).map(d => d.name));
 
-                const t = svg.transition()
+                const t = chartSvg.transition()
                     .duration(750);
 
                 bar.data(data, d => d.name)
@@ -66,20 +67,73 @@
             }
         });
         const order = () => { };
-        const update = chart.update(order);
+        const update = barChart.update(order);
 
-        d3.append()
+
+        // Line Chart
+        const lineChartMargin = { top: 20, right: 30, bottom: 30, left: 40 };
+        const lineChartWidth = 500;
+        const lineChartHeight = 300;
+        const lineChartData = @Json.Serialize(Model.lineChart.dataPoints);
+        lineChartData.forEach(bla => bla.date = Date.parse(bla.date))
+
+        const lineChartY = d3.scaleLinear()
+            .domain([0, d3.max(lineChartData, d => d.value)]).nice()
+            .range([lineChartHeight - lineChartMargin.bottom, lineChartMargin.top]);
+
+        const lineChartX = d3.scaleUtc()
+            .domain(d3.extent(lineChartData, d => d.date))
+            .range([lineChartMargin.left, lineChartWidth - lineChartMargin.right]);
+
+        const lineChartYAxis = g => g
+            .attr("transform", `translate(${lineChartMargin.left},0)`)
+            .call(d3.axisLeft(lineChartY))
+            .call(g => g.select(".domain").remove())
+            .call(g => g.select(".tick:last-of-type text").clone()
+                .attr("x", 3)
+                .attr("text-anchor", "start")
+                .attr("font-weight", "bold")
+                .text(lineChartData.y));
+
+        const lineChartXAxis = g => g
+            .attr("transform", `translate(0,${lineChartHeight - lineChartMargin.bottom})`)
+            .call(d3.axisBottom(lineChartX).ticks(lineChartWidth / 80).tickSizeOuter(0));
+
+        const lineChartLine = d3.line()
+            .defined(d => !isNaN(d.value))
+            .x(d => lineChartX(d.date))
+            .y(d => lineChartY(d.value));
+
+
+        const lineChartSvg = d3.select("svg.js-statistics-line-chart")
+            .attr("viewBox", [0, 0, lineChartWidth, lineChartHeight]);
+
+        lineChartSvg.append("g")
+            .call(lineChartXAxis);
+
+        lineChartSvg.append("g")
+            .call(lineChartYAxis);
+
+        lineChartSvg.append("path")
+            .datum(lineChartData)
+            .attr("fill", "none")
+            .attr("stroke", "steelblue")
+            .attr("stroke-width", 1.5)
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("d", lineChartLine);
 
     </script>
 }
 
 <div class="text-center" class="">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about statistics!!!!!!! <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Bar Chart</p>
+    <svg class="js-statistics-bar-chart">
+    </svg>
 </div>
 
-
-
-<svg class="js-statistics-contatiner">
-
-</svg>
+<div class="text-center" class="">
+    <p>Line Chart</p>
+    <svg class="js-statistics-line-chart">
+    </svg>
+</div>
