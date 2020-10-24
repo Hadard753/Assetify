@@ -24,7 +24,7 @@ namespace Assetify.Controllers
             _context = context;
         }
         
-
+        //message is an option if you want to add it to the Login initial view
         public ActionResult Login(String FirstName, String Password, String message = "")
 
         {
