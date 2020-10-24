@@ -18,18 +18,22 @@ namespace Assetify.Controllers
     public class UsersController : Controller
     {
         private readonly AssetifyContext _context;
-
+       
         public UsersController(AssetifyContext context)
         {
             _context = context;
         }
+        
 
-        public ActionResult Login(String FirstName, String Password)
+        public ActionResult Login(String FirstName, String Password, String message = "")
 
         {
             if (FirstName == null && Password == null)
 
-            { return View(); }
+            {
+                ViewBag.Message = message;
+                return View(); 
+            }
             foreach (var u in _context.Users)
             {
                 if (u.FirstName == FirstName && u.Password == Password)
@@ -44,6 +48,15 @@ namespace Assetify.Controllers
             }
             ViewBag.Error = "Login failed, name or password is incorrect!";
             return View();
+        }
+
+        public ActionResult Logout()
+        {
+            var userContext = UserContextService.GetUserContext(HttpContext);
+            userContext.userSessionID = null;
+            userContext.adminSessionID = null;
+            userContext.isAdmin = false;
+            return RedirectToAction("Login", "Users", new {FirstName = "", Password = "", message  = "You just logged out :)" } );
         }
 
         // GET: Users

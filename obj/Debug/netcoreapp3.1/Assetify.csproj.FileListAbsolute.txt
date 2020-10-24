@@ -359,3 +359,4 @@ C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Assetify.dll
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Assetify.pdb
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Assetify.genruntimeconfig.cache
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Razor\Views\Users\Login.cshtml.g.cs
+C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Razor\Views\Statistics\Index.cshtml.g.cs

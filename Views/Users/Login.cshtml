@@ -1,0 +1,48 @@
+﻿@model Assetify.Models.User
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+<h1>Login</h1>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-secondary" role="alert">@ViewBag.Message</div>
+    ViewBag.Message = null;
+}
+<form>
+
+    <table style="width:70%">
+        <tr>
+            <th>
+                <label asp-for="FirstName"><b>First Name</b></label>
+            </th>
+            <th>
+                <input type="text" placeholder="Enter First Name" name="FirstName" required />
+            </th>
+        </tr>
+
+        <tr>
+            <th>
+                <label asp-for="Password"><b>Password</b></label>
+            </th>
+            <th>
+                <input type="Password" placeholder="Enter Password" name="Password" required />
+            </th>
+        </tr>
+    </table>
+
+
+    @if (ViewBag.Error != null)
+    {
+        <span class="badge badge-danger">@ViewBag.error</span>
+    }
+
+    <div>
+        <button type="submit" class="btn btn-secondary btn-sm">Login</button>
+    </div>
+    <div>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Create">Don't have an account yet  ?</a>
+    </div>
+
+</form>

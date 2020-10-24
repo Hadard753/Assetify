@@ -36,6 +36,7 @@ namespace Assetify
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(3600);
             });
+
             //finish session try
         }
 
