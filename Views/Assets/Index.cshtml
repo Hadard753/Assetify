@@ -4,272 +4,38 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<!-- Create asset button -->
+<div class="create-btn">
+    <button type="button" class="btn btn-primary btn-lg" asp-action="Create" position="left">
+        <a asp-action="Create">Create Asset</a>
+    </button>
+</div><br />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<!-- Search form -->
+<form class="form-inline d-flex justify-content-center md-form form-sm active-cyan active-cyan-2 mt-2">
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <input class="form-control form-control-sm ml-3 w-75" type="text" onfocus="if(this.value == 'Search') { this.value = ''; }" value="Search"
+           aria-label="Search">
+</form><br />
 
+<!-- Display all the assets -->
 @foreach (var item in Model)
 {
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="..." alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">@item.Price</h5>
-            <p class="card-text">@item.Address</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="..." class="card-img" alt="no image">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Description</h5>
+                    <p class="card-text">@item.Address.Full</p>
+                    <a asp-action="Edit" asp-route-id="@item.AssetID" class="card-link">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.AssetID" class="card-link">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.AssetID" class="card-link">Delete</a>
+                    <p class="card-text"><small class="text-muted">Created at @item.CreatedAt</small></p>
+                </div>
+            </div>
         </div>
     </div>
 }
-    @*<table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Price)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EstimatedPrice)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Furnished)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TypeId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Condition)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Size)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.GardenSize)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.BalconySize)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Rooms)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Floor)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TotalFloor)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.NumOfParking)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EntryDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CreatedAt)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsElevator)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsBalcony)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsTerrace)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsStorage)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsRenovated)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsRealtyCommission)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsAircondition)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsMamad)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsPandorDoors)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsAccessible)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsKosherKitchen)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsKosherBoiler)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsOnPillars)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsBars)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsForSell)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsCommercial)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsRoomates)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsImmediate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsNearTrainStation)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsNearLightTrainStation)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsNearBeach)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsActive)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.RemovedReason)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Address)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-        @foreach (var item in Model) {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EstimatedPrice)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Furnished)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TypeId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Condition)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Size)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.GardenSize)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BalconySize)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Rooms)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Floor)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TotalFloor)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NumOfParking)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EntryDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedAt)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsElevator)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsBalcony)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsTerrace)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsStorage)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsRenovated)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsRealtyCommission)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsAircondition)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsMamad)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsPandorDoors)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsAccessible)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsKosherKitchen)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsKosherBoiler)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsOnPillars)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsBars)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsForSell)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsCommercial)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsRoomates)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsImmediate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsNearTrainStation)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsNearLightTrainStation)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsNearBeach)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsActive)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RemovedReason)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Address.AddressID)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.AssetID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.AssetID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.AssetID">Delete</a>
-                    </td>
-                </tr>
-        }
-            </tbody>
-        </table>*@
