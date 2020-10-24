@@ -74,7 +74,7 @@ namespace Assetify.Controllers
             if (ModelState.IsValid)
             {
                 asset.CreatedAt = DateTime.Now;
-                UserAsset user_asset = new UserAsset { UserID = int.Parse(userContext.userSessionID), AssetID = asset.AssetID, ActionTime = DateTime.Now, Action = ActionType.PUBLISH , Asset = asset};
+                UserAsset user_asset = new UserAsset { UserID = int.Parse(userContext.userSessionID), AssetID = asset.AssetID, ActionTime = DateTime.Now, ActionID = (int)ActionType.PUBLISH , Asset = asset};
                 foreach(var user in _context.Users)
                 {
                     if (user.UserID == int.Parse(userContext.userSessionID))
@@ -105,7 +105,7 @@ namespace Assetify.Controllers
             {
                 foreach (var user_asset in _context.UserAsset)
                 {
-                    if (user_asset.UserID == int.Parse(userContext.userSessionID) && user_asset.Action == ActionType.PUBLISH)
+                    if (user_asset.UserID == int.Parse(userContext.userSessionID) && user_asset.ActionID == (int)ActionType.PUBLISH)
                     {
                         isValid = true;
                         break;

@@ -19,7 +19,7 @@ namespace Assetify.Models
         public int UserID { get; set; }
         public int AssetID { get; set; }
         public bool IsSeen { get; set; }
-        public ActionType Action { get; set; }
+        public int ActionID { get; set; }
         public DateTime ActionTime { get; set; }
 
         public Asset Asset { get; set; }

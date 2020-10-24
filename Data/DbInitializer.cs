@@ -64,9 +64,9 @@ namespace Assetify.Data
 
             var userAssets = new UserAsset[]
             {
-                new UserAsset{ UserID=2, AssetID=1, ActionTime=twoDaysago, Action=ActionType.PUBLISH, IsSeen=true},
-                new UserAsset{ UserID=2, AssetID=2, ActionTime=fourDaysago, Action=ActionType.PUBLISH, IsSeen=true},
-                new UserAsset{ UserID=1, AssetID=2, ActionTime=now, Action=ActionType.LIKE, IsSeen=true},
+                new UserAsset{ UserID=2, AssetID=1, ActionTime=twoDaysago, ActionID = (int)ActionType.PUBLISH, IsSeen=true},
+                new UserAsset{ UserID=2, AssetID=2, ActionTime=fourDaysago, ActionID = (int)ActionType.PUBLISH, IsSeen=true},
+                new UserAsset{ UserID=1, AssetID=2, ActionTime=now, ActionID = (int)ActionType.LIKE, IsSeen=true},
             };
 
             foreach (UserAsset ua in userAssets)

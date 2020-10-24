@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gharris\\develop\\Assetify.csproj": {}
+    "C:\\Users\\hdayan\\Desktop\\hadar\\study\\final\\Assetify\\Assetify.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gharris\\develop\\Assetify.csproj": {
+    "C:\\Users\\hdayan\\Desktop\\hadar\\study\\final\\Assetify\\Assetify.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gharris\\develop\\Assetify.csproj",
+        "projectUniqueName": "C:\\Users\\hdayan\\Desktop\\hadar\\study\\final\\Assetify\\Assetify.csproj",
         "projectName": "Assetify",
-        "projectPath": "C:\\Users\\gharris\\develop\\Assetify.csproj",
-        "packagesPath": "C:\\Users\\gharris\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gharris\\develop\\obj\\",
+        "projectPath": "C:\\Users\\hdayan\\Desktop\\hadar\\study\\final\\Assetify\\Assetify.csproj",
+        "packagesPath": "C:\\Users\\hdayan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\hdayan\\Desktop\\hadar\\study\\final\\Assetify\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\gharris\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hdayan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
