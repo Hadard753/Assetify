@@ -10,6 +10,9 @@ using Assetify.Models;
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
 using System.Net.Http;
+using Microsoft.IdentityModel.Tokens;
+using NewsAPI;
+using NewsAPI.Models;
 
 namespace Assetify.Controllers
 {
@@ -26,14 +29,6 @@ namespace Assetify.Controllers
         // GET: Assets
         public async Task<IActionResult> Index()
         {
-            //webapi
-            using (var client = new HttpClient())
-            {
-                
-            }
-            //webapi
-
-
             var assetifyContext = _context.Assets.Include(a => a.Address);
             return View(await assetifyContext.ToListAsync());
         }
@@ -53,6 +48,7 @@ namespace Assetify.Controllers
             {
                 return NotFound();
             }
+            var articalsFeatureingCity = cityArticals(asset.Address.city);
 
             return View(asset);
         }
@@ -211,11 +207,47 @@ namespace Assetify.Controllers
         {
             return _context.Assets.Any(e => e.AssetID == id);
         }
+
+        public async List<ArticleCity> cityArticals(String cityName)
+        {
+            List<ArticleCity> articleCity = new ArticleCity();
+            var newsApiClient = new NewsApiClient("f6395a1d8a3c469f9be70c0ec5075340");
+            var articlesResponse = await newsApiClient.GetEverythingAsync(new EverythingRequest
+            {
+                Q = cityName,
+                SortBy = NewsAPI.Constants.SortBys.Popularity,
+                Language = NewsAPI.Constants.Languages.EN,
+                From = new DateTime(2020,10,1)
+            });
+
+            //Append all articles to output
+            if (articlesResponse.Status == NewsAPI.Constants.Statuses.Ok)
+            {
+                articlesResponse.Articles.ToList().ForEach(articleCity.add(new ArticleCity(article.Title, article.Description, article.Url, article.urlToImage)));
+                //Oprtion two:
+                //Array.ForEach(articlesResponse.Articles, articleCity => articleCity.add(new ArticleCity(article.Title, article.Description, article.Url, article.urlToImage)));
+            }
+           
+            //returns articles array
+            return articleCity;
+        }
     }
 
     //web api trying stuff
 
+    public class ArticleCity
+    {
+        private string title { get; set; }
+        private string description { get; set; }
+        private string url { get; set; }
+        private string image_url { get; set; }
 
+        public ArticleCity(string title, string description, string url, string imageUrl)
+        {
+            title = title; description = description; url = url; image_url = imageUrl;
+        }
+
+    }
 
 
 

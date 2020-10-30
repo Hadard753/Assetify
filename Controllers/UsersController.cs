@@ -62,6 +62,7 @@ namespace Assetify.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            
             return View(await _context.Users.ToListAsync());
         }
 
@@ -195,5 +196,11 @@ namespace Assetify.Controllers
         {
             return _context.Users.Any(e => e.UserID == id);
         }
+
+        public async Task<IActionResult> CreateWithAPI()
+        {
+            return View();
+        }
+
     }
 }

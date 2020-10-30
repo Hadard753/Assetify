@@ -358,5 +358,11 @@ C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Assetify.pdb
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Assetify.genruntimeconfig.cache
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Razor\Views\Users\Login.cshtml.g.cs
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Razor\Views\Statistics\Index.cshtml.g.cs
+C:\Users\gharris\develop\bin\Debug\netcoreapp3.1\Connected Services\Microsoft WCF Web Service Reference Provider\ConnectedService.json
+C:\Users\gharris\develop\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+C:\Users\gharris\develop\bin\Debug\netcoreapp3.1\System.Web.Http.dll
+C:\Users\gharris\develop\bin\Debug\netcoreapp3.1\System.Web.Http.WebHost.dll
+C:\Users\gharris\develop\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Assetify.csproj.CoreCompileInputs.cache
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Assetify.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\gharris\develop\bin\Debug\netcoreapp3.1\NewsAPI.dll
