@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div id="maincontent">
-    <h4>Asset</h4>
+    <h4>@Model.Address.City, @Model.Address.Street</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -247,23 +247,37 @@
     </dl>
 </div>
 <div id="articlescontent">
-    
-    bla bla bla
+    <h4>News featuring @Model.Address.City</h4>
+    @{int counter = 0;}
+    @foreach (var article in ViewBag.articleCity)
+    {
+        @if (counter == 3)
+            break;
+        <div class="card" style="width: 18rem; height: 35rem;">
+            <img class="card-img-top" src=@article.image_url alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@article.title</h5>
+                <p class="card-text">@article.description</p>
+                <a href="@article.url" target="_blank">full article</a>
+            </div>
+        </div>
+        counter++;
+    }
+    <a asp-action="cityArticals">For more articals</a> 
 </div>
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.AssetID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
 <style>
     #maincontent {
-        float: right;
-        width: 100%;
+        float: left;
+        width: 65%;
+        overflow: hidden;
     }
 
-    #articlescontent
-{
-    float: left; 
-    width: 200px; 
-
-}
+    #articlescontent {
+        overflow: hidden;
+    }
 </style>

@@ -366,3 +366,13 @@ C:\Users\gharris\develop\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Assetify.csproj.CoreCompileInputs.cache
 C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Assetify.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\gharris\develop\bin\Debug\netcoreapp3.1\NewsAPI.dll
+C:\Users\gharris\develop backup 3010\obj\Debug\netcoreapp3.1\Assetify.csprojAssemblyReference.cache
+C:\Users\gharris\develop backup 3010\obj\Debug\netcoreapp3.1\Assetify.AssemblyInfoInputs.cache
+C:\Users\gharris\develop backup 3010\obj\Debug\netcoreapp3.1\Assetify.AssemblyInfo.cs
+C:\Users\gharris\develop backup 3010\obj\Debug\netcoreapp3.1\Assetify.csproj.CoreCompileInputs.cache
+C:\Users\gharris\develop backup 3010\obj\Debug\netcoreapp3.1\Assetify.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\gharris\develop backup 3010\obj\Debug\netcoreapp3.1\Assetify.RazorAssemblyInfo.cache
+C:\Users\gharris\develop backup 3010\obj\Debug\netcoreapp3.1\Assetify.RazorAssemblyInfo.cs
+C:\Users\gharris\develop backup 3010\obj\Debug\netcoreapp3.1\Assetify.dll
+C:\Users\gharris\develop backup 3010\obj\Debug\netcoreapp3.1\Assetify.pdb
+C:\Users\gharris\develop\obj\Debug\netcoreapp3.1\Razor\Views\Assets\cityArticals.cshtml.g.cs
