@@ -26,8 +26,11 @@ namespace Assetify.Controllers
         
         //message is an option if you want to add it to the Login initial view
         public ActionResult Login(String FirstName, String Password, String message = "")
-
         {
+            if (message == null)
+            {
+                message = "Please enter credentials";
+            }
             if (FirstName == null && Password == null)
 
             {
@@ -42,11 +45,12 @@ namespace Assetify.Controllers
                         HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
 
                     HttpContext.Session.SetString("UserIDSession", u.UserID.ToString());
-                    
+                    ViewBag.Login = true;
                     return RedirectToAction("Index", "home");
                 }
             }
             ViewBag.Error = "Login failed, name or password is incorrect!";
+
             return View();
         }
 

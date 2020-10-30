@@ -33,7 +33,7 @@
     </table>
 
 
-    @if (ViewBag.Error != null)
+    @if (ViewBag.Error == null)
     {
         <span class="badge badge-danger">@ViewBag.error</span>
     }
