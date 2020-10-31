@@ -7,20 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Assetify.Models;
 using Assetify.ViewsModels;
+using Assetify.Data;
 
 namespace Assetify.Controllers
 {
     public class StatisticsController : Controller
     {
         private readonly ILogger<StatisticsController> _logger;
-
-        public StatisticsController(ILogger<StatisticsController> logger)
+        private readonly AssetifyContext _context;
+        public StatisticsController(ILogger<StatisticsController> logger, AssetifyContext assetifyContext)
         {
             _logger = logger;
+            _context = assetifyContext;
         }
 
         public IActionResult Index()
         {
+
+            //_context.UserAsset.GroupBy()
             // populate here the real statistics data
             var dataPoints = new[] {
                 new BarDataPoint { name = "Doron", value = 26 },
@@ -45,7 +49,8 @@ namespace Assetify.Controllers
             };
 
 
-            var model = new StatisticsViewModel { 
+            var model = new StatisticsViewModel
+            {
                 barChart = new BarChart { dataPoints = dataPoints },
                 lineChart = new LineChart { dataPoints = lineChartDataPoints },
             };
