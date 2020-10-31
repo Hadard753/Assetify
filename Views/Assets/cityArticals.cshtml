@@ -1,14 +1,33 @@
-﻿
-<h4>News featuring @ViewBag.cityName</h4>
+﻿<h4>News featuring @ViewBag.cityName</h4>
+<br />
+<form>
+    <input type="text" placeholder="Any other cities you are intereste in reading about?" name="cityName" size="45">
+    <button type="submit" class="btn btn-secondary btn-sm">Search</button>
+</form>
+<br />
+<h6>found @ViewBag.number_of_articals articals</h6>
+@{var index = 0;}
 
-@foreach (var article in ViewBag.articleCity)
-{
-    <div class="card" style="width: 18rem; height: 35rem;">
-        <img class="card-img-top" src=@article.image_url alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">@article.title</h5>
-            <p class="card-text">@article.description</p>
-            <a href="@article.url" target="_blank">full article</a>
-        </div>
-    </div>
-}
+<table>
+    @while (ViewBag.number_of_articals != index + 1)
+    {
+        <tr>
+            @for (var index2 = 0; index2 < 4; index2++)
+            {
+                @if (ViewBag.number_of_articals == index + 1) break;
+                <td>
+                    <div class="card" style="width: 18rem; height: 40rem;">
+                        <img class="card-img-top" src=@ViewBag.articleCity[index].image_url alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.articleCity[index].title</h5>
+                            <p class="card-text">@ViewBag.articleCity[index].description</p>
+                            <a href="@ViewBag.articleCity[index].url" target="_blank">full article</a>
+                        </div>
+                    </div>
+                    @{index = index + 1;}
+                </td>
+            }
+        </tr>
+    }
+</table>
+

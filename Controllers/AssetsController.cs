@@ -238,8 +238,10 @@ namespace Assetify.Controllers
 
             }
             //returns articles array
+            ViewBag.number_of_articals = articleCity.Count();
             ViewBag.articleCity = articleCity;
-            ViewBag.cityName = cityName;
+            ViewBag.cityName = cityName.ToUpperInvariant();
+            
             return View();    
         }
     }

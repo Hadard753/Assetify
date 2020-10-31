@@ -263,7 +263,8 @@
         </div>
         counter++;
     }
-    <a asp-action="cityArticals">For more articals</a> 
+    <a asp-action="cityArticals" asp-route-cityName="@Model.Address.City">For more articals</a>
+  
 </div>
 
 <div>

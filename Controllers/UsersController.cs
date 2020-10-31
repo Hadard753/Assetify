@@ -12,6 +12,7 @@ using System.Diagnostics.Eventing.Reader;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
+using System.Web.Helpers;
 
 namespace Assetify.Controllers
 {
@@ -25,7 +26,7 @@ namespace Assetify.Controllers
         }
         
         //message is an option if you want to add it to the Login initial view
-        public ActionResult Login(String FirstName, String Password, String message = "")
+        public ActionResult Login(String FirstName, String Password, String message = "", String returnUrl = "")
         {
             if (message == null)
             {
@@ -39,7 +40,7 @@ namespace Assetify.Controllers
             }
             foreach (var u in _context.Users)
             {
-                if (u.FirstName == FirstName && u.Password == Password)
+                if (u.FirstName == FirstName && (Crypto.VerifyHashedPassword(u.Password.ToString(),Password.ToString())))
                 {
                     if (u.IsAdmin)
                         HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
@@ -50,7 +51,8 @@ namespace Assetify.Controllers
                 }
             }
             ViewBag.Error = "Login failed, name or password is incorrect!";
-
+            if (returnUrl != "")
+                return Redirect(returnUrl);
             return View();
         }
 
@@ -66,7 +68,9 @@ namespace Assetify.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            
+            var userContext = UserContextService.GetUserContext(HttpContext);
+            if (!(userContext.isAdmin))
+                return RedirectToAction("Login", "Users", new { message = "You have to be an Admin to see all users, please login with admin credentials" });
             return View(await _context.Users.ToListAsync());
         }
 
@@ -101,6 +105,7 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user)
         {
+            user.Password = Crypto.HashPassword(user.Password);
             if (ModelState.IsValid)
             {
                 _context.Add(user);
@@ -201,10 +206,7 @@ namespace Assetify.Controllers
             return _context.Users.Any(e => e.UserID == id);
         }
 
-        public async Task<IActionResult> CreateWithAPI()
-        {
-            return View();
-        }
+
 
     }
 }
