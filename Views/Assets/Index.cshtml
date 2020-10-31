@@ -17,7 +17,7 @@
         <div class="card-body">
             <h5 class="card-title">@item.Price</h5>
             <p class="card-text">@item.Address</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <a asp-action="Details" asp-route-id=@item.AssetID>details</a>
         </div>
     </div>
 }

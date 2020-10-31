@@ -138,7 +138,6 @@ namespace Assetify.Models
         public bool IsNearLightTrainStation { get; set; }
         [Display(Name = "Near Beach")]
         public bool IsNearBeach { get; set; }
-
         public bool IsActive { get; set; }
         public string RemovedReason { get; set; }
         public ICollection<UserAsset> Users { get; set; }

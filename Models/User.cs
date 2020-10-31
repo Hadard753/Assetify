@@ -13,14 +13,14 @@ namespace Assetify.Models
         //public int AddressID { get; set; }
         public string Email { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Please enter password")]
+        //[DataType(DataType.Password)]
         public string Password { get; set; }
 
-        /*[DataType(DataType.Password)]
+/*        [Required(ErrorMessage = "Please enter confirm password")]
         [Display(Name = "Confirm Password")]
-        [Compare("Password", ErrorMessage = "Passwords do not match.")]
-        public string comparePassword { get; set; }*/
+        [Compare("Password", ErrorMessage = "Password and confirm password does not match")]
+        public string ComparePassword { get; set; }*/
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
