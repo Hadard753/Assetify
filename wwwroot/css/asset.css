@@ -23,6 +23,13 @@
     box-shadow: 3px 3px 7px #777;
     border-radius: 22px;
     transition: 0.8s;
-    width: 350px;
-    height: 164px;
+    height: 15%;
+    width: 30%;
+    margin: 12px;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 22px 22px 0 0;
+    box-shadow: 1px 0px 0px 0px lightslategrey;
 }
