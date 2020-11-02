@@ -136,6 +136,7 @@ namespace Assetify.Controllers
                 return NotFound();
             }
 
+            ViewBag.isAdmin = userContext.isAdmin;
             return View(user);
         }
 
@@ -169,7 +170,13 @@ namespace Assetify.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                if(UserContextService.GetUserContext(HttpContext).isAdmin)
+                {
+                    return RedirectToAction(nameof(Index));
+                } else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             return View(user);
         }

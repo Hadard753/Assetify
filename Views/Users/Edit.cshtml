@@ -15,7 +15,7 @@
             <input type="hidden" asp-for="UserID" />
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" disabled />
+                <input asp-for="Email" class="form-control"/>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,21 +39,18 @@
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <img src="" />
-                <label asp-for="ProfileImgPath" class="control-label"></label>
-                <input asp-for="ProfileImgPath" class="form-control" />
-                <span asp-validation-for="ProfileImgPath" class="text-danger"></span>
+                <img src="@Model.ProfileImgPath" />
             </div>
             @{ if (ViewBag.isAdmin)
                 {
                     <div class="form-group">
                         <label asp-for="LastSeenFavorite" class="control-label"></label>
-                        <input asp-for="LastSeenFavorite" class="form-control" />
+                        <input asp-for="LastSeenFavorite" class="form-control" disabled/>
                         <span asp-validation-for="LastSeenFavorite" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="LastSeenMessages" class="control-label"></label>
-                        <input asp-for="LastSeenMessages" class="form-control" />
+                        <input asp-for="LastSeenMessages" class="form-control" disabled/>
                         <span asp-validation-for="LastSeenMessages" class="text-danger"></span>
                     </div>
                 }

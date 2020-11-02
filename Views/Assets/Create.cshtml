@@ -20,14 +20,14 @@
                 <div class="form-group">
                     <label class="control-label">Address</label>
                     <input class="form-control" id="searchTextField" type="text" size="50" placeholder="Enter Israeli Address.." />
-                    
+
                     <input asp-for="AddressID" class="form-control" id="address-id" type="text" hidden />
                     @*<input asp-for="Address.City" class="form-control" id="city" type="text" hidden />
-                    <input asp-for="Address.Building" class="form-control" id="building" type="text" hidden />
-                    <input asp-for="Address.Latitude" class="form-control" id="lat" type="text" hidden />
-                    <input asp-for="Address.Longitude" class="form-control" id="lon" type="text" hidden />
-                    <input asp-for="Address.Street" class="form-control" id="street" type="text" hidden />
-                    <input asp-for="Address.Full" class="form-control" id="full" type="text" hidden />*@
+                        <input asp-for="Address.Building" class="form-control" id="building" type="text" hidden />
+                        <input asp-for="Address.Latitude" class="form-control" id="lat" type="text" hidden />
+                        <input asp-for="Address.Longitude" class="form-control" id="lon" type="text" hidden />
+                        <input asp-for="Address.Street" class="form-control" id="street" type="text" hidden />
+                        <input asp-for="Address.Full" class="form-control" id="full" type="text" hidden />*@
                 </div>
                 <div class="form-group">
                     <label asp-for="Price" class="control-label"></label>
@@ -240,12 +240,25 @@
 
             var street = place.address_components.find(component => component.types[0] == "route");
             var building = place.address_components.find(component => component.types[0] == "street_number");
-            document.getElementById('full').value = place.formatted_address;
-            document.getElementById('city').value = place.vicinity;
-            document.getElementById('street').value = street ? street.long_name : '';
-            document.getElementById('building').value = building ? building.long_name : '';
-            document.getElementById('lat').value = place.geometry.location.lat();
-            document.getElementById('lon').value = place.geometry.location.lng();
+            var Full = place.formatted_address;
+            var City = place.vicinity;
+            var Street = street ? street.long_name : '';
+            var Building = building ? building.long_name : '';
+            var Latitude = place.geometry.location.lat();
+            var Longitude = place.geometry.location.lng();
+
+            $.ajax({
+                type: "POST",
+                url: "/Assets/CreateAddress",
+                data: { Street, Building, Full, City, Latitude, Longitude },
+                success: function (response) {
+                    document.getElementById('address-id').value = response;
+                },
+                error: function () {
+                    console.log("Error");
+                }
+
+            });
         });
     }
 </script>

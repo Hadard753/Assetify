@@ -97,10 +97,11 @@ namespace Assetify.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<int> CreateAddress([Bind("AddressID, Street, Building, Full, Latitude, Longitude,City")] Address address)
+        public int CreateAddress(string Street, string Building, string Full, double Latitude, double Longitude, string City)
         {
+            Address address = new Address { Latitude = Latitude, Longitude = Longitude, Full = Full, City = City, Building = Building, Street = Street };
             _context.Add(address);
+            _context.SaveChanges();
             return address.AddressID;
         }
 
