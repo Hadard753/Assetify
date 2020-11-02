@@ -12,23 +12,25 @@ namespace Assetify.Service
 
     public class UserContext
     {
-        public string userSessionID { get; set; }
-        public string adminSessionID { get; set; }
+        public string sessionID { get; set; }
         public bool isAdmin { get; set; }
     }
     public static class UserContextService
     {
 
-        public static UserContext GetUserContext (HttpContext httpContext)
+        public static UserContext GetUserContext(HttpContext httpContext)
         {
 
             UserContext userSessionID = new UserContext();
             if (httpContext.Session.GetString("AdminIDSession") != null)
             {
-                userSessionID.adminSessionID = httpContext.Session.GetString("AdminIDSession");
+                userSessionID.sessionID = httpContext.Session.GetString("AdminIDSession");
                 userSessionID.isAdmin = true;
             }
-            userSessionID.userSessionID = httpContext.Session.GetString("UserIDSession");
+            else
+            {
+                userSessionID.sessionID = httpContext.Session.GetString("UserIDSession");
+            }
 
             return userSessionID;
         }
