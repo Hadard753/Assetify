@@ -1,0 +1,35 @@
+﻿/* Create button 
+-------------------------------------------------- */
+.create-btn a {
+    color: #fff;
+}
+/* Search modifications 
+-------------------------------------------------- */
+.active-cyan input.form-control[type=text] {
+    border-color: transparent transparent #4dd0e1 transparent;
+}
+
+.active-cyan-2 input.form-control[type=text]:focus:not([readonly]) {
+    /*border-bottom: 1px solid #4dd0e1;*/
+    border: 1px solid;
+    border-color: transparent transparent #4dd0e1 transparent;
+    box-shadow: 0 0 0 0 #4dd0e1;
+}
+
+
+/* Card modifications 
+-------------------------------------------------- */
+.card {
+    box-shadow: 3px 3px 7px #777;
+    border-radius: 22px;
+    transition: 0.8s;
+    height: 15%;
+    width: 30%;
+    margin: 12px;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 22px 22px 0 0;
+    box-shadow: 1px 0px 0px 0px lightslategrey;
+}
