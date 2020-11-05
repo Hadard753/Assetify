@@ -9,6 +9,7 @@ using Assetify.Data;
 using Assetify.Models;
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
+using System.IO;
 
 namespace Assetify.Controllers
 {
@@ -25,7 +26,10 @@ namespace Assetify.Controllers
         // GET: Assets
         public async Task<IActionResult> Index()
         {
-            var assetifyContext = _context.Assets.Include(a => a.Address);
+            var assetifyContext = _context.Assets
+                .Include(a => a.Address);
+                //.Include(i => i.Images.FirstOrDefault()).ThenInclude(p => p.Path);
+                //.Include(i => i.Images).ThenInclude(p => p.Path);
             return View(await assetifyContext.ToListAsync());
         }
 
@@ -39,6 +43,7 @@ namespace Assetify.Controllers
 
             var asset = await _context.Assets
                 .Include(a => a.Address)
+                .Include(a=> a.Images)
                 .FirstOrDefaultAsync(m => m.AssetID == id);
             if (asset == null)
             {
