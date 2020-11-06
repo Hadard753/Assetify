@@ -21,30 +21,24 @@
 </form>
 <br />
 
+
 <!-- Display all the assets -->
 <div class="row">
     @foreach (var item in Model)
     {
-        if (counter != 0 && counter % 3 == 0)
-        {
-        @:</div>
-        @:<div class="row">
-        }
-
-        <div class="card">
-            <img class="card-img-top" src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9" @*alt="C:\Users\stavb\Desktop\images\house.jpg"*@>
-            <div class="card-body">
-                <i class="fas fa-id-card"></i>
-                @*<h5 class="card-title">@item.Description</h5>*@
-                <p class="card-text">@item.Address.Full</p>
-                <a asp-action="Edit" asp-route-id="@item.AssetID" class="card-link">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.AssetID" class="card-link">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.AssetID" class="card-link">Delete</a>
-                <p class="card-text"><small class="text-muted">Created at @item.CreatedAt</small></p>
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9" @*alt="C:\Users\stavb\Desktop\images\house.jpg"*@>
+                <div class="card-body">
+                    <i class="fas fa-id-card"></i>
+                    @*<h5 class="card-title">@item.Description</h5>*@
+                    <p class="card-text">@item.Address.Full</p>
+                    <a asp-action="Edit" asp-route-id="@item.AssetID" class="card-link">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.AssetID" class="card-link">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.AssetID" class="card-link">Delete</a>
+                    <p class="card-text"><small class="text-muted">Created at @item.CreatedAt</small></p>
+                </div>
             </div>
         </div>
-
-        counter++;
     }
 </div>
-<br/><br/><br/>

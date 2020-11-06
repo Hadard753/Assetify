@@ -9,12 +9,16 @@ using Assetify.Data;
 using Assetify.Models;
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
+using System.Net.Http;
+using Microsoft.IdentityModel.Tokens;
+using NewsAPI;
+using NewsAPI.Models;
 
 namespace Assetify.Controllers
 {
     public class AssetsController : Controller
     {
-        
+
         private readonly AssetifyContext _context;
 
         public AssetsController(AssetifyContext context)
@@ -45,6 +49,7 @@ namespace Assetify.Controllers
                 return NotFound();
             }
 
+            ViewBag.articleCity = await getCityArticals(asset.Address.City);
             return View(asset);
         }
 
@@ -74,8 +79,8 @@ namespace Assetify.Controllers
             if (ModelState.IsValid)
             {
                 asset.CreatedAt = DateTime.Now;
-                UserAsset user_asset = new UserAsset { UserID = int.Parse(userContext.sessionID), AssetID = asset.AssetID, ActionTime = DateTime.Now, Action = ActionType.PUBLISH , Asset = asset};
-                foreach(var user in _context.Users)
+                UserAsset user_asset = new UserAsset { UserID = int.Parse(userContext.sessionID), AssetID = asset.AssetID, ActionTime = DateTime.Now, Action = ActionType.PUBLISH, Asset = asset };
+                foreach (var user in _context.Users)
                 {
                     if (user.UserID == int.Parse(userContext.sessionID))
                     {
@@ -109,38 +114,22 @@ namespace Assetify.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             bool isValid = false;
-            var userContext = UserContextService.GetUserContext(HttpContext);
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
 
-            //Check if the user is the Publisher
-            if (id != null)
-            {
-                foreach (var user_asset in _context.UserAsset)
-                {
-                    if (user_asset.UserID == int.Parse(userContext.sessionID) && user_asset.Action == ActionType.PUBLISH)
-                    {
-                        isValid = true;
-                        break;
-                    }
-                }
-            }
-            //Can't if not logged in admin
-            if ((userContext.sessionID == null) && !isValid)
-            {
-                return RedirectToAction("Login", "Users");
-            }
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
+            if (userContext.sessionID == null) return RedirectToAction("Login", "Users", new { message = "You need to login in order to edit this asset" });
+            bool isPublisher = _context.UserAsset.Any(ua => ua.UserID == int.Parse(userContext.sessionID) && ua.AssetID == id && ua.Action == ActionType.PUBLISH);
 
-            var asset = await _context.Assets.FindAsync(id);
-            if (asset == null)
+            if (userContext.isAdmin || isPublisher)
             {
-                return NotFound();
+                var asset = await _context.Assets.FindAsync(id);
+                ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
+                return View(asset);
             }
-
-            ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
-            return View(asset);
+            else
+            {
+                return RedirectToAction("Login", "Users", "You are not the publisher of that assert, nore or you an admin. please login with a different user");
+            }
         }
 
         // POST: Assets/Edit/5
@@ -150,7 +139,7 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AssetID,AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,CreatedAt,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
         {
-           if (id != asset.AssetID)
+            if (id != asset.AssetID)
             {
                 return NotFound();
             }
@@ -213,5 +202,65 @@ namespace Assetify.Controllers
         {
             return _context.Assets.Any(e => e.AssetID == id);
         }
+
+        public async Task<IActionResult> cityArticals(String cityName)
+        {
+            List < ArticleCity > articleCity = await getCityArticals(cityName);
+
+            //returns articles array
+            ViewBag.number_of_articals = articleCity.Count();
+            ViewBag.articleCity = articleCity;
+            ViewBag.cityName = cityName.ToUpperInvariant();
+
+            return View();
+        }
+
+        public async Task<List<ArticleCity>> getCityArticals(String cityName)
+        {
+
+            List<ArticleCity> articleCity = new List<ArticleCity>();
+            var newsApiClient = new NewsApiClient("f6395a1d8a3c469f9be70c0ec5075340");
+            var monthStart = DateTime.Now.AddMonths(-1);
+            var articlesResponse = await newsApiClient.GetEverythingAsync(new EverythingRequest
+            {
+                Q = "\"" + cityName + "\"",
+                SortBy = NewsAPI.Constants.SortBys.Popularity,
+                Language = NewsAPI.Constants.Languages.EN,
+                From = monthStart
+            });
+
+            //Append all articles to output
+            if (articlesResponse.Status == NewsAPI.Constants.Statuses.Ok)
+            {
+                //articlesResponse.Articles.ToList().ForEach(articleCity.add(new ArticleCity(article.Title, article.Description, article.Url, article.urlToImage)));
+                //Oprtion two:
+                foreach (var article in articlesResponse.Articles)
+                {
+                    articleCity.Add(new ArticleCity(article.Title, article.Description, article.Url, article.UrlToImage));
+                }
+
+            }
+
+            return articleCity;
+        }
     }
+
+    //web api trying stuff
+
+    public class ArticleCity
+    {
+        public string title { get; set; }
+        public string description { get; set; }
+        public string url { get; set; }
+        public string image_url { get; set; }
+
+        public ArticleCity(string title, string description, string url, string imageUrl)
+        {
+            this.title = title; this.description = description; this.url = url; this.image_url = imageUrl;
+        }
+
+    }
+
+
+
 }

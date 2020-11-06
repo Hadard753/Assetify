@@ -22,6 +22,7 @@ namespace Assetify.Service
         {
 
             UserContext userSessionID = new UserContext();
+            
             if (httpContext.Session.GetString("AdminIDSession") != null)
             {
                 userSessionID.sessionID = httpContext.Session.GetString("AdminIDSession");

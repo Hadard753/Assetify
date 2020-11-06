@@ -12,42 +12,44 @@ using System.Diagnostics.Eventing.Reader;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
+using System.Web.Helpers;
 
 namespace Assetify.Controllers
 {
     public class UsersController : Controller
     {
         private readonly AssetifyContext _context;
-       
+
         public UsersController(AssetifyContext context)
         {
             _context = context;
         }
-        
 
-        public ActionResult Login ()
+        //message is an option if you want to add it to the Login initial view
+        public ActionResult Login(String FirstName, String Password, String message = "")
         {
+            ViewBag.Message = message;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(String FirstName, String Password, String message = "")
-
+        public ActionResult Login(String FirstName, String Password, String message = "", String returnUrl = "")
         {
             foreach (var u in _context.Users)
             {
-                if (u.FirstName == FirstName && u.Password == Password)
+                if (u.FirstName == FirstName && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
                 {
                     if (u.IsAdmin)
                         HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
 
                     HttpContext.Session.SetString("UserIDSession", u.UserID.ToString());
-                    
-                    return RedirectToAction("Index", "home");
+                    ViewBag.Login = true;
+                    return RedirectToAction("Index", "Home");
                 }
             }
             ViewBag.Error = "Login failed, name or password is incorrect!";
+            if (returnUrl != "")
+                return Redirect(returnUrl);
             return View();
         }
 
@@ -58,12 +60,15 @@ namespace Assetify.Controllers
             userContext.sessionID = null;
             userContext.isAdmin = false;
             HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Users", new {FirstName = "", Password = "", message  = "You just logged out :)" } );
+            return RedirectToAction("Login", "Users", new { FirstName = "", Password = "", message = "You just logged out :)" });
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            var userContext = UserContextService.GetUserContext(HttpContext);
+            if (!(userContext.isAdmin))
+                return RedirectToAction("Login", "Users", new { message = "You have to be an Admin to see all users, please login with admin credentials" });
             return View(await _context.Users.ToListAsync());
         }
 
@@ -98,6 +103,7 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user)
         {
+            user.Password = Crypto.HashPassword(user.Password);
             if (ModelState.IsValid)
             {
                 _context.Add(user);
@@ -121,7 +127,7 @@ namespace Assetify.Controllers
         {
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
             //Check that this is an Admin or the user signed in
-            if (!userContext.isAdmin && id.ToString()!= userContext.sessionID)
+            if (!userContext.isAdmin && id.ToString() != userContext.sessionID)
             {
                 return RedirectToAction("EditMyProfile"); // TODO: no permission error
             }
@@ -170,10 +176,11 @@ namespace Assetify.Controllers
                         throw;
                     }
                 }
-                if(UserContextService.GetUserContext(HttpContext).isAdmin)
+                if (UserContextService.GetUserContext(HttpContext).isAdmin)
                 {
                     return RedirectToAction(nameof(Index));
-                } else
+                }
+                else
                 {
                     return RedirectToAction("Index", "Home");
                 }
@@ -214,5 +221,8 @@ namespace Assetify.Controllers
         {
             return _context.Users.Any(e => e.UserID == id);
         }
+
+
+
     }
 }

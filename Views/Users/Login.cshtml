@@ -33,7 +33,7 @@
     </table>
 
 
-    @if (ViewBag.Error != null)
+    @if (ViewBag.Error == null)
     {
         <span class="badge badge-danger">@ViewBag.error</span>
     }
@@ -42,7 +42,7 @@
         <button type="submit" class="btn btn-secondary btn-sm">Login</button>
     </div>
     <div>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Create">Don't have an account yet  ?</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Create">Don't have an account yet?<br />Click here to sign up</a>
     </div>
 
 </form>
