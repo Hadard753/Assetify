@@ -53,7 +53,7 @@ namespace Assetify.Controllers
         {
             var userContext = UserContextService.GetUserContext(HttpContext);
             //Can't create if not logged in
-            if ((userContext.userSessionID == null))
+            if ((userContext.sessionID == null))
             {
                 return RedirectToAction("Login", "Users");
             }
@@ -67,17 +67,17 @@ namespace Assetify.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AssetID,AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
+        public async Task<IActionResult> Create([Bind("AssetID, AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
         {
             var userContext = UserContextService.GetUserContext(HttpContext);
 
             if (ModelState.IsValid)
             {
                 asset.CreatedAt = DateTime.Now;
-                UserAsset user_asset = new UserAsset { UserID = int.Parse(userContext.userSessionID), AssetID = asset.AssetID, ActionTime = DateTime.Now, Action = ActionType.PUBLISH , Asset = asset};
+                UserAsset user_asset = new UserAsset { UserID = int.Parse(userContext.sessionID), AssetID = asset.AssetID, ActionTime = DateTime.Now, Action = ActionType.PUBLISH , Asset = asset};
                 foreach(var user in _context.Users)
                 {
-                    if (user.UserID == int.Parse(userContext.userSessionID))
+                    if (user.UserID == int.Parse(userContext.sessionID))
                     {
                         user_asset.User = user;
                         break;
@@ -89,10 +89,21 @@ namespace Assetify.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
+
             return View(asset);
         }
 
+        // POST: Assets/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public int CreateAddress(string Street, string Building, string Full, double Latitude, double Longitude, string City)
+        {
+            Address address = new Address { Latitude = Latitude, Longitude = Longitude, Full = Full, City = City, Building = Building, Street = Street };
+            _context.Add(address);
+            _context.SaveChanges();
+            return address.AddressID;
+        }
 
         // GET: Assets/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -105,7 +116,7 @@ namespace Assetify.Controllers
             {
                 foreach (var user_asset in _context.UserAsset)
                 {
-                    if (user_asset.UserID == int.Parse(userContext.userSessionID) && user_asset.Action == ActionType.PUBLISH)
+                    if (user_asset.UserID == int.Parse(userContext.sessionID) && user_asset.Action == ActionType.PUBLISH)
                     {
                         isValid = true;
                         break;
@@ -113,7 +124,7 @@ namespace Assetify.Controllers
                 }
             }
             //Can't if not logged in admin
-            if ((userContext.adminSessionID == null) && !isValid)
+            if ((userContext.sessionID == null) && !isValid)
             {
                 return RedirectToAction("Login", "Users");
             }

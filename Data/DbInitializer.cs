@@ -17,12 +17,12 @@ namespace Assetify.Data
 
             var address = new Address[]
             {
-                new Address{City="Holon",Street="Emek Dotan", Building="3", Full="Emek Dotan 3, Holon", IsPublic=false, Neighborhood="Kiryat sharet", Latitude=222, Longitude=222 },
-                new Address{City="Maor",Street="Azait", Building="101", Full="Azait 101, Moshav Maor", IsPublic=true, Neighborhood="", Latitude=111, Longitude=111 },
-                new Address{City="Tel Aviv",Street="Begin Road", Building="150", Full="", IsPublic=false, Neighborhood="", Latitude=444, Longitude=444 },
-                new Address{City="Bat Yam",Street="Hahazmaot", Building="150", Full="", IsPublic=false, Neighborhood="", Latitude=777, Longitude=777 },
-                new Address{City="Harish",Street="Turkiz", Building="9", Full="", IsPublic=true, Neighborhood="Avnei Hen", Latitude=999, Longitude=999 },
-                new Address{City="Holon",Street="Harokmim", Building="26", Full="", IsPublic=true, Neighborhood="", Latitude=555, Longitude=555 }//,
+                new Address{City="Holon",Street="Emek Dotan", Building="3", Full="Emek Dotan 3, Holon", IsPublic=false, Neighborhood="Kiryat sharet", Latitude=32.0063753, Longitude=34.7917401 },
+                new Address{City="Maor",Street="Azait", Building="101", Full="Azait 101, Moshav Maor", IsPublic=true, Neighborhood="", Latitude=32.4219787, Longitude=35.0057886 },
+                new Address{City="Tel Aviv",Street="Begin Road", Building="150", Full="", IsPublic=false, Neighborhood="", Latitude=32.0790551, Longitude=34.7970892 },
+                new Address{City="Bat Yam",Street="Hahazmaot", Building="150", Full="", IsPublic=false, Neighborhood="", Latitude=32.029274, Longitude=34.7521107 },
+                new Address{City="Harish",Street="Turkiz", Building="9", Full="", IsPublic=true, Neighborhood="Avnei Hen", Latitude=32.4624368, Longitude=35.0484248 },
+                new Address{City="Holon",Street="Harokmim", Building="26", Full="", IsPublic=true, Neighborhood="", Latitude=32.0077569, Longitude=34.8028279 }//,
               //  new Address{City="Tibiria",Street="Oranim", Building="1", Full="Oranim 1, Tibiria", IsPublic=false, Neighborhood="Ramot Tibiria", Latitude=333, Longitude=333 }
             };
 

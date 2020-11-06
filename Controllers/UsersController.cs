@@ -12,6 +12,7 @@ using System.Diagnostics.Eventing.Reader;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace Assetify.Controllers
 {
@@ -25,15 +26,15 @@ namespace Assetify.Controllers
         }
         
 
+        public ActionResult Login ()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult Login(String FirstName, String Password, String message = "")
 
         {
-            if (FirstName == null && Password == null)
-
-            {
-                ViewBag.Message = message;
-                return View(); 
-            }
             foreach (var u in _context.Users)
             {
                 if (u.FirstName == FirstName && u.Password == Password)
@@ -53,9 +54,10 @@ namespace Assetify.Controllers
         public ActionResult Logout()
         {
             var userContext = UserContextService.GetUserContext(HttpContext);
-            userContext.userSessionID = null;
-            userContext.adminSessionID = null;
+            userContext.sessionID = null;
+            userContext.sessionID = null;
             userContext.isAdmin = false;
+            HttpContext.Session.Clear();
             return RedirectToAction("Login", "Users", new {FirstName = "", Password = "", message  = "You just logged out :)" } );
         }
 
@@ -105,14 +107,23 @@ namespace Assetify.Controllers
             return View(user);
         }
 
+        public IActionResult EditMyProfile()
+        {
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
+            if (userContext.sessionID == null)
+                return RedirectToAction("Login");
+
+            return RedirectToAction("Edit", "Users", new { id = userContext.sessionID });
+        }
+
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            var userContext = UserContextService.GetUserContext(HttpContext);
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
             //Check that this is an Admin or the user signed in
-            if (userContext.adminSessionID == null && id.ToString()!= userContext.userSessionID)
+            if (!userContext.isAdmin && id.ToString()!= userContext.sessionID)
             {
-                return RedirectToAction("Details", "Users");
+                return RedirectToAction("EditMyProfile"); // TODO: no permission error
             }
             if (id == null)
             {
@@ -124,6 +135,8 @@ namespace Assetify.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.isAdmin = userContext.isAdmin;
             return View(user);
         }
 
@@ -157,7 +170,13 @@ namespace Assetify.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                if(UserContextService.GetUserContext(HttpContext).isAdmin)
+                {
+                    return RedirectToAction(nameof(Index));
+                } else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             return View(user);
         }
