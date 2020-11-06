@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
 using System.Web.Helpers;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace Assetify.Controllers
 {
@@ -29,15 +28,8 @@ namespace Assetify.Controllers
         //message is an option if you want to add it to the Login initial view
         public ActionResult Login(String FirstName, String Password, String message = "")
         {
-            if (message == null)
-            {
-                message = "Please enter credentials";
-            }
-            if (FirstName == null && Password == null)
-            {
-                ViewBag.Message = message;
-            }
-                return View();
+            ViewBag.Message = message;
+            return View();
         }
 
         [HttpPost]

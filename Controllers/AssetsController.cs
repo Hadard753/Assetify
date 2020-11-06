@@ -48,8 +48,8 @@ namespace Assetify.Controllers
             {
                 return NotFound();
             }
-            await cityArticals(asset.Address.City);
 
+            ViewBag.articleCity = await getCityArticals(asset.Address.City);
             return View(asset);
         }
 
@@ -120,12 +120,13 @@ namespace Assetify.Controllers
             if (userContext.sessionID == null) return RedirectToAction("Login", "Users", new { message = "You need to login in order to edit this asset" });
             bool isPublisher = _context.UserAsset.Any(ua => ua.UserID == int.Parse(userContext.sessionID) && ua.AssetID == id && ua.Action == ActionType.PUBLISH);
 
-            if(userContext.isAdmin || isPublisher)
+            if (userContext.isAdmin || isPublisher)
             {
                 var asset = await _context.Assets.FindAsync(id);
                 ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
                 return View(asset);
-            } else
+            }
+            else
             {
                 return RedirectToAction("Login", "Users", "You are not the publisher of that assert, nore or you an admin. please login with a different user");
             }
@@ -204,15 +205,28 @@ namespace Assetify.Controllers
 
         public async Task<IActionResult> cityArticals(String cityName)
         {
+            List < ArticleCity > articleCity = await getCityArticals(cityName);
+
+            //returns articles array
+            ViewBag.number_of_articals = articleCity.Count();
+            ViewBag.articleCity = articleCity;
+            ViewBag.cityName = cityName.ToUpperInvariant();
+
+            return View();
+        }
+
+        public async Task<List<ArticleCity>> getCityArticals(String cityName)
+        {
 
             List<ArticleCity> articleCity = new List<ArticleCity>();
             var newsApiClient = new NewsApiClient("f6395a1d8a3c469f9be70c0ec5075340");
+            var monthStart = DateTime.Now.AddMonths(-1);
             var articlesResponse = await newsApiClient.GetEverythingAsync(new EverythingRequest
             {
                 Q = "\"" + cityName + "\"",
                 SortBy = NewsAPI.Constants.SortBys.Popularity,
                 Language = NewsAPI.Constants.Languages.EN,
-                From = new DateTime(2020, 10, 1)
+                From = monthStart
             });
 
             //Append all articles to output
@@ -226,12 +240,8 @@ namespace Assetify.Controllers
                 }
 
             }
-            //returns articles array
-            ViewBag.number_of_articals = articleCity.Count();
-            ViewBag.articleCity = articleCity;
-            ViewBag.cityName = cityName.ToUpperInvariant();
 
-            return View();
+            return articleCity;
         }
     }
 
