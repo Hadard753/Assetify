@@ -18,7 +18,7 @@ namespace Assetify.Controllers
 {
     public class AssetsController : Controller
     {
-        
+
         private readonly AssetifyContext _context;
 
         public AssetsController(AssetifyContext context)
@@ -58,7 +58,7 @@ namespace Assetify.Controllers
         {
             var userContext = UserContextService.GetUserContext(HttpContext);
             //Can't create if not logged in
-            if ((userContext.userSessionID == null))
+            if ((userContext.sessionID == null))
             {
                 return RedirectToAction("Login", "Users");
             }
@@ -72,17 +72,17 @@ namespace Assetify.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AssetID,AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
+        public async Task<IActionResult> Create([Bind("AssetID, AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
         {
             var userContext = UserContextService.GetUserContext(HttpContext);
 
             if (ModelState.IsValid)
             {
                 asset.CreatedAt = DateTime.Now;
-                UserAsset user_asset = new UserAsset { UserID = int.Parse(userContext.userSessionID), AssetID = asset.AssetID, ActionTime = DateTime.Now, Action = ActionType.PUBLISH , Asset = asset};
-                foreach(var user in _context.Users)
+                UserAsset user_asset = new UserAsset { UserID = int.Parse(userContext.sessionID), AssetID = asset.AssetID, ActionTime = DateTime.Now, Action = ActionType.PUBLISH, Asset = asset };
+                foreach (var user in _context.Users)
                 {
-                    if (user.UserID == int.Parse(userContext.userSessionID))
+                    if (user.UserID == int.Parse(userContext.sessionID))
                     {
                         user_asset.User = user;
                         break;
@@ -94,52 +94,41 @@ namespace Assetify.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
+
             return View(asset);
         }
 
+        // POST: Assets/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        public int CreateAddress(string Street, string Building, string Full, double Latitude, double Longitude, string City)
+        {
+            Address address = new Address { Latitude = Latitude, Longitude = Longitude, Full = Full, City = City, Building = Building, Street = Street };
+            _context.Add(address);
+            _context.SaveChanges();
+            return address.AddressID;
+        }
 
         // GET: Assets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             bool isValid = false;
-            var userContext = UserContextService.GetUserContext(HttpContext);
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
 
-            //Check if the user is the Publisher admin and id is not null
-            if (id != null)
+            if (id == null) return NotFound();
+            if (userContext.sessionID == null) return RedirectToAction("Login", "Users", new { message = "You need to login in order to edit this asset" });
+            bool isPublisher = _context.UserAsset.Any(ua => ua.UserID == int.Parse(userContext.sessionID) && ua.AssetID == id && ua.Action == ActionType.PUBLISH);
+
+            if(userContext.isAdmin || isPublisher)
             {
-                if (userContext.userSessionID == null)
-                {
-                    return RedirectToAction("Login", "Users", new { message = "Sorry you have to login in order to edit an asset" });
-                }
-                if (userContext.adminSessionID == null)
-                {
-                    foreach (var user_asset in _context.UserAsset)
-                    {
-                        if (user_asset.UserID == int.Parse(userContext.userSessionID) && user_asset.Action == ActionType.PUBLISH)
-                        {
-                            isValid = true;
-                            break;
-                        }
-                    }
-                }
-                else isValid = true;
-            }
-            else return NotFound();
-            //Can't if not logged in admin
-            if (!isValid)
+                var asset = await _context.Assets.FindAsync(id);
+                ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
+                return View(asset);
+            } else
             {
                 return RedirectToAction("Login", "Users", "You are not the publisher of that assert, nore or you an admin. please login with a different user");
             }
-
-            var asset = await _context.Assets.FindAsync(id);
-            if (asset == null)
-            {
-                return NotFound();
-            }
-
-            ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
-            return View(asset);
         }
 
         // POST: Assets/Edit/5
@@ -149,7 +138,7 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AssetID,AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,CreatedAt,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
         {
-           if (id != asset.AssetID)
+            if (id != asset.AssetID)
             {
                 return NotFound();
             }
@@ -212,7 +201,7 @@ namespace Assetify.Controllers
         {
             return _context.Assets.Any(e => e.AssetID == id);
         }
-        
+
         public async Task<IActionResult> cityArticals(String cityName)
         {
 
@@ -220,10 +209,10 @@ namespace Assetify.Controllers
             var newsApiClient = new NewsApiClient("f6395a1d8a3c469f9be70c0ec5075340");
             var articlesResponse = await newsApiClient.GetEverythingAsync(new EverythingRequest
             {
-                Q = "\""+cityName+ "\"",
+                Q = "\"" + cityName + "\"",
                 SortBy = NewsAPI.Constants.SortBys.Popularity,
                 Language = NewsAPI.Constants.Languages.EN,
-                From = new DateTime(2020,10,1)
+                From = new DateTime(2020, 10, 1)
             });
 
             //Append all articles to output
@@ -241,8 +230,8 @@ namespace Assetify.Controllers
             ViewBag.number_of_articals = articleCity.Count();
             ViewBag.articleCity = articleCity;
             ViewBag.cityName = cityName.ToUpperInvariant();
-            
-            return View();    
+
+            return View();
         }
     }
 
@@ -257,7 +246,7 @@ namespace Assetify.Controllers
 
         public ArticleCity(string title, string description, string url, string imageUrl)
         {
-            this.title= title; this.description = description; this.url = url; this.image_url = imageUrl;
+            this.title = title; this.description = description; this.url = url; this.image_url = imageUrl;
         }
 
     }

@@ -13,8 +13,8 @@ namespace Assetify.Models
         public string Building { get; set; }
         public string Full { get; set; }
         public string Neighborhood { get; set; }
-        public int Latitude { get; set; }
-        public int Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         public bool IsPublic { get; set; }
     }
 }

@@ -13,41 +13,46 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
 using System.Web.Helpers;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace Assetify.Controllers
 {
     public class UsersController : Controller
     {
         private readonly AssetifyContext _context;
-       
+
         public UsersController(AssetifyContext context)
         {
             _context = context;
         }
-        
+
         //message is an option if you want to add it to the Login initial view
-        public ActionResult Login(String FirstName, String Password, String message = "", String returnUrl = "")
+        public ActionResult Login(String FirstName, String Password, String message = "")
         {
             if (message == null)
             {
                 message = "Please enter credentials";
             }
             if (FirstName == null && Password == null)
-
             {
                 ViewBag.Message = message;
-                return View(); 
             }
+                return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(String FirstName, String Password, String message = "", String returnUrl = "")
+        {
             foreach (var u in _context.Users)
             {
-                if (u.FirstName == FirstName && (Crypto.VerifyHashedPassword(u.Password.ToString(),Password.ToString())))
+                if (u.FirstName == FirstName && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
                 {
                     if (u.IsAdmin)
                         HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
 
                     HttpContext.Session.SetString("UserIDSession", u.UserID.ToString());
                     ViewBag.Login = true;
-                    return RedirectToAction("Index", "home");
+                    return RedirectToAction("Index", "Home");
                 }
             }
             ViewBag.Error = "Login failed, name or password is incorrect!";
@@ -59,10 +64,11 @@ namespace Assetify.Controllers
         public ActionResult Logout()
         {
             var userContext = UserContextService.GetUserContext(HttpContext);
-            userContext.userSessionID = null;
-            userContext.adminSessionID = null;
+            userContext.sessionID = null;
+            userContext.sessionID = null;
             userContext.isAdmin = false;
-            return RedirectToAction("Login", "Users", new {FirstName = "", Password = "", message  = "You just logged out :)" } );
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Users", new { FirstName = "", Password = "", message = "You just logged out :)" });
         }
 
         // GET: Users
@@ -115,14 +121,23 @@ namespace Assetify.Controllers
             return View(user);
         }
 
+        public IActionResult EditMyProfile()
+        {
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
+            if (userContext.sessionID == null)
+                return RedirectToAction("Login");
+
+            return RedirectToAction("Edit", "Users", new { id = userContext.sessionID });
+        }
+
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            var userContext = UserContextService.GetUserContext(HttpContext);
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
             //Check that this is an Admin or the user signed in
-            if (userContext.adminSessionID == null && id.ToString()!= userContext.userSessionID)
+            if (!userContext.isAdmin && id.ToString() != userContext.sessionID)
             {
-                return RedirectToAction("Details", "Users");
+                return RedirectToAction("EditMyProfile"); // TODO: no permission error
             }
             if (id == null)
             {
@@ -134,6 +149,8 @@ namespace Assetify.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.isAdmin = userContext.isAdmin;
             return View(user);
         }
 
@@ -167,7 +184,14 @@ namespace Assetify.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                if (UserContextService.GetUserContext(HttpContext).isAdmin)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
             }
             return View(user);
         }

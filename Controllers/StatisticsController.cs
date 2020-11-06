@@ -7,45 +7,53 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Assetify.Models;
 using Assetify.ViewsModels;
+using Assetify.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Assetify.Controllers
 {
     public class StatisticsController : Controller
     {
         private readonly ILogger<StatisticsController> _logger;
-
-        public StatisticsController(ILogger<StatisticsController> logger)
+        private readonly AssetifyContext _context;
+        public StatisticsController(ILogger<StatisticsController> logger, AssetifyContext assetifyContext)
         {
             _logger = logger;
+            _context = assetifyContext;
         }
 
         public IActionResult Index()
         {
-            // populate here the real statistics data
-            var dataPoints = new[] {
-                new BarDataPoint { name = "Doron", value = 26 },
-                new BarDataPoint { name = "Moshe", value = 25 },
-                new BarDataPoint { name = "Leon", value = 18 },
-                new BarDataPoint { name = "Daniala", value = 19 },
-                new BarDataPoint { name = "Bla", value = 23 },
-                new BarDataPoint { name = "Vova", value = 30 },
-            };
 
-            var lineChartDataPoints = new[] {
-                new LineDataPoint{date = DateTime.Now, value= 1 },
-                new LineDataPoint{date = DateTime.Now.AddDays(-1), value= 1 },
-                new LineDataPoint{date = DateTime.Now.AddDays(-2), value= 2 },
-                new LineDataPoint{date = DateTime.Now.AddDays(-3), value= 3 },
-                new LineDataPoint{date = DateTime.Now.AddDays(-4), value= 4 },
-                new LineDataPoint{date = DateTime.Now.AddDays(-5), value= 5 },
-                new LineDataPoint{date = DateTime.Now.AddDays(-6), value= 6 },
-                new LineDataPoint{date = DateTime.Now.AddDays(-7), value= 7 },
-                new LineDataPoint{date = DateTime.Now.AddDays(-8), value= 8 },
-                new LineDataPoint{date = DateTime.Now.AddDays(-9), value= 9 },
-            };
+            var TopPublishers = _context.UserAsset.Where(x => x.Action == ActionType.PUBLISH)
+                .GroupBy(y => y.UserID, y => y.User.FirstName, (userId, names) => new
+                {
+                    Key = userId,
+                    Count = names.Count(),
+                    Description = names.Max()
+                })
+                .OrderByDescending(x => x.Count)
+                .ToList();
+
+            var dataPoints = new List<BarDataPoint>();
+            TopPublishers.ForEach(x => dataPoints.Add(new BarDataPoint() { name = x.Description, value = x.Count }));
+            
+
+            var likesForDate = _context.UserAsset.Where(x => x.Action == ActionType.LIKE)
+                .GroupBy(x => x.ActionTime, (actionTime, userAssets) => new
+            {
+                ActionTime = actionTime,
+                Count = userAssets.Count()
+            }).ToList();
 
 
-            var model = new StatisticsViewModel { 
+
+            var lineChartDataPoints = new List<LineDataPoint>();
+            likesForDate.ForEach(x => lineChartDataPoints.Add(new LineDataPoint() { date = x.ActionTime, value = x.Count }));
+
+
+            var model = new StatisticsViewModel
+            {
                 barChart = new BarChart { dataPoints = dataPoints },
                 lineChart = new LineChart { dataPoints = lineChartDataPoints },
             };
