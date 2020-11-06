@@ -1,8 +1,7 @@
 ﻿@{
 
     String layout = "~/Views/Shared/_Layout.cshtml";
-    if (Url.ActionContext.RouteData.Values["Login"] != null)
-        layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    
     Layout = layout;
 
 }
