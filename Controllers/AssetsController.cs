@@ -29,7 +29,10 @@ namespace Assetify.Controllers
         // GET: Assets
         public async Task<IActionResult> Index()
         {
-            var assetifyContext = _context.Assets.Include(a => a.Address);
+            var assetifyContext = _context.Assets
+                .Include(a => a.Address)
+                .Include(a => a.Images)
+                .AsNoTracking();
             return View(await assetifyContext.ToListAsync());
         }
 
@@ -43,6 +46,8 @@ namespace Assetify.Controllers
 
             var asset = await _context.Assets
                 .Include(a => a.Address)
+                .Include(a => a.Images)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.AssetID == id);
             if (asset == null)
             {
@@ -258,6 +263,5 @@ namespace Assetify.Controllers
         {
             this.title = title; this.description = description; this.url = url; this.image_url = imageUrl;
         }
-
     }
 }
