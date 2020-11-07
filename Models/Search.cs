@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Assetify.Models
 {
+
     public class Search
     {
         public int SearchID { get; set; }

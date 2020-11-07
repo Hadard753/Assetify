@@ -146,5 +146,7 @@ namespace Assetify.Models
 
         public Address Address { get; set; }
 
+        
+
     }
 }

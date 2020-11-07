@@ -27,9 +27,14 @@ namespace Assetify.Controllers
         }
 
         // GET: Assets
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(List<Asset> searchList)
         {
+            if (searchList!=null)
+            {
+                return View(searchList);
+            }
             var assetifyContext = _context.Assets.Include(a => a.Address);
+            
             return View(await assetifyContext.ToListAsync());
         }
 
