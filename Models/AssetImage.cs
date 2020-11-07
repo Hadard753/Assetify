@@ -12,5 +12,6 @@ namespace Assetify.Models
         public string Path{ get; set; }
         public string Type{ get; set; }
         public bool Updated{ get; set; }
+        public Asset Asset { get; set; }
     }
 }

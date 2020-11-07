@@ -250,6 +250,13 @@
                     @Html.DisplayFor(model => model.Address.AddressID)
                 </dd>
             </dl>
+            @if (Model.Images.Count > 0)
+            {
+                @foreach (var item in Model.Images)
+                {
+                    <img src="@Html.DisplayFor(modelItem => item.Path)" alt="Image not found" width="250" height="250">
+                }
+            }
         </div>
         <div class="col-4">
             <div class="col-12">
@@ -273,7 +280,7 @@
                         </div>
                         counter++;
                     }
-                    <a asp-action="cityArticals" asp-route-cityName="@Model.Address.City">For more articals</a>
+                    <a asp-action="cityArticals" asp-route-cityName="@Model.Address.City">For more articles</a>
 
                 </div>
             </div>
@@ -317,3 +324,4 @@
             center: uluru,
         });
     }</script>
+
