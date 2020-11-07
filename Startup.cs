@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Assetify.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace Assetify
@@ -25,19 +27,21 @@ namespace Assetify
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDbContext<AssetifyContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
             services.AddControllersWithViews();
 
             //session try
             services.AddDistributedMemoryCache();
-
+            services.AddHttpContextAccessor();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(3600);
             });
 
             //finish session try
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +61,6 @@ namespace Assetify
             app.UseStaticFiles();
 
             app.UseRouting();
-
             //session try
             app.UseSession();
 

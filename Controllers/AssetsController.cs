@@ -260,7 +260,4 @@ namespace Assetify.Controllers
         }
 
     }
-
-
-
 }

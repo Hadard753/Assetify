@@ -297,6 +297,7 @@
             width: 65%;
             overflow: hidden;
         }
+
         #articlescontent {
             overflow: hidden;
         }
@@ -307,6 +308,7 @@
     function initMap() {
         const lon = +document.getElementById("lon").value;
         const lat = +document.getElementById("lat").value;
+
         // The location of Uluru
         const uluru = { lat: lat, lng: lon };
         // The map, centered at Uluru
@@ -315,3 +317,4 @@
             center: uluru,
         });
     }</script>
+
