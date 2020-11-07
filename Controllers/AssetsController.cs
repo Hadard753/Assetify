@@ -27,9 +27,8 @@ namespace Assetify.Controllers
         public async Task<IActionResult> Index()
         {
             var assetifyContext = _context.Assets
-                .Include(a => a.Address);
-                //.Include(i => i.Images.FirstOrDefault()).ThenInclude(p => p.Path);
-                //.Include(i => i.Images).ThenInclude(p => p.Path);
+                .Include(a => a.Address)
+                .Include(a => a.Images);
             return View(await assetifyContext.ToListAsync());
         }
 
