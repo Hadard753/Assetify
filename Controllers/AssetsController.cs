@@ -33,6 +33,10 @@ namespace Assetify.Controllers
                 .Include(a => a.Address)
                 .Include(a => a.Images)
                 .AsNoTracking();
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
+            User user = _context.Users.FirstOrDefault(userContext => userContext.UserID == userContext.UserID);
+            ViewBag.Recommendations = user == null ? new Dictionary<int, Recommendation>() : this.getRecommendations(user);
+
             return View(await assetifyContext.ToListAsync());
         }
 
@@ -208,6 +212,33 @@ namespace Assetify.Controllers
             return _context.Assets.Any(e => e.AssetID == id);
         }
 
+        private Dictionary<int, Recommendation> getRecommendations(User user)
+        {
+            List<int> myFavorites = _context.UserAsset.Where(ua => ua.UserID == user.UserID && ua.Action == ActionType.LIKE).Select(ua => ua.AssetID).ToList();
+            List<User> allUsers = _context.Users.Include(u => u.Assets).ToList();
+            Dictionary<int, Recommendation> recommendations = new Dictionary<int, Recommendation>();
+
+            foreach (User u in allUsers)
+            {
+                List<int> uFavorites = u.Assets.Where(ua => ua.Action == ActionType.LIKE).Select(ua => ua.AssetID).ToList();
+                List<int> commonFavorites = myFavorites.Intersect(uFavorites).ToList();
+                List<int> onlyULike = uFavorites.Except(myFavorites).ToList();
+
+                foreach(int r in onlyULike)
+                {
+                    if (recommendations.ContainsKey(r))
+                        recommendations[r].Score += commonFavorites.Count();
+                    else
+                    {
+                        Asset asset = _context.Assets.FirstOrDefault(a => a.AssetID == r);
+                        recommendations.Add(r, new Recommendation() { Score = commonFavorites.Count(), Asset = asset });
+                    }
+                }
+            }
+
+            return recommendations;
+        }
+
         public async Task<IActionResult> cityArticals(String cityName)
         {
             List<ArticleCity> articleCity = await getCityArticals(cityName);
@@ -264,4 +295,5 @@ namespace Assetify.Controllers
             this.title = title; this.description = description; this.url = url; this.image_url = imageUrl;
         }
     }
+
 }
