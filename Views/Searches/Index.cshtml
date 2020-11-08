@@ -1,0 +1,269 @@
+﻿@model IEnumerable<Assetify.Models.Search>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCommercial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Neighborhoods)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsForSell)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinGardenSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxGardenSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinRooms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxRooms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinFloor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxFloor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinTotalFloor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxTotalFloor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeIdIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MinEntryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FurnishedIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Orientations)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsElevator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsBalcony)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsTerrace)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsStorage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsRenovated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsRealtyCommission)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAircondition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsMamad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPandorDoors)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAccessible)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsKosherKitchen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsKosherBoiler)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsOnPillars)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsBars)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsRoomates)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsImmediate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsNearTrainStation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsNearLightTrainStation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsNearBeach)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCommercial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Neighborhoods)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsForSell)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinGardenSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxGardenSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinRooms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxRooms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinFloor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxFloor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinTotalFloor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxTotalFloor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeIdIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinEntryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FurnishedIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Orientations)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsElevator)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsBalcony)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsTerrace)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsStorage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRenovated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRealtyCommission)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAircondition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsMamad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPandorDoors)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsAccessible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsKosherKitchen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsKosherBoiler)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsOnPillars)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsBars)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsRoomates)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsImmediate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsNearTrainStation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsNearLightTrainStation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsNearBeach)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SearchID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SearchID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SearchID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
