@@ -253,48 +253,7 @@ namespace Assetify.Controllers
         }
 
 
-        public IActionResult Search()
-        {
-            return View();
-        }
-
-        // POST: Assets/Search
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Search([Bind("SearchID,UserID,IsCommercial,City,Street,Neighborhoods,IsForSell,MinPrice,MaxPrice" +
-            ",MinSize,MaxSize,MinGardenSize,MaxGardenSize,MinRooms,MaxRooms,MinFloor,MaxFloor,MinTotalFloor,MaxTotalFloor,TypeIdIn,MinEntryDate" +
-            ",FurnishedIn,Orientations,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors" +
-            ",IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach")] Search search)
-            {
-            var userContext = UserContextService.GetUserContext(HttpContext);
-            var searchedAssets = (from ass in _context.Assets select ass);
-            //allAssets = allAssets.Include(a => a.Address);
-
-            if (ModelState.IsValid)
-            {
-                search.UserID = 1;// int.Parse(userContext.userSessionID);
-                _context.Add(search);
-                await _context.SaveChangesAsync();
-                // redirect after adding? return RedirectToAction(nameof(Index));
-            }
-
-            //address
-            searchedAssets = searchedAssets.Where(a => a.Address.City == search.City && a.Address.Street == search.Street);
-
-            //sizes
-            searchedAssets = searchedAssets.Where(a => ((a.Price >= search.MinPrice && a.Price <= search.MaxPrice) &&
-            (a.Size >= search.MinSize && a.Size <= search.MaxSize) &&
-            (a.GardenSize >= search.MinGardenSize && a.GardenSize <= search.MaxGardenSize) &&
-            (a.Rooms >= search.MinRooms && a.Rooms <= search.MaxRooms) &&
-            (a.Floor >= search.MinFloor && a.Floor <= search.MaxFloor) &&
-            (a.TotalFloor >= search.MinTotalFloor && a.Floor <= search.MaxTotalFloor)));
-
-            searchedAssets.ToList<Asset>();
-            ViewBag.searchedAssets = searchedAssets;
-            return View(searchedAssets);
-        }
+        
 
     }
 

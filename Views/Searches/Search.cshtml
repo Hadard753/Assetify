@@ -47,21 +47,18 @@
                     <div class="form-group">
                         <label asp-for="City" class="control-label"></label>
                         <input asp-for="City" class="form-control" />
-                        <span asp-validation-for="City" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Street" class="control-label"></label>
                         <input asp-for="Street" class="form-control" />
-                        <span asp-validation-for="Street" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Neighborhoods" class="control-label"></label>
                         <input asp-for="Neighborhoods" class="form-control" />
-                        <span asp-validation-for="Neighborhoods" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -69,29 +66,25 @@
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MinPrice" class="control-label"></label>
-                        <input asp-for="MinPrice" class="form-control" />
-                        <span asp-validation-for="MinPrice" class="text-danger"></span>
+                        <input asp-for="MinPrice" class="form-control" value="0" />
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MaxPrice" class="control-label"></label>
-                        <input asp-for="MaxPrice" class="form-control" />
-                        <span asp-validation-for="MaxPrice" class="text-danger"></span>
+                        <input asp-for="MaxPrice" class="form-control" value="20000000"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MinSize" class="control-label"></label>
-                        <input asp-for="MinSize" class="form-control" />
-                        <span asp-validation-for="MinSize" class="text-danger"></span>
+                        <input asp-for="MinSize" class="form-control" value="0"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MaxSize" class="control-label"></label>
-                        <input asp-for="MaxSize" class="form-control" />
-                        <span asp-validation-for="MaxSize" class="text-danger"></span>
+                        <input asp-for="MaxSize" class="form-control" value="20000"/>
                     </div>
                 </div>
             </div>
@@ -99,29 +92,25 @@
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MinGardenSize" class="control-label"></label>
-                        <input asp-for="MinGardenSize" class="form-control" />
-                        <span asp-validation-for="MinGardenSize" class="text-danger"></span>
+                        <input asp-for="MinGardenSize" class="form-control" value="0"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MaxGardenSize" class="control-label"></label>
-                        <input asp-for="MaxGardenSize" class="form-control" />
-                        <span asp-validation-for="MaxGardenSize" class="text-danger"></span>
+                        <input asp-for="MaxGardenSize" class="form-control" value="20"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MinRooms" class="control-label"></label>
-                        <input asp-for="MinRooms" class="form-control" />
-                        <span asp-validation-for="MinRooms" class="text-danger"></span>
+                        <input asp-for="MinRooms" class="form-control" value="0"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MaxRooms" class="control-label"></label>
-                        <input asp-for="MaxRooms" class="form-control" />
-                        <span asp-validation-for="MaxRooms" class="text-danger"></span>
+                        <input asp-for="MaxRooms" class="form-control" value="20"/>
                     </div>
                 </div>
             </div>
@@ -129,39 +118,28 @@
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MinFloor" class="control-label"></label>
-                        <input asp-for="MinFloor" class="form-control" />
-                        <span asp-validation-for="MinFloor" class="text-danger"></span>
+                        <input asp-for="MinFloor" class="form-control" value="0"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MaxFloor" class="control-label"></label>
-                        <input asp-for="MaxFloor" class="form-control" />
-                        <span asp-validation-for="MaxFloor" class="text-danger"></span>
+                        <input asp-for="MaxFloor" class="form-control" value="20" />
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MinTotalFloor" class="control-label"></label>
-                        <input asp-for="MinTotalFloor" class="form-control" />
-                        <span asp-validation-for="MinTotalFloor" class="text-danger"></span>
+                        <input asp-for="MinTotalFloor" class="form-control" value="0"/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MaxTotalFloor" class="control-label"></label>
-                        <input asp-for="MaxTotalFloor" class="form-control" />
-                        <span asp-validation-for="MaxTotalFloor" class="text-danger"></span>
+                        <input asp-for="MaxTotalFloor" class="form-control" value="20000" />
                     </div>
                 </div>
             </div>
-
-
-            @*<div class="form-group">
-                    <label asp-for="Orientations" class="control-label"></label>
-                    <select asp-for="Orientations" class="form-control"></select>
-                    <span asp-validation-for="Orientations" class="text-danger"></span>
-                </div>*@
             <div class="form-group form-check-inline">
                 <label class="form-check-label">
                     <input class="form-check-inline-input" asp-for="IsForSell" /> @Html.DisplayNameFor(model => model.IsForSell)
@@ -269,8 +247,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="MinEntryDate" class="control-label"></label>
-                <input asp-for="MinEntryDate" class="form-control" />
-                <span asp-validation-for="MinEntryDate" class="text-danger"></span>
+                <input asp-for="MinEntryDate" class="form-control" value="01/01/1990"/>
             </div>
             <div class="form-group">
                 <input type="submit" value="Search" class="btn btn-primary" />

@@ -8,29 +8,73 @@ namespace Assetify.Models
 {
     public class Search
     {
-        public int SearchID { get; set; }
-        public int UserID { get; set; }
+        public int? SearchID { get; set; }
+        public int? UserID { get; set; }
         public bool IsCommercial { get; set; }
-        public string City { get; set; }
-        public string Street { get; set; }
-        public string Neighborhoods { get; set; }
+        [System.ComponentModel.DefaultValue("")]
+        public string? City { get; set; }
+        [System.ComponentModel.DefaultValue("")]
+
+        public string? Street { get; set; }
+        [System.ComponentModel.DefaultValue("")]
+
+        public string? Neighborhoods { get; set; }
+        [Display(Name = "For sale")]
+
         public bool IsForSell { get; set; }
-        public int MinPrice { get; set; }
-        public int MaxPrice { get; set; }
-        public int MinSize { get; set; }
-        public int MaxSize { get; set; }
-        public int MinGardenSize { get; set; }
-        public int MaxGardenSize { get; set; }
-        public int MinRooms { get; set; }
-        public int MaxRooms { get; set; }
-        public int MinFloor { get; set; }
-        public int MaxFloor { get; set; }
-        public int MinTotalFloor { get; set; }
-        public int MaxTotalFloor { get; set; }
+        [Display(Name = "Minimum price")]
+        [System.ComponentModel.DefaultValue(0)]
+
+
+        public int? MinPrice { get; set; }
+        [Display(Name = "Maximum price")]
+        [System.ComponentModel.DefaultValue(20000000)]
+
+        public int? MaxPrice { get; set; }
+        [Display(Name = "Minimum size")]
+        [System.ComponentModel.DefaultValue(0)]
+
+        public int? MinSize { get; set; }
+        [Display(Name = "Maximum size")]
+        [System.ComponentModel.DefaultValue(20000000)]
+
+        public int? MaxSize { get; set; }
+        [Display(Name = "Minimum Garden size")]
+        [System.ComponentModel.DefaultValue(0)]
+
+        public int? MinGardenSize { get; set; }
+        [Display(Name = "Maximum Garden size")]
+        [System.ComponentModel.DefaultValue(20000000)]
+
+        public int? MaxGardenSize { get; set; }
+        [Display(Name = "Minimum rooms")]
+        [System.ComponentModel.DefaultValue(0)]
+
+        public int? MinRooms { get; set; }
+        [Display(Name = "Maximum rooms")]
+        [System.ComponentModel.DefaultValue(20000000)]
+
+        public int? MaxRooms { get; set; }
+        [Display(Name = "Minimum floors")]
+        [System.ComponentModel.DefaultValue(0)]
+
+        public int? MinFloor { get; set; }
+        [Display(Name = "Maximum floors")]
+        [System.ComponentModel.DefaultValue(20000000)]
+
+        public int? MaxFloor { get; set; }
+        [Display(Name = "Minimum floors")]
+        [System.ComponentModel.DefaultValue(0)]
+
+        public int? MinTotalFloor { get; set; }
+        [Display(Name = "Maximum total floors")]
+        [System.ComponentModel.DefaultValue(20000000)]
+
+        public int? MaxTotalFloor { get; set; }
         public AssetType TypeIdIn { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime MinEntryDate { get; set; }
+        public DateTime? MinEntryDate { get; set; }
         public FurnishedType FurnishedIn { get; set; }
         public OrientationType Orientations { get; set; }
 
