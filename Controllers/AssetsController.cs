@@ -26,6 +26,13 @@ namespace Assetify.Controllers
             _context = context;
         }
 
+        private string buildFacebookPost(Asset asset)
+        {
+            var address = _context.Addresses.First(x => x.AddressID == asset.AddressID);
+            var post = $"New on our site! checkout the latest asset! available from {asset.EntryDate.ToShortDateString()},{asset.Description ?? " the publisher words \"{asset.Description}\","} located at \"{address.Full}\" with price of {asset.Price} shakels";
+            return post;
+        }
+
         // GET: Assets
         public async Task<IActionResult> Index()
         {
@@ -81,8 +88,9 @@ namespace Assetify.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AssetID, AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
+        public async Task<IActionResult> Create([Bind("AssetID, AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason,PostToFacebook")] CreateAssetRequest asset)
         {
+
             var userContext = UserContextService.GetUserContext(HttpContext);
 
             if (ModelState.IsValid)
@@ -101,6 +109,8 @@ namespace Assetify.Controllers
                 _context.Add(user_asset);
                 _context.Add(asset);
                 await _context.SaveChangesAsync();
+                var post = buildFacebookPost(asset);
+                FacebookApi.PostToPage(post);
                 return RedirectToAction(nameof(Index));
             }
 
