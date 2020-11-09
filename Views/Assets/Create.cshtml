@@ -1,4 +1,4 @@
-﻿@model Assetify.Models.Asset
+﻿@model Assetify.Models.CreateAssetRequest
 
 @{
     ViewData["Title"] = "Create";
@@ -23,11 +23,11 @@
 
                     <input asp-for="AddressID" class="form-control" id="address-id" type="text" hidden />
                     @*<input asp-for="Address.City" class="form-control" id="city" type="text" hidden />
-                        <input asp-for="Address.Building" class="form-control" id="building" type="text" hidden />
-                        <input asp-for="Address.Latitude" class="form-control" id="lat" type="text" hidden />
-                        <input asp-for="Address.Longitude" class="form-control" id="lon" type="text" hidden />
-                        <input asp-for="Address.Street" class="form-control" id="street" type="text" hidden />
-                        <input asp-for="Address.Full" class="form-control" id="full" type="text" hidden />*@
+            <input asp-for="Address.Building" class="form-control" id="building" type="text" hidden />
+            <input asp-for="Address.Latitude" class="form-control" id="lat" type="text" hidden />
+            <input asp-for="Address.Longitude" class="form-control" id="lon" type="text" hidden />
+            <input asp-for="Address.Street" class="form-control" id="street" type="text" hidden />
+            <input asp-for="Address.Full" class="form-control" id="full" type="text" hidden />*@
                 </div>
                 <div class="form-group">
                     <label asp-for="Price" class="control-label"></label>
@@ -208,6 +208,12 @@
                 <div class="form-group form-check">
                     <label class="form-check-label">
                         <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+                <br />
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="PostToFacebook" /> Check here to also post on our facebook page
                     </label>
                 </div>
                 <div class="form-group">
