@@ -1,6 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
 
+@{
+    var context = Assetify.Service.UserContextService.GetUserContext(HttpContextAccessor.HttpContext);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +38,14 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
+                    @{
+                        if (context.isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Manage users</a>
+                            </li>
+                        }
+                    }
                 </ul>
 
                 <div class="right-side d-flex">
@@ -45,7 +56,7 @@
                             </a>
                             <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 @{
-                                    if (HttpContextAccessor.HttpContext.Session.GetString("UserIDSession") == null && HttpContextAccessor.HttpContext.Session.GetString("AdminIDSession") == null)
+                                    if (context.sessionID == null && !context.isAdmin)
                                     {
 
                                         <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Login">Log In</a>
@@ -53,7 +64,7 @@
                                     }
                                     else
                                     {
-                                        <a class="dropdown-item"  asp-area="" asp-controller="Users" asp-action="EditMyProfile">Edit Profile</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="EditMyProfile">Edit Profile</a>
                                         <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Logout">Log Out</a>
                                     }
                                 }

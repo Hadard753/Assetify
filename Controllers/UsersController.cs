@@ -69,7 +69,18 @@ namespace Assetify.Controllers
             var userContext = UserContextService.GetUserContext(HttpContext);
             if (!(userContext.isAdmin))
                 return RedirectToAction("Login", "Users", new { message = "You have to be an Admin to see all users, please login with admin credentials" });
-            return View(await _context.Users.ToListAsync());
+            return View(new UserIndex() { users = await _context.Users.ToListAsync(), userSearch = new UserSearch() });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> IndexSearch([FromForm] UserSearch userSearch)
+        {
+            var users = await _context.Users
+                .Where(x=> x.Email.Contains(userSearch.Email))
+                .ToListAsync();
+
+            return View("Index", new UserIndex() { users = users, userSearch = userSearch });
         }
 
         // GET: Users/Details/5
