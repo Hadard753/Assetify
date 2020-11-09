@@ -40,11 +40,20 @@ namespace Assetify.Controllers
                 .Include(a => a.Address)
                 .Include(a => a.Images)
                 .AsNoTracking();
-            UserContext userContext = UserContextService.GetUserContext(HttpContext);
-            User user = _context.Users.FirstOrDefault(userContext => userContext.UserID == userContext.UserID);
-            ViewBag.Recommendations = user == null ? new Dictionary<int, Recommendation>() : this.getRecommendations(user);
-
-            return View(await assetifyContext.ToListAsync());
+            UserContext UserContext = UserContextService.GetUserContext(HttpContext);
+            User User = _context.Users.Include(u => u.Assets).FirstOrDefault(u => u.UserID.ToString() == UserContext.sessionID);
+            List<int> UserFavorites = new List<int>();
+            if (User != null)
+            {
+                UserFavorites = User.Assets.Where(ua => ua.Action == ActionType.LIKE).Select(ua => ua.AssetID).ToList();
+                ViewBag.Recommendations = User == null ? new Dictionary<int, Recommendation>() : this.getRecommendations(User);
+            }
+            List<Asset> Assets = await assetifyContext.ToListAsync();
+            foreach (Asset Asset in Assets)
+            {
+                Asset.isFavorite = UserFavorites.Contains(Asset.AssetID);
+            }
+            return View(Assets);
         }
 
         // GET: Assets/Details/5
@@ -115,6 +124,26 @@ namespace Assetify.Controllers
             }
 
             return View(asset);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleFav(int AssetID, bool IsFav)
+        {
+            string UserID = UserContextService.GetUserContext(HttpContext).sessionID;
+            if (UserID == null)
+                return Json(new { status = 401 });
+
+            if (IsFav)
+            {
+                _context.UserAsset.Add(new UserAsset() { Action = ActionType.LIKE, ActionTime = new DateTime(), AssetID = AssetID, UserID = Int32.Parse(UserID) });
+            }
+            else
+            {
+                UserAsset ua = _context.UserAsset.FirstOrDefault(ua => ua.AssetID == AssetID && ua.UserID.ToString() == UserID && ua.Action == ActionType.LIKE);
+                _context.UserAsset.Remove(ua);
+            }
+            await _context.SaveChangesAsync();
+            return Json(new { status = 200 });
         }
 
         // POST: Assets/Create
@@ -234,7 +263,7 @@ namespace Assetify.Controllers
                 List<int> commonFavorites = myFavorites.Intersect(uFavorites).ToList();
                 List<int> onlyULike = uFavorites.Except(myFavorites).ToList();
 
-                foreach(int r in onlyULike)
+                foreach (int r in onlyULike)
                 {
                     if (recommendations.ContainsKey(r))
                         recommendations[r].Score += commonFavorites.Count();

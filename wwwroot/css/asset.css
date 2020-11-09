@@ -23,8 +23,8 @@
     border-radius: 22px;
     transition: 0.8s;
     height: 15%;
-    width: 30%;
-    margin: 12px;
+    width: 90%;
+    margin-bottom: 12px;
 }
 
 #listofcards .card .card-img-top {
@@ -109,4 +109,9 @@ lex-direction: column;
 
 #assetdetailscard .btn {
     margin-top: auto;
+}
+
+.btn-fav {
+    border: none;
+    background-color: transparent;
 }

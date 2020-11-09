@@ -17,7 +17,7 @@ namespace Assetify.Models
         //[DataType(DataType.Password)]
         public string Password { get; set; }
 
-/*        [Required(ErrorMessage = "Please enter confirm password")]
+        /*[Required(ErrorMessage = "Please enter confirm password")]
         [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "Password and confirm password does not match")]
         public string ComparePassword { get; set; }*/
