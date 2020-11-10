@@ -35,12 +35,10 @@ namespace Assetify.Controllers
 
             if (TempData["searchedAssets"]!=null)
             {
-                //var searchedAssets = TempData["searchedAssets"] as List<Asset>;
+                var searchedAssets = TempData["searchedAssets"] as Int32[];
 
-                TempData["searchedAssets"] = JsonSerializer.Serialize(TempData["searchedAssets"]);
-                var searchedAssets = JsonSerializer.Deserialize<List<Asset>>(TempData["searchedAssets"].ToString());
-                
-                return View();
+                List<Asset> assets = _context.Assets.Where(a => searchedAssets.Contains(a.AssetID)).Include(a => a.Address).ToList();
+                return View(assets);
             }
             assetifyContext = _context.Assets.Include(a => a.Address);
 

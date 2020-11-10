@@ -168,12 +168,8 @@ namespace Assetify.Controllers
             if(search.MinEntryDate != null)
                 searchedAssets = searchedAssets.Where(a => a.EntryDate <= search.MinEntryDate);
 
-            //searchedAssets.ToList<Asset>();
-            //ViewBag.searchedAssets = searchedAssets;
-           // searchedAssets.ToList<Asset>();
-            String searchedAssetsJson = searchedAssets.ToList<Asset>().ToString();
-            //TempData["searchedAssets"] = JsonConvert.SerializeObject(searchedAssets.ToList<Asset>());
-            TempData["searchedAssets"] = searchedAssetsJson;// as List<Asset>;
+            TempData["searchedAssets"] = searchedAssets.Select(a => a.AssetID).ToList<int>();
+
             return RedirectToAction("Index", "Assets");
         }
 
