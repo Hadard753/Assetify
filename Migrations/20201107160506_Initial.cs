@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Assetify.Migrations
 {
-    public partial class t : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,8 +18,8 @@ namespace Assetify.Migrations
                     Building = table.Column<string>(nullable: true),
                     Full = table.Column<string>(nullable: true),
                     Neighborhood = table.Column<string>(nullable: true),
-                    Latitude = table.Column<int>(nullable: false),
-                    Longitude = table.Column<int>(nullable: false),
+                    Latitude = table.Column<double>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false),
                     IsPublic = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -34,14 +34,15 @@ namespace Assetify.Migrations
                     UserID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
                     IsVerified = table.Column<bool>(nullable: false),
                     ProfileImgPath = table.Column<string>(nullable: true),
                     LastSeenFavorite = table.Column<DateTime>(nullable: false),
-                    LastSeenMessages = table.Column<DateTime>(nullable: false)
+                    LastSeenMessages = table.Column<DateTime>(nullable: false),
+                    IsAdmin = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

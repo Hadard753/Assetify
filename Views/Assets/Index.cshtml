@@ -11,15 +11,10 @@
     <button type="button" class="btn btn-primary btn-lg" asp-action="Create" position="left">
         <a asp-action="Create">Create Asset</a>
     </button>
+    <button type="button" class="btn btn-primary btn-lg" asp-action="Create" position="left">
+        <a asp-action="Search" asp-controller="Searches">Search</a>
+    </button>
 </div>
-<br />
-
-<!-- Search form -->
-<form class="form-inline d-flex justify-content-center md-form form-sm active-cyan active-cyan-2 mt-2">
-    <i class="fas fa-search" aria-hidden="true"></i>
-    <input class="form-control form-control-sm ml-3 w-75" type="text" onfocus="if(this.value == 'Search') { this.value = ''; }" value="Search"
-           aria-label="Search">
-</form>
 <br />
 
 
@@ -131,6 +126,7 @@
             </div>
         }
     </div>
+
 </div>
 
 <script>

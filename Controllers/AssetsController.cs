@@ -13,6 +13,8 @@ using System.Net.Http;
 using Microsoft.IdentityModel.Tokens;
 using NewsAPI;
 using NewsAPI.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Assetify.Controllers
 {
@@ -36,6 +38,13 @@ namespace Assetify.Controllers
         // GET: Assets
         public async Task<IActionResult> Index()
         {
+            if (TempData["searchedAssets"] != null)
+            {
+                var searchedAssets = TempData["searchedAssets"] as Int32[];
+                TempData["searchedAssets"] = null;
+                List<Asset> assets = _context.Assets.Where(a => searchedAssets.Contains(a.AssetID)).Include(a => a.Images).Include(a => a.Address).ToList();
+                return View(assets);
+            }
             var assetifyContext = _context.Assets
                 .Include(a => a.Address)
                 .Include(a => a.Images)
@@ -163,7 +172,7 @@ namespace Assetify.Controllers
         // GET: Assets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            bool isValid = false;
+            //bool isValid = false;
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
 
             if (id == null) return NotFound();
@@ -216,6 +225,7 @@ namespace Assetify.Controllers
             }
             ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
             return View(asset);
+            
         }
 
         // GET: Assets/Delete/5
@@ -323,6 +333,10 @@ namespace Assetify.Controllers
 
             return articleCity;
         }
+
+
+        
+
     }
 
     //web api trying stuff

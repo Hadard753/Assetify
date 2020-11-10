@@ -8,29 +8,57 @@ namespace Assetify.Models
 {
     public class Search
     {
-        public int SearchID { get; set; }
-        public int UserID { get; set; }
+        public int? SearchID { get; set; }
+        public int? UserID { get; set; }
         public bool IsCommercial { get; set; }
-        public string City { get; set; }
-        public string Street { get; set; }
-        public string Neighborhoods { get; set; }
+        public string? City { get; set; }
+
+        public string? Street { get; set; }
+
+        public string? Neighborhoods { get; set; }
+
         public bool IsForSell { get; set; }
-        public int MinPrice { get; set; }
-        public int MaxPrice { get; set; }
-        public int MinSize { get; set; }
-        public int MaxSize { get; set; }
-        public int MinGardenSize { get; set; }
-        public int MaxGardenSize { get; set; }
-        public int MinRooms { get; set; }
-        public int MaxRooms { get; set; }
-        public int MinFloor { get; set; }
-        public int MaxFloor { get; set; }
-        public int MinTotalFloor { get; set; }
-        public int MaxTotalFloor { get; set; }
+        [Display(Name = "Minimum price")]
+
+
+        public int? MinPrice { get; set; }
+        [Display(Name = "Maximum price")]
+
+        public int? MaxPrice { get; set; }
+        [Display(Name = "Minimum size")]
+
+        public int? MinSize { get; set; }
+        [Display(Name = "Maximum size")]
+
+        public int? MaxSize { get; set; }
+        [Display(Name = "Minimum Garden size")]
+
+        public int? MinGardenSize { get; set; }
+        [Display(Name = "Maximum Garden size")]
+
+        public int? MaxGardenSize { get; set; }
+        [Display(Name = "Minimum rooms")]
+
+        public int? MinRooms { get; set; }
+        [Display(Name = "Maximum rooms")]
+
+        public int? MaxRooms { get; set; }
+        [Display(Name = "Minimum floors")]
+
+        public int? MinFloor { get; set; }
+        [Display(Name = "Maximum floors")]
+
+        public int? MaxFloor { get; set; }
+        [Display(Name = "Minimum floors")]
+
+        public int? MinTotalFloor { get; set; }
+        [Display(Name = "Maximum total floors")]
+
+        public int? MaxTotalFloor { get; set; }
         public AssetType TypeIdIn { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime MinEntryDate { get; set; }
+        public DateTime? MinEntryDate { get; set; }
         public FurnishedType FurnishedIn { get; set; }
         public OrientationType Orientations { get; set; }
 
