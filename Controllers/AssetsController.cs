@@ -307,8 +307,7 @@ namespace Assetify.Controllers
             //Append all articles to output
             if (articlesResponse.Status == NewsAPI.Constants.Statuses.Ok)
             {
-                //articlesResponse.Articles.ToList().ForEach(articleCity.add(new ArticleCity(article.Title, article.Description, article.Url, article.urlToImage)));
-                //Oprtion two:
+
                 foreach (var article in articlesResponse.Articles)
                 {
                     articleCity.Add(new ArticleCity(article.Title, article.Description, article.Url, article.UrlToImage));

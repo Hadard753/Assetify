@@ -79,3 +79,21 @@ body {
     right: 0;
     left: unset;
 }
+
+/*General styles */
+display-4
+{
+	text-shadow:5px 5px 10px black;	
+	
+}
+h1
+{
+	text-shadow:5px 5px 10px black;	
+}
+
+/* #card-text */
+/* { */
+	/* border: 2px solid black; */
+	/* padding: 10px; */
+	/* border-radius: 25px; */
+/* } */
