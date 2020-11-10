@@ -46,7 +46,9 @@ namespace Assetify.Controllers
             if (User != null)
             {
                 UserFavorites = User.Assets.Where(ua => ua.Action == ActionType.LIKE).Select(ua => ua.AssetID).ToList();
-                ViewBag.Recommendations = User == null ? new Dictionary<int, Recommendation>() : this.getRecommendations(User);
+                var r = User == null ? new Dictionary<int, Recommendation>() : this.getRecommendations(User);
+                var sortedDict = (from entry in r orderby entry.Value.Score descending select entry.Value).Take(3).ToList();
+                ViewBag.Recommendations = sortedDict;
             }
             List<Asset> Assets = await assetifyContext.ToListAsync();
             foreach (Asset Asset in Assets)
@@ -269,8 +271,11 @@ namespace Assetify.Controllers
                         recommendations[r].Score += commonFavorites.Count();
                     else
                     {
-                        Asset asset = _context.Assets.FirstOrDefault(a => a.AssetID == r);
-                        recommendations.Add(r, new Recommendation() { Score = commonFavorites.Count(), Asset = asset });
+                        if (commonFavorites.Count() != 0)
+                        {
+                            Asset asset = _context.Assets.FirstOrDefault(a => a.AssetID == r);
+                            recommendations.Add(r, new Recommendation() { Score = commonFavorites.Count(), Asset = asset });
+                        }
                     }
                 }
             }

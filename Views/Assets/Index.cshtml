@@ -25,6 +25,62 @@
 
 <!-- Display all the assets -->
 <div id="listofcards">
+
+    @if (ViewBag.Recommendations != null)
+    {
+        <div class="row">
+            @foreach (Recommendation r in ViewBag.Recommendations)
+            {
+                var item = r.Asset;
+                <div class="col-xs-12 col-md-4 recommendation">
+                    <div class="card">
+                        <div class="row">
+                            @if (item.Images.Count > 0)
+                                imgSrcUrl = item.Images.First().Path;
+                            else
+                                imgSrcUrl = "assets/default-house.jpg";
+                            <img class="card-img-top" src="@imgSrcUrl" alt="Image not found">
+                        </div>
+                        <div class="card-img-overlay align-bottom row">
+                            <div class="col-4">
+                                <img src="~/assets/floors-icon.jpg" alt="Floor" />@item.Floor
+                            </div>
+                            <div class="col-4">
+                                <img src="~/assets/rooms-icon.png" alt="Rooms" />@item.Rooms
+                            </div>
+                            <div class="col-4">
+                                <img src="~/assets/size-icon.png" alt="Size" />@item.Size
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @item.Description
+                                <span class="float-right font-weight-light">@Convert.ToDecimal(item.Price).ToString("#,##0")</span>
+                            </h5>
+                            <div class="card-subtitle">
+                                <img src="assets/location.png" width="15" height="15">
+                                @item.Address.Street, @item.Address.City
+                                <span class="float-right font-weight-light">
+                                    <button hidden="@(!item.isFavorite)" onclick="toggleFav(false,@item.AssetID)" class="btn-fav" id="fav_@item.AssetID">
+                                        <img src="~/assets/icon__fav-filled.png" width="30" />
+                                    </button>
+                                    <button hidden="@item.isFavorite" onclick="toggleFav(true,@item.AssetID)" class="btn-fav" id="not_fav_@item.AssetID">
+                                        <img src="~/assets/icon__fav.png" width="30" />
+                                    </button>
+                                </span>
+                            </div>
+                            <p class="card-text">@item.Address.Full</p>
+                            <a asp-action="Edit" asp-route-id="@item.AssetID" class="card-link">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.AssetID" class="card-link">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.AssetID" class="card-link">Delete</a>
+                            <p class="card-text"><small class="text-muted">Created at @item.CreatedAt</small></p>
+                        </div>
+                    </div>
+                </div>
+            }
+        <hr />
+        </div>
+    }
     <div class="row">
         @foreach (var item in Model)
         {
