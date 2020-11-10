@@ -83,6 +83,11 @@
     margin-top: 20px;
 }
 
+#assetdetailscard .card-block {
+    box-shadow: 0 0 black !important;
+    border: none !important;
+}
+
 .carousel-indicators li {
     border-radius: 12px;
     width: 12px;
