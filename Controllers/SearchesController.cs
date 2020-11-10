@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Http;
 using Assetify.Service;
 using System.Net.Http;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Assetify.Controllers
 {
@@ -125,49 +126,55 @@ namespace Assetify.Controllers
 
 
             //address
-            if (search.City != "")
+            if (search.City != null)
                 searchedAssets = searchedAssets.Where(a => a.Address.City == search.City);
-            if (search.Street!= "")
+            if (search.Street!= null)
                 searchedAssets = searchedAssets.Where(a => a.Address.Street == search.Street);
-            if (search.Neighborhoods != "")
+            if (search.Neighborhoods != null)
                 searchedAssets = searchedAssets.Where(a => a.Address.Neighborhood == search.Neighborhoods);
 
             //sizes
-            if (search.MinPrice != 0)
+            if (search.MinPrice != null)
                 searchedAssets = searchedAssets.Where(a=> a.Price >= search.MinPrice);
-            if (search.MaxPrice != 0)
+            if (search.MaxPrice != null)
                 searchedAssets = searchedAssets.Where(a => a.Price >= search.MaxPrice);
 
-            if (search.MinSize != 0)
+            if (search.MinSize != null)
                 searchedAssets = searchedAssets.Where(a => a.Size >= search.MinSize);
-            if (search.MaxSize != 0)
+            if (search.MaxSize != null)
                 searchedAssets = searchedAssets.Where(a => a.Size >= search.MaxSize);
 
-            if (search.MinGardenSize != 0)
+            if (search.MinGardenSize != null)
                 searchedAssets = searchedAssets.Where(a => a.GardenSize >= search.MinGardenSize);
-            if (search.MaxGardenSize != 0)
+            if (search.MaxGardenSize != null)
                 searchedAssets = searchedAssets.Where(a => a.GardenSize >= search.MaxGardenSize);
 
-            if (search.MinRooms != 0)
+            if (search.MinRooms != null)
                 searchedAssets = searchedAssets.Where(a => a.Rooms >= search.MinRooms);
-            if (search.MaxRooms != 0)
+            if (search.MaxRooms != null)
                 searchedAssets = searchedAssets.Where(a => a.Rooms >= search.MaxRooms);
 
-            if (search.MinFloor != 0)
+            if (search.MinFloor != null)
                 searchedAssets = searchedAssets.Where(a => a.Floor >= search.MinFloor);
-            if (search.MaxFloor != 0)
+            if (search.MaxFloor != null)
                 searchedAssets = searchedAssets.Where(a => a.Floor >= search.MaxFloor);
 
-            if (search.MinTotalFloor != 0)
+            if (search.MinTotalFloor != null)
                 searchedAssets = searchedAssets.Where(a => a.TotalFloor >= search.MinTotalFloor);
-            if (search.MaxTotalFloor != 0)
+            if (search.MaxTotalFloor != null)
                 searchedAssets = searchedAssets.Where(a => a.TotalFloor >= search.MaxTotalFloor);
 
-            // searchedAssets.ToList<Asset>();
-            ViewBag.searchedAssets = searchedAssets;
-            TempData["searchedAssets"] = JsonConvert.SerializeObject(searchedAssets.ToList<Asset>());
+            //date
+            if(search.MinEntryDate != null)
+                searchedAssets = searchedAssets.Where(a => a.EntryDate <= search.MinEntryDate);
 
-            return View();// "Index", "Assets");
+            //searchedAssets.ToList<Asset>();
+            //ViewBag.searchedAssets = searchedAssets;
+           // searchedAssets.ToList<Asset>();
+            String searchedAssetsJson = searchedAssets.ToList<Asset>().ToString();
+            //TempData["searchedAssets"] = JsonConvert.SerializeObject(searchedAssets.ToList<Asset>());
+            TempData["searchedAssets"] = searchedAssetsJson;// as List<Asset>;
+            return RedirectToAction("Index", "Assets");
         }
 
         // GET: Searches/Edit/5

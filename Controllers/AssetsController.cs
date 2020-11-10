@@ -13,7 +13,8 @@ using System.Net.Http;
 using Microsoft.IdentityModel.Tokens;
 using NewsAPI;
 using NewsAPI.Models;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Assetify.Controllers
 {
@@ -30,14 +31,21 @@ namespace Assetify.Controllers
         // GET: Assets
         public async Task<IActionResult> Index()
         {
-           if(TempData["searchedAssets"]!=null)
+            var assetifyContext = (from ass in _context.Assets select ass);
+
+            if (TempData["searchedAssets"]!=null)
             {
-                ViewBag.AssetsToView = JsonConvert.DeserializeObject<List<Asset>>((string)TempData["searchedAssets"]);
+                //var searchedAssets = TempData["searchedAssets"] as List<Asset>;
+
+                TempData["searchedAssets"] = JsonSerializer.Serialize(TempData["searchedAssets"]);
+                var searchedAssets = JsonSerializer.Deserialize<List<Asset>>(TempData["searchedAssets"].ToString());
+                
                 return View();
             }
-            var assetifyContext = _context.Assets.Include(a => a.Address);
-            ViewBag.AssetsToView = await assetifyContext.ToListAsync();
-            return View();// (await assetifyContext.ToListAsync());
+            assetifyContext = _context.Assets.Include(a => a.Address);
+
+            //ViewBag.AssetsToView = await assetifyContext.ToListAsync();
+            return View(await assetifyContext.ToListAsync());
         }
 
         // GET: Assets/Details/5
