@@ -273,7 +273,7 @@ namespace Assetify.Controllers
                     {
                         if (commonFavorites.Count() != 0)
                         {
-                            Asset asset = _context.Assets.FirstOrDefault(a => a.AssetID == r);
+                            Asset asset = _context.Assets.Include(a => a.Address).Include(a => a.Images).FirstOrDefault(a => a.AssetID == r);
                             recommendations.Add(r, new Recommendation() { Score = commonFavorites.Count(), Asset = asset });
                         }
                     }
