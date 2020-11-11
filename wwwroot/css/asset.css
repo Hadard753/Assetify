@@ -88,6 +88,10 @@
     border: none !important;
 }
 
+#assetdetailscard #assetinfo .img-container {
+    font-size: 0.75em;
+    text-align: center;
+}
 .carousel-indicators li {
     border-radius: 12px;
     width: 12px;
