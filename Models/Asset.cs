@@ -149,6 +149,11 @@ namespace Assetify.Models
 
         [NotMapped]
         [System.Web.Mvc.HiddenInput(DisplayValue = false)]
-        public bool isFavorite { set; get; }
+        public bool IsFavorite { set; get; }
+
+
+        [NotMapped]
+        [System.Web.Mvc.HiddenInput(DisplayValue = false)]
+        public bool IsOwner { set; get; }
     }
 }
