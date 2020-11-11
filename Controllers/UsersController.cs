@@ -76,9 +76,13 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> IndexSearch([FromForm] UserSearch userSearch)
         {
-            var users = await _context.Users
-                .Where(x=> x.Email.Contains(userSearch.Email))
-                .ToListAsync();
+            var filteredUsers =  _context.Users.AsQueryable();
+            if (userSearch.Email != null) filteredUsers = filteredUsers.Where(x => x.Email.Contains(userSearch.Email));
+            if (userSearch.FirstName != null) filteredUsers = filteredUsers.Where(x => x.FirstName.Contains(userSearch.FirstName));
+            if (userSearch.LastName != null) filteredUsers = filteredUsers.Where(x => x.LastName.Contains(userSearch.LastName));
+            var users = await filteredUsers.ToListAsync();
+
+            //.ToListAsync();
 
             return View("Index", new UserIndex() { users = users, userSearch = userSearch });
         }
