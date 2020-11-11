@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Assetify.Service;
 using System.Web.Helpers;
 using SQLitePCL;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Assetify.Controllers
 {
@@ -22,32 +23,37 @@ namespace Assetify.Controllers
             _context = context;
         }
 
-        //message is an option if you want to add it to the Login initial view
-        public ActionResult Login(String FirstName, String Password, String message = "")
+        public ActionResult Login(String returnUrl = "")
         {
-            ViewBag.Message = message;
+            //TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString();
+            if (TempData["LoginMessage"]!=null)
+                ViewBag.Message = TempData["LoginMessage"];
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(String FirstName, String Password, String message = "", String returnUrl = "")
+        public ActionResult Login(String FirstName, String Password)
         {
+            
             foreach (var u in _context.Users)
             {
                 if (u.FirstName == FirstName && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
                 {
-                    HttpContext.Session.SetString("ProfileImg", u.ProfileImgPath);
+                    if(u.ProfileImgPath!=null)
+                        HttpContext.Session.SetString("ProfileImg", u.ProfileImgPath);
                     if (u.IsAdmin)
                         HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
 
                     HttpContext.Session.SetString("UserIDSession", u.UserID.ToString());
                     ViewBag.Login = true;
-                    return RedirectToAction("Index", "Home");
+
+                    return RedirectToAction("Index", "home");
                 }
             }
-            ViewBag.Error = "Login failed, name or password is incorrect!";
-            if (returnUrl != "")
-                return Redirect(returnUrl);
+            //test this
+            ViewBag.Message = "Login failed, name or password is incorrect!";
+
+           
             return View();
         }
 
@@ -66,7 +72,10 @@ namespace Assetify.Controllers
         {
             var userContext = UserContextService.GetUserContext(HttpContext);
             if (!(userContext.isAdmin))
-                return RedirectToAction("Login", "Users", new { message = "You have to be an Admin to see all users, please login with admin credentials" });
+            {
+                TempData["LoginMessage"] = "You have to be an Admin to see all users, please login with admin credentials";
+                return RedirectToAction("Login", "Users");
+            }
             return View(new UserIndex() { users = await _context.Users.ToListAsync(), userSearch = new UserSearch() });
         }
 
