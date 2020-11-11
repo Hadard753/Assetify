@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
 using System.Web.Helpers;
+using SQLitePCL;
 
 namespace Assetify.Controllers
 {
@@ -172,7 +173,7 @@ namespace Assetify.Controllers
             {
                 return NotFound();
             }
-
+            //user.Password = _context.Users.FindAsync(id).Result.Password;
             if (ModelState.IsValid)
             {
                 try

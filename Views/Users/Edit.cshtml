@@ -1,4 +1,10 @@
-﻿@model Assetify.Models.User
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var context = Assetify.Service.UserContextService.GetUserContext(HttpContextAccessor.HttpContext);
+}
+@model Assetify.Models.User
 
 @{
     ViewData["Title"] = "Edit";
@@ -15,14 +21,10 @@
             <input type="hidden" asp-for="UserID" />
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control"/>
+                <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Password" />
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -41,23 +43,25 @@
             <div class="form-group">
                 <img src="@Model.ProfileImgPath" />
             </div>
-            @{ if (ViewBag.isAdmin)
-                {
-                    <div class="form-group">
-                        <label asp-for="LastSeenFavorite" class="control-label"></label>
-                        <input asp-for="LastSeenFavorite" class="form-control" disabled/>
-                        <span asp-validation-for="LastSeenFavorite" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="LastSeenMessages" class="control-label"></label>
-                        <input asp-for="LastSeenMessages" class="form-control" disabled/>
-                        <span asp-validation-for="LastSeenMessages" class="text-danger"></span>
-                    </div>
-                }
-            }
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+            @*@if (Model.UserID == int.Parse(context.sessionID))
+            {
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input type="password" placeholder="Password" id="password" required />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input type="password" placeholder="Confirm Password" id="confirm_password" required />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+            }*@
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            
         </form>
     </div>
 </div>
@@ -69,3 +73,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
