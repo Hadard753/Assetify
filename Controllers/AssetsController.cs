@@ -7,14 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assetify.Data;
 using Assetify.Models;
-using Microsoft.AspNetCore.Http;
 using Assetify.Service;
-using System.Net.Http;
-using Microsoft.IdentityModel.Tokens;
 using NewsAPI;
 using NewsAPI.Models;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Assetify.Controllers
 {
