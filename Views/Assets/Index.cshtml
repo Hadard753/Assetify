@@ -14,7 +14,15 @@
     <button type="button" class="btn btn-primary btn-lg" asp-action="Create" position="left">
         <a asp-action="Search" asp-controller="Searches">Search</a>
     </button>
+
 </div>
+@if (ViewBag.NoSearchResultsFound == true)
+    {
+    <div><br />
+        No search Results found for your search :(<br />
+        Here are all our other assets for some inspiration!
+    </div>
+    }
 <br />
 
 
@@ -73,7 +81,7 @@
                     </div>
                 </div>
             }
-        <hr />
+            <hr />
         </div>
     }
     <div class="row">

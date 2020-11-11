@@ -42,108 +42,114 @@ namespace Assetify.Controllers
             ",IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach")] Search search)
         {
             var userContext = UserContextService.GetUserContext(HttpContext);
-            var searchedAssets = (from ass in _context.Assets select ass);
+            var searchedAssets = (from ass in _context.Assets join add in _context.Addresses on ass.AddressID equals add.AddressID select new {ass, add });
+            //var searchedAssets = (from ass in _context.Assets select ass);
 
             if (ModelState.IsValid)
             {
-                search.UserID = 1;// TODO int.Parse(userContext.userSessionID);
+                if (userContext.sessionID != null)
+                    search.UserID = int.Parse(userContext.sessionID);
+                else search.UserID = null;
                 _context.Add((Search)search);
                 await _context.SaveChangesAsync();
             }
             //Enums
-            searchedAssets = searchedAssets.Where(a => a.TypeId == search.TypeIdIn && a.Furnished == search.FurnishedIn);
+            searchedAssets = searchedAssets.Where(a => a.ass.TypeId == search.TypeIdIn && a.ass.Furnished == search.FurnishedIn);
 
             //Date
             if (search.MinEntryDate != null)
-                searchedAssets = searchedAssets.Where(a => a.EntryDate >= search.MinEntryDate);
+                searchedAssets = searchedAssets.Where(a => a.ass.EntryDate <= search.MinEntryDate);
 
             //Boolians
             if (search.IsAccessible == true)
-                searchedAssets = searchedAssets.Where(a => a.IsAccessible == search.IsAccessible);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsAccessible == search.IsAccessible);
             if (search.IsElevator == true)
-                searchedAssets = searchedAssets.Where(a => a.IsElevator == search.IsElevator);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsElevator == search.IsElevator);
             if (search.IsBalcony == true)
-                searchedAssets = searchedAssets.Where(a => a.IsBalcony == search.IsBalcony);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsBalcony == search.IsBalcony);
             if (search.IsTerrace == true)
-                searchedAssets = searchedAssets.Where(a => a.IsTerrace == search.IsTerrace);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsTerrace == search.IsTerrace);
             if (search.IsStorage == true)
-                searchedAssets = searchedAssets.Where(a => a.IsStorage == search.IsStorage);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsStorage == search.IsStorage);
             if (search.IsRenovated == true)
-                searchedAssets = searchedAssets.Where(a => a.IsRenovated == search.IsRenovated);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsRenovated == search.IsRenovated);
             if (search.IsRealtyCommission == true)
-                searchedAssets = searchedAssets.Where(a => a.IsRealtyCommission == search.IsRealtyCommission);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsRealtyCommission == search.IsRealtyCommission);
             if (search.IsAircondition == true)
-                searchedAssets = searchedAssets.Where(a => a.IsAircondition == search.IsAircondition);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsAircondition == search.IsAircondition);
             if (search.IsPandorDoors == true)
-                searchedAssets = searchedAssets.Where(a => a.IsPandorDoors == search.IsPandorDoors);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsPandorDoors == search.IsPandorDoors);
             if (search.IsMamad == true)
-                searchedAssets = searchedAssets.Where(a => a.IsMamad == search.IsMamad);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsMamad == search.IsMamad);
             if (search.IsAccessible == true)
-                searchedAssets = searchedAssets.Where(a => a.IsAccessible == search.IsAccessible);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsAccessible == search.IsAccessible);
             if (search.IsKosherKitchen == true)
-                searchedAssets = searchedAssets.Where(a => a.IsKosherKitchen == search.IsKosherKitchen);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsKosherKitchen == search.IsKosherKitchen);
             if (search.IsKosherBoiler == true)
-                searchedAssets = searchedAssets.Where(a => a.IsKosherBoiler == search.IsKosherBoiler);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsKosherBoiler == search.IsKosherBoiler);
             if (search.IsOnPillars == true)
-                searchedAssets = searchedAssets.Where(a => a.IsOnPillars == search.IsOnPillars);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsOnPillars == search.IsOnPillars);
             if (search.IsBars == true)
-                searchedAssets = searchedAssets.Where(a => a.IsBars == search.IsBars);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsBars == search.IsBars);
             if (search.IsRoomates == true)
-                searchedAssets = searchedAssets.Where(a => a.IsRoomates == search.IsRoomates);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsRoomates == search.IsRoomates);
             if (search.IsImmediate == true)
-                searchedAssets = searchedAssets.Where(a => a.IsImmediate == search.IsImmediate);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsImmediate == search.IsImmediate);
             if (search.IsNearTrainStation == true)
-                searchedAssets = searchedAssets.Where(a => a.IsNearTrainStation == search.IsNearTrainStation);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsNearTrainStation == search.IsNearTrainStation);
             if (search.IsNearLightTrainStation == true)
-                searchedAssets = searchedAssets.Where(a => a.IsNearLightTrainStation == search.IsNearLightTrainStation);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsNearLightTrainStation == search.IsNearLightTrainStation);
             if (search.IsNearBeach == true)
-                searchedAssets = searchedAssets.Where(a => a.IsNearBeach == search.IsNearBeach);
+                searchedAssets = searchedAssets.Where(a => a.ass.IsNearBeach == search.IsNearBeach);
 
+           // searchedAssets = searchedAssets.Where(_context.Addresses.Where(a=>a.AddressID==sear))
 
             //address
             if (search.City != null)
-                searchedAssets = searchedAssets.Where(a => a.Address.City == search.City);
+                searchedAssets = searchedAssets.Where(a => a.add.City.Contains(search.City));
             if (search.Street!= null)
-                searchedAssets = searchedAssets.Where(a => a.Address.Street == search.Street);
+                searchedAssets = searchedAssets.Where(a => a.add.Street == search.Street);
             if (search.Neighborhoods != null)
-                searchedAssets = searchedAssets.Where(a => a.Address.Neighborhood == search.Neighborhoods);
+                searchedAssets = searchedAssets.Where(a => a.add.Neighborhood == search.Neighborhoods);
 
             //sizes
             if (search.MinPrice != null)
-                searchedAssets = searchedAssets.Where(a=> a.Price <= search.MinPrice);
+                searchedAssets = searchedAssets.Where(a=> a.ass.Price <= search.MinPrice);
             if (search.MaxPrice != null)
-                searchedAssets = searchedAssets.Where(a => a.Price >= search.MaxPrice);
+                searchedAssets = searchedAssets.Where(a => a.ass.Price >= search.MaxPrice);
 
             if (search.MinSize != null)
-                searchedAssets = searchedAssets.Where(a => a.Size <= search.MinSize);
+                searchedAssets = searchedAssets.Where(a => a.ass.Size <= search.MinSize);
             if (search.MaxSize != null)
-                searchedAssets = searchedAssets.Where(a => a.Size >= search.MaxSize);
+                searchedAssets = searchedAssets.Where(a => a.ass.Size >= search.MaxSize);
 
             if (search.MinGardenSize != null)
-                searchedAssets = searchedAssets.Where(a => a.GardenSize <= search.MinGardenSize);
+                searchedAssets = searchedAssets.Where(a => a.ass.GardenSize <= search.MinGardenSize);
             if (search.MaxGardenSize != null)
-                searchedAssets = searchedAssets.Where(a => a.GardenSize >= search.MaxGardenSize);
+                searchedAssets = searchedAssets.Where(a => a.ass.GardenSize >= search.MaxGardenSize);
 
             if (search.MinRooms != null)
-                searchedAssets = searchedAssets.Where(a => a.Rooms <= search.MinRooms);
+                searchedAssets = searchedAssets.Where(a => a.ass.Rooms <= search.MinRooms);
             if (search.MaxRooms != null)
-                searchedAssets = searchedAssets.Where(a => a.Rooms >= search.MaxRooms);
+                searchedAssets = searchedAssets.Where(a => a.ass.Rooms >= search.MaxRooms);
 
             if (search.MinFloor != null)
-                searchedAssets = searchedAssets.Where(a => a.Floor <= search.MinFloor);
+                searchedAssets = searchedAssets.Where(a => a.ass.Floor <= search.MinFloor);
             if (search.MaxFloor != null)
-                searchedAssets = searchedAssets.Where(a => a.Floor >= search.MaxFloor);
+                searchedAssets = searchedAssets.Where(a => a.ass.Floor >= search.MaxFloor);
 
             if (search.MinTotalFloor != null)
-                searchedAssets = searchedAssets.Where(a => a.TotalFloor <= search.MinTotalFloor);
+                searchedAssets = searchedAssets.Where(a => a.ass.TotalFloor <= search.MinTotalFloor);
             if (search.MaxTotalFloor != null)
-                searchedAssets = searchedAssets.Where(a => a.TotalFloor >= search.MaxTotalFloor);
+                searchedAssets = searchedAssets.Where(a => a.ass.TotalFloor >= search.MaxTotalFloor);
 
             //date
             if(search.MinEntryDate != null)
-                searchedAssets = searchedAssets.Where(a => a.EntryDate <= search.MinEntryDate);
+                searchedAssets = searchedAssets.Where(a => a.ass.EntryDate <= search.MinEntryDate);
 
-            TempData["searchedAssets"] = searchedAssets.Select(a => a.AssetID).ToList<int>();
+            TempData["searchedAssets"] = searchedAssets.Select(a => a.ass.AssetID).ToList<int>();
+            if(searchedAssets.Count()==0)
+                return RedirectToAction("Index", "Assets", new { NoSearchResults =true});
 
             return RedirectToAction("Index", "Assets");
         }

@@ -36,7 +36,7 @@ namespace Assetify.Controllers
         }
 
         // GET: Assets
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool NoSearchResults)
         {
             if (TempData["searchedAssets"] != null)
             {
@@ -45,6 +45,8 @@ namespace Assetify.Controllers
                 List<Asset> assets = _context.Assets.Where(a => searchedAssets.Contains(a.AssetID)).Include(a => a.Images).Include(a => a.Address).ToList();
                 return View(assets);
             }
+            if (NoSearchResults)
+                ViewBag.NoSearchResultsFound = true;
             var assetifyContext = _context.Assets
                 .Include(a => a.Address)
                 .Include(a => a.Images)
