@@ -31,7 +31,7 @@ namespace Assetify.Controllers
         }
 
         // GET: Assets
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool NoSearchResults)
         {
             UserContext UserContext = UserContextService.GetUserContext(HttpContext);
             User User = _context.Users.Include(u => u.Assets).FirstOrDefault(u => u.UserID.ToString() == UserContext.sessionID);
@@ -46,7 +46,6 @@ namespace Assetify.Controllers
                 this.MarkFavoritesAndOwnership(User, assets);
                 return View(assets);
             }
-
             // Get user recommendations
             if (User != null)
             {
@@ -55,6 +54,8 @@ namespace Assetify.Controllers
                 ViewBag.Recommendations = sortedDict;
             }
 
+            if (NoSearchResults)
+                ViewBag.NoSearchResultsFound = true;
             var Assets = _context.Assets
                 .Include(a => a.Address)
                 .Include(a => a.Images)
@@ -337,8 +338,7 @@ namespace Assetify.Controllers
             //Append all articles to output
             if (articlesResponse.Status == NewsAPI.Constants.Statuses.Ok)
             {
-                //articlesResponse.Articles.ToList().ForEach(articleCity.add(new ArticleCity(article.Title, article.Description, article.Url, article.urlToImage)));
-                //Oprtion two:
+
                 foreach (var article in articlesResponse.Articles)
                 {
                     articleCity.Add(new ArticleCity(article.Title, article.Description, article.Url, article.UrlToImage));
