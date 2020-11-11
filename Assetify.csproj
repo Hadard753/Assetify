@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi" Version="5.2.7" />
     <None Include="wwwroot\assets\default-house.jpg" />
     <None Include="wwwroot\assets\location.png" />

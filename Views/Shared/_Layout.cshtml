@@ -33,41 +33,11 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbar-list-8">
                     <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @{
-                                    string profile = HttpContextAccessor.HttpContext.Session.GetString("ProfileImg");
-                                    if (profile != null)
-                                    {
-                                        <img src="/UploadedFiles/@profile" width="30" height="25" class="rounded-circle">
-                                    }
-                                    else
-                                    {
-                                        <img src="/assets/profile-img.jpg" width="30" height="25" class="rounded-circle">
-                                    }
-                                }
-                            </a>
-                            <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                @{
-                                    if (context.sessionID == null && !context.isAdmin)
-                                    {
-
-                                        <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Login">Log In</a>
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Create">New to this site?</a>
-                                    }
-                                    else
-                                    {
-                                        <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="EditMyProfile">Edit Profile</a>
-                                        <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Logout">Log Out</a>
-                                    }
-                                }
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Assets" asp-action="Index">Assets</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Statistics" asp-action="Index">Statistics</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @{
                             if (context.isAdmin)
@@ -83,7 +53,17 @@
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="/assets/profile-img.jpg" width="30" height="25" class="rounded-circle">
+                                    @{
+                                        string profile = HttpContextAccessor.HttpContext.Session.GetString("ProfileImg");
+                                        if (profile != null)
+                                        {
+                                            <img src="/UploadedFiles/@profile" width="30" height="25" class="rounded-circle">
+                                        }
+                                        else
+                                        {
+                                            <img src="/assets/profile-img.jpg" width="30" height="25" class="rounded-circle">
+                                        }
+                                    }
                                 </a>
                                 <div class="dropdown-menu custom-dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                     @{
