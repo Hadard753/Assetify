@@ -121,13 +121,11 @@ lex-direction: column;
     background-color: transparent;
 }
 
-
 .btn-circle {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
+    padding: 7px 10px;
+    border-radius: 25px;
+    font-size: 10px;
     text-align: center;
-    padding: 6px 0;
-    font-size: 12px;
-    line-height: 1.428571429;
-    border-radius: 15px;
-}
+} 
