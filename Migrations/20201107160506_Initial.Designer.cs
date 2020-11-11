@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Assetify.Migrations
 {
     [DbContext(typeof(AssetifyContext))]
-    [Migration("20201031134538_BeforePasswordTypeChange")]
-    partial class BeforePasswordTypeChange
+    [Migration("20201107160506_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,11 +40,11 @@ namespace Assetify.Migrations
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Latitude")
-                        .HasColumnType("int");
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Longitude")
-                        .HasColumnType("int");
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
 
                     b.Property<string>("Neighborhood")
                         .HasColumnType("nvarchar(max)");

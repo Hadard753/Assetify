@@ -1,0 +1,258 @@
+﻿@model Assetify.Models.Search
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Search</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Search">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TypeIdIn, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.TypeIdIn, new SelectList(AssetType.GetValues(typeof(AssetType))))
+                            @Html.ValidationMessageFor(model => model.TypeIdIn, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FurnishedIn, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(model => model.FurnishedIn, new SelectList(FurnishedType.GetValues(typeof(FurnishedType))))
+                            @Html.ValidationMessageFor(model => model.FurnishedIn, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="City" class="control-label"></label>
+                        <input asp-for="City" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Street" class="control-label"></label>
+                        <input asp-for="Street" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Neighborhoods" class="control-label"></label>
+                        <input asp-for="Neighborhoods" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MinPrice" class="control-label"></label>
+                        <input asp-for="MinPrice" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MaxPrice" class="control-label"></label>
+                        <input asp-for="MaxPrice" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MinSize" class="control-label"></label>
+                        <input asp-for="MinSize" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MaxSize" class="control-label"></label>
+                        <input asp-for="MaxSize" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MinGardenSize" class="control-label"></label>
+                        <input asp-for="MinGardenSize" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MaxGardenSize" class="control-label"></label>
+                        <input asp-for="MaxGardenSize" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MinRooms" class="control-label"></label>
+                        <input asp-for="MinRooms" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MaxRooms" class="control-label"></label>
+                        <input asp-for="MaxRooms" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MinFloor" class="control-label"></label>
+                        <input asp-for="MinFloor" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MaxFloor" class="control-label"></label>
+                        <input asp-for="MaxFloor" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MinTotalFloor" class="control-label"></label>
+                        <input asp-for="MinTotalFloor" class="form-control" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="MaxTotalFloor" class="control-label"></label>
+                        <input asp-for="MaxTotalFloor" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsForSell" /> @Html.DisplayNameFor(model => model.IsForSell)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsElevator" /> @Html.DisplayNameFor(model => model.IsElevator)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsBalcony" /> @Html.DisplayNameFor(model => model.IsBalcony)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsTerrace" /> @Html.DisplayNameFor(model => model.IsTerrace)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsStorage" /> @Html.DisplayNameFor(model => model.IsStorage)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsRenovated" /> @Html.DisplayNameFor(model => model.IsRenovated)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsRealtyCommission" /> @Html.DisplayNameFor(model => model.IsRealtyCommission)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsAircondition" /> @Html.DisplayNameFor(model => model.IsAircondition)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsMamad" /> @Html.DisplayNameFor(model => model.IsMamad)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsPandorDoors" /> @Html.DisplayNameFor(model => model.IsPandorDoors)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsAccessible" /> @Html.DisplayNameFor(model => model.IsAccessible)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsKosherKitchen" /> @Html.DisplayNameFor(model => model.IsKosherKitchen)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsKosherBoiler" /> @Html.DisplayNameFor(model => model.IsKosherBoiler)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsOnPillars" /> @Html.DisplayNameFor(model => model.IsOnPillars)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsBars" /> @Html.DisplayNameFor(model => model.IsBars)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsRoomates" /> @Html.DisplayNameFor(model => model.IsRoomates)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsImmediate" /> @Html.DisplayNameFor(model => model.IsImmediate)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsNearTrainStation" /> @Html.DisplayNameFor(model => model.IsNearTrainStation)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsNearLightTrainStation" /> @Html.DisplayNameFor(model => model.IsNearLightTrainStation)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsNearBeach" /> @Html.DisplayNameFor(model => model.IsNearBeach)
+                </label>
+            </div>
+            <div class="form-group form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-inline-input" asp-for="IsCommercial" /> @Html.DisplayNameFor(model => model.IsCommercial)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinEntryDate" class="control-label"></label>
+                <input asp-for="MinEntryDate" class="form-control" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index" asp-controller="Assets">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

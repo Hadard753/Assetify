@@ -13,6 +13,8 @@ using System.Net.Http;
 using Microsoft.IdentityModel.Tokens;
 using NewsAPI;
 using NewsAPI.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Assetify.Controllers
 {
@@ -36,6 +38,13 @@ namespace Assetify.Controllers
         // GET: Assets
         public async Task<IActionResult> Index()
         {
+            if (TempData["searchedAssets"] != null)
+            {
+                var searchedAssets = TempData["searchedAssets"] as Int32[];
+                TempData["searchedAssets"] = null;
+                List<Asset> assets = _context.Assets.Where(a => searchedAssets.Contains(a.AssetID)).Include(a => a.Images).Include(a => a.Address).ToList();
+                return View(assets);
+            }
             var assetifyContext = _context.Assets
                 .Include(a => a.Address)
                 .Include(a => a.Images)
@@ -46,7 +55,9 @@ namespace Assetify.Controllers
             if (User != null)
             {
                 UserFavorites = User.Assets.Where(ua => ua.Action == ActionType.LIKE).Select(ua => ua.AssetID).ToList();
-                ViewBag.Recommendations = User == null ? new Dictionary<int, Recommendation>() : this.getRecommendations(User);
+                var r = User == null ? new Dictionary<int, Recommendation>() : this.getRecommendations(User);
+                var sortedDict = (from entry in r orderby entry.Value.Score descending select entry.Value).Take(3).ToList();
+                ViewBag.Recommendations = sortedDict;
             }
             List<Asset> Assets = await assetifyContext.ToListAsync();
             foreach (Asset Asset in Assets)
@@ -161,7 +172,7 @@ namespace Assetify.Controllers
         // GET: Assets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            bool isValid = false;
+            //bool isValid = false;
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
 
             if (id == null) return NotFound();
@@ -214,6 +225,7 @@ namespace Assetify.Controllers
             }
             ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
             return View(asset);
+            
         }
 
         // GET: Assets/Delete/5
@@ -269,8 +281,11 @@ namespace Assetify.Controllers
                         recommendations[r].Score += commonFavorites.Count();
                     else
                     {
-                        Asset asset = _context.Assets.FirstOrDefault(a => a.AssetID == r);
-                        recommendations.Add(r, new Recommendation() { Score = commonFavorites.Count(), Asset = asset });
+                        if (commonFavorites.Count() != 0)
+                        {
+                            Asset asset = _context.Assets.Include(a => a.Address).Include(a => a.Images).FirstOrDefault(a => a.AssetID == r);
+                            recommendations.Add(r, new Recommendation() { Score = commonFavorites.Count(), Asset = asset });
+                        }
                     }
                 }
             }
@@ -317,6 +332,10 @@ namespace Assetify.Controllers
 
             return articleCity;
         }
+
+
+        
+
     }
 
     //web api trying stuff
