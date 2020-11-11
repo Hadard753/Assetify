@@ -10,6 +10,7 @@ using Assetify.Models;
 using Assetify.Service;
 using NewsAPI;
 using NewsAPI.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Assetify.Controllers
 {
@@ -112,6 +113,7 @@ namespace Assetify.Controllers
             //Can't create if not logged in
             if ((userContext.sessionID == null))
             {
+                TempData["LoginMessage"] = "You have to be logged in in order to create a new asset";
                 return RedirectToAction("Login", "Users");
             }
 
@@ -192,7 +194,12 @@ namespace Assetify.Controllers
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
 
             if (id == null) return NotFound();
-            if (userContext.sessionID == null) return RedirectToAction("Login", "Users", new { message = "You need to login in order to edit this asset" });
+            if (userContext.sessionID == null)
+            {
+                TempData["LoginMessage"] = "You need to login in order to edit this asset";
+                //TempData["ReturnUrl"]= Request.GetDisplayUrl().ToString();
+                return RedirectToAction("Login", "Users");
+            }
             bool isPublisher = _context.UserAsset.Any(ua => ua.UserID == int.Parse(userContext.sessionID) && ua.AssetID == id && ua.Action == ActionType.PUBLISH);
 
             if (userContext.isAdmin || isPublisher)
@@ -203,7 +210,8 @@ namespace Assetify.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Users", "You are not the publisher of that assert, nore or you an admin. please login with a different user");
+                TempData["LoginMessage"] = "You are not the publisher of that assert, nore or you an admin. please login with a different user";
+                return RedirectToAction("Login", "Users");
             }
         }
 
