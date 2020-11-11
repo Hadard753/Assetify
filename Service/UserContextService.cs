@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Assetify.Data;
+using Assetify.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -14,13 +16,13 @@ namespace Assetify.Service
     {
         public string sessionID { get; set; }
         public bool isAdmin { get; set; }
+
+        public User User { get; set; }
     }
     public static class UserContextService
     {
-
         public static UserContext GetUserContext(HttpContext httpContext)
         {
-
             UserContext userSessionID = new UserContext();
             
             if (httpContext.Session.GetString("AdminIDSession") != null)

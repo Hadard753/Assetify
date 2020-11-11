@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assetify.Data;
 using Assetify.Models;
-using System.Web;
-using System.Diagnostics.Eventing.Reader;
-using Newtonsoft.Json;
+
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
 using System.Web.Helpers;
@@ -40,6 +36,7 @@ namespace Assetify.Controllers
             {
                 if (u.FirstName == FirstName && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
                 {
+                    HttpContext.Session.SetString("ProfileImg", u.ProfileImgPath);
                     if (u.IsAdmin)
                         HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
 
@@ -77,7 +74,7 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> IndexSearch([FromForm] UserSearch userSearch)
         {
-            var filteredUsers =  _context.Users.AsQueryable();
+            var filteredUsers = _context.Users.AsQueryable();
             if (userSearch.Email != null) filteredUsers = filteredUsers.Where(x => x.Email.Contains(userSearch.Email));
             if (userSearch.FirstName != null) filteredUsers = filteredUsers.Where(x => x.FirstName.Contains(userSearch.FirstName));
             if (userSearch.LastName != null) filteredUsers = filteredUsers.Where(x => x.LastName.Contains(userSearch.LastName));
@@ -117,11 +114,12 @@ namespace Assetify.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user)
+        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user, IFormFile file)
         {
             user.Password = Crypto.HashPassword(user.Password);
             if (ModelState.IsValid)
             {
+                user.ProfileImgPath = await FileUploader.UploadFile(file);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -237,8 +235,5 @@ namespace Assetify.Controllers
         {
             return _context.Users.Any(e => e.UserID == id);
         }
-
-
-
     }
 }
