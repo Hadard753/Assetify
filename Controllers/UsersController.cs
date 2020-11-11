@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assetify.Data;
 using Assetify.Models;
-using System.Web;
-using System.Diagnostics.Eventing.Reader;
-using Newtonsoft.Json;
+
 using Microsoft.AspNetCore.Http;
 using Assetify.Service;
 using System.Web.Helpers;
+using SQLitePCL;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Assetify.Controllers
 {
@@ -25,31 +23,37 @@ namespace Assetify.Controllers
             _context = context;
         }
 
-        //message is an option if you want to add it to the Login initial view
-        public ActionResult Login(String FirstName, String Password, String message = "")
+        public ActionResult Login(String returnUrl = "")
         {
-            ViewBag.Message = message;
+            //TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString();
+            if (TempData["LoginMessage"]!=null)
+                ViewBag.Message = TempData["LoginMessage"];
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(String FirstName, String Password, String message = "", String returnUrl = "")
+        public ActionResult Login(String FirstName, String Password)
         {
+            
             foreach (var u in _context.Users)
             {
                 if (u.FirstName == FirstName && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
                 {
+                    if(u.ProfileImgPath!=null)
+                        HttpContext.Session.SetString("ProfileImg", u.ProfileImgPath);
                     if (u.IsAdmin)
                         HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
 
                     HttpContext.Session.SetString("UserIDSession", u.UserID.ToString());
                     ViewBag.Login = true;
-                    return RedirectToAction("Index", "Home");
+
+                    return RedirectToAction("Index", "home");
                 }
             }
-            ViewBag.Error = "Login failed, name or password is incorrect!";
-            if (returnUrl != "")
-                return Redirect(returnUrl);
+            //test this
+            ViewBag.Message = "Login failed, name or password is incorrect!";
+
+           
             return View();
         }
 
@@ -68,7 +72,10 @@ namespace Assetify.Controllers
         {
             var userContext = UserContextService.GetUserContext(HttpContext);
             if (!(userContext.isAdmin))
-                return RedirectToAction("Login", "Users", new { message = "You have to be an Admin to see all users, please login with admin credentials" });
+            {
+                TempData["LoginMessage"] = "You have to be an Admin to see all users, please login with admin credentials";
+                return RedirectToAction("Login", "Users");
+            }
             return View(new UserIndex() { users = await _context.Users.ToListAsync(), userSearch = new UserSearch() });
         }
 
@@ -76,7 +83,7 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> IndexSearch([FromForm] UserSearch userSearch)
         {
-            var filteredUsers =  _context.Users.AsQueryable();
+            var filteredUsers = _context.Users.AsQueryable();
             if (userSearch.Email != null) filteredUsers = filteredUsers.Where(x => x.Email.Contains(userSearch.Email));
             if (userSearch.FirstName != null) filteredUsers = filteredUsers.Where(x => x.FirstName.Contains(userSearch.FirstName));
             if (userSearch.LastName != null) filteredUsers = filteredUsers.Where(x => x.LastName.Contains(userSearch.LastName));
@@ -116,11 +123,12 @@ namespace Assetify.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user)
+        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user, IFormFile file)
         {
             user.Password = Crypto.HashPassword(user.Password);
             if (ModelState.IsValid)
             {
+                user.ProfileImgPath = await FileUploader.UploadFile(file);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -172,7 +180,7 @@ namespace Assetify.Controllers
             {
                 return NotFound();
             }
-
+            //user.Password = _context.Users.FindAsync(id).Result.Password;
             if (ModelState.IsValid)
             {
                 try
@@ -236,8 +244,5 @@ namespace Assetify.Controllers
         {
             return _context.Users.Any(e => e.UserID == id);
         }
-
-
-
     }
 }

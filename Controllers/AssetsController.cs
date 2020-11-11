@@ -7,14 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Assetify.Data;
 using Assetify.Models;
-using Microsoft.AspNetCore.Http;
 using Assetify.Service;
-using System.Net.Http;
-using Microsoft.IdentityModel.Tokens;
 using NewsAPI;
 using NewsAPI.Models;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Assetify.Controllers
 {
@@ -36,35 +32,56 @@ namespace Assetify.Controllers
         }
 
         // GET: Assets
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(bool NoSearchResults)
         {
+            UserContext UserContext = UserContextService.GetUserContext(HttpContext);
+            User User = _context.Users.Include(u => u.Assets).FirstOrDefault(u => u.UserID.ToString() == UserContext.sessionID);
+            ViewBag.IsAdmin = UserContext.isAdmin;
+
+            // If Action was called from search page
             if (TempData["searchedAssets"] != null)
             {
                 var searchedAssets = TempData["searchedAssets"] as Int32[];
                 TempData["searchedAssets"] = null;
                 List<Asset> assets = _context.Assets.Where(a => searchedAssets.Contains(a.AssetID)).Include(a => a.Images).Include(a => a.Address).ToList();
+                this.MarkFavoritesAndOwnership(User, assets);
                 return View(assets);
             }
-            var assetifyContext = _context.Assets
-                .Include(a => a.Address)
-                .Include(a => a.Images)
-                .AsNoTracking();
-            UserContext UserContext = UserContextService.GetUserContext(HttpContext);
-            User User = _context.Users.Include(u => u.Assets).FirstOrDefault(u => u.UserID.ToString() == UserContext.sessionID);
-            List<int> UserFavorites = new List<int>();
+            // Get user recommendations
             if (User != null)
             {
-                UserFavorites = User.Assets.Where(ua => ua.Action == ActionType.LIKE).Select(ua => ua.AssetID).ToList();
                 var r = User == null ? new Dictionary<int, Recommendation>() : this.getRecommendations(User);
                 var sortedDict = (from entry in r orderby entry.Value.Score descending select entry.Value).Take(3).ToList();
                 ViewBag.Recommendations = sortedDict;
             }
-            List<Asset> Assets = await assetifyContext.ToListAsync();
+
+            if (NoSearchResults)
+                ViewBag.NoSearchResultsFound = true;
+            var Assets = _context.Assets
+                .Include(a => a.Address)
+                .Include(a => a.Images)
+                .ToList();
+
+            this.MarkFavoritesAndOwnership(User, Assets);
+            return View(Assets);
+        }
+
+        private void MarkFavoritesAndOwnership(User User, List<Asset> Assets)
+        {
+            List<int> UserFavorites = new List<int>();
+            List<int> UserPublish = new List<int>();
+
+            if (User != null)
+            {
+                UserFavorites = User.Assets.Where(ua => ua.Action == ActionType.LIKE).Select(ua => ua.AssetID).ToList();
+                UserPublish = User.Assets.Where(ua => ua.Action == ActionType.PUBLISH).Select(ua => ua.AssetID).ToList();
+            }
+
             foreach (Asset Asset in Assets)
             {
-                Asset.isFavorite = UserFavorites.Contains(Asset.AssetID);
+                Asset.IsOwner = UserPublish.Contains(Asset.AssetID);
+                Asset.IsFavorite = UserFavorites.Contains(Asset.AssetID);
             }
-            return View(Assets);
         }
 
         // GET: Assets/Details/5
@@ -97,6 +114,7 @@ namespace Assetify.Controllers
             //Can't create if not logged in
             if ((userContext.sessionID == null))
             {
+                TempData["LoginMessage"] = "You have to be logged in in order to create a new asset";
                 return RedirectToAction("Login", "Users");
             }
 
@@ -177,7 +195,12 @@ namespace Assetify.Controllers
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
 
             if (id == null) return NotFound();
-            if (userContext.sessionID == null) return RedirectToAction("Login", "Users", new { message = "You need to login in order to edit this asset" });
+            if (userContext.sessionID == null)
+            {
+                TempData["LoginMessage"] = "You need to login in order to edit this asset";
+                //TempData["ReturnUrl"]= Request.GetDisplayUrl().ToString();
+                return RedirectToAction("Login", "Users");
+            }
             bool isPublisher = _context.UserAsset.Any(ua => ua.UserID == int.Parse(userContext.sessionID) && ua.AssetID == id && ua.Action == ActionType.PUBLISH);
 
             if (userContext.isAdmin || isPublisher)
@@ -188,7 +211,8 @@ namespace Assetify.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Users", "You are not the publisher of that assert, nore or you an admin. please login with a different user");
+                TempData["LoginMessage"] = "You are not the publisher of that assert, nore or you an admin. please login with a different user";
+                return RedirectToAction("Login", "Users");
             }
         }
 
@@ -226,7 +250,7 @@ namespace Assetify.Controllers
             }
             ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
             return View(asset);
-            
+
         }
 
         // GET: Assets/Delete/5
@@ -323,8 +347,7 @@ namespace Assetify.Controllers
             //Append all articles to output
             if (articlesResponse.Status == NewsAPI.Constants.Statuses.Ok)
             {
-                //articlesResponse.Articles.ToList().ForEach(articleCity.add(new ArticleCity(article.Title, article.Description, article.Url, article.urlToImage)));
-                //Oprtion two:
+
                 foreach (var article in articlesResponse.Articles)
                 {
                     articleCity.Add(new ArticleCity(article.Title, article.Description, article.Url, article.UrlToImage));
@@ -336,7 +359,7 @@ namespace Assetify.Controllers
         }
 
 
-        
+
 
     }
 

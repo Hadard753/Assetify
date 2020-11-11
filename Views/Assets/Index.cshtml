@@ -8,13 +8,24 @@
 
 <!-- Create asset button -->
 <div class="create-btn">
-    <button type="button" class="btn btn-primary btn-lg" asp-action="Create" position="left">
-        <a asp-action="Create">Create Asset</a>
-    </button>
-    <button type="button" class="btn btn-primary btn-lg" asp-action="Create" position="left">
-        <a asp-action="Search" asp-controller="Searches">Search</a>
-    </button>
+    <button type="button" asp-action="Create" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-list"></i></button>
+    <button type="button" asp-action="Search" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-list"></i></button>
+
+    @*<button type="button" class="btn btn-primary btn-lg" asp-action="Create" position="left">
+            <a asp-action="Create">Create Asset</a>
+        </button>
+        <button type="button" class="btn btn-primary btn-lg" asp-action="Create" position="left">
+            <a asp-action="Search" asp-controller="Searches">Search</a>
+        </button>*@
+
 </div>
+@if (ViewBag.NoSearchResultsFound == true)
+    {
+    <div><br />
+        No search Results found for your search :(<br />
+        Here are all our other assets for some inspiration!
+    </div>
+    }
 <br />
 
 
@@ -56,10 +67,10 @@
                                 <img src="assets/location.png" width="15" height="15">
                                 @item.Address.Street, @item.Address.City
                                 <span class="float-right font-weight-light">
-                                    <button hidden="@(!item.isFavorite)" onclick="toggleFav(false,@item.AssetID)" class="btn-fav" id="fav_@item.AssetID">
+                                    <button hidden="@(!item.IsFavorite)" onclick="toggleFav(false,@item.AssetID)" class="btn-fav" id="fav_@item.AssetID">
                                         <img src="~/assets/icon__fav-filled.png" width="30" />
                                     </button>
-                                    <button hidden="@item.isFavorite" onclick="toggleFav(true,@item.AssetID)" class="btn-fav" id="not_fav_@item.AssetID">
+                                    <button hidden="@item.IsFavorite" onclick="toggleFav(true,@item.AssetID)" class="btn-fav" id="not_fav_@item.AssetID">
                                         <img src="~/assets/icon__fav.png" width="30" />
                                     </button>
                                 </span>
@@ -73,7 +84,7 @@
                     </div>
                 </div>
             }
-        <hr />
+            <hr />
         </div>
     }
     <div class="row">
@@ -108,18 +119,23 @@
                             <img src="assets/location.png" width="15" height="15">
                             @item.Address.Street, @item.Address.City
                             <span class="float-right font-weight-light">
-                                <button hidden="@(!item.isFavorite)" onclick="toggleFav(false,@item.AssetID)" class="btn-fav" id="fav_@item.AssetID">
+                                <button hidden="@(!item.IsFavorite)" onclick="toggleFav(false,@item.AssetID)" class="btn-fav" id="fav_@item.AssetID">
                                     <img src="~/assets/icon__fav-filled.png" width="30" />
                                 </button>
-                                <button hidden="@item.isFavorite" onclick="toggleFav(true,@item.AssetID)" class="btn-fav" id="not_fav_@item.AssetID">
+                                <button hidden="@item.IsFavorite" onclick="toggleFav(true,@item.AssetID)" class="btn-fav" id="not_fav_@item.AssetID">
                                     <img src="~/assets/icon__fav.png" width="30" />
                                 </button>
                             </span>
                         </div>
                         <p class="card-text">@item.Address.Full</p>
-                        <a asp-action="Edit" asp-route-id="@item.AssetID" class="card-link">Edit</a>
                         <a asp-action="Details" asp-route-id="@item.AssetID" class="card-link">Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.AssetID" class="card-link">Delete</a>
+                        @{ 
+                            if (item.IsOwner || ViewBag.IsAdmin)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.AssetID" class="card-link">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.AssetID" class="card-link">Delete</a>
+                            }
+                        }
                         <p class="card-text"><small class="text-muted">Created at @item.CreatedAt</small></p>
                     </div>
                 </div>
@@ -137,7 +153,10 @@
             url: "/Assets/ToggleFav",
             data: { IsFav: isFav, AssetID: assetID },
             success: function (response) {
-                if (response.status == 401) window.location.replace("/Users/Login?message=You have to login in order to save assets to favorites")
+                if (response.status == 401) {
+                    TempData["LoginMessage"] = "You have to login in order to save assets to favorites";
+                    window.location.replace("/Users/Login")
+                }
                 document.getElementById("fav_" + assetID).hidden = !isFav;
                 document.getElementById("not_fav_" + assetID).hidden = isFav;
             },

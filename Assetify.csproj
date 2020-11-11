@@ -31,10 +31,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi" Version="5.2.7" />
     <None Include="wwwroot\assets\default-house.jpg" />
     <None Include="wwwroot\assets\location.png" />
     <None Include="wwwroot\assets\profile-img.jpg" />
+    <None Include="wwwroot\UploadedFiles\github-logo.png" />
+    <None Include="wwwroot\UploadedFiles\github12.gif" />
+    <None Include="wwwroot\UploadedFiles\logo.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,6 +64,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\UploadedFiles\" />
     <Folder Include="OpenAPIs\" />
   </ItemGroup>
 

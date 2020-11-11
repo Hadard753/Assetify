@@ -67,7 +67,6 @@ namespace Assetify.Models
         [Required]
         public double Rooms { get; set; }
         [Range(1, 100)]
-        [Required]
         public int Floor { get; set; }
 
         [Range(1, 100)]
@@ -139,6 +138,8 @@ namespace Assetify.Models
         public bool IsNearLightTrainStation { get; set; }
         [Display(Name = "Near Beach")]
         public bool IsNearBeach { get; set; }
+
+        [System.Web.Mvc.HiddenInput(DisplayValue = false)]
         public bool IsActive { get; set; }
         public string RemovedReason { get; set; }
         public ICollection<UserAsset> Users { get; set; }
@@ -149,6 +150,11 @@ namespace Assetify.Models
 
         [NotMapped]
         [System.Web.Mvc.HiddenInput(DisplayValue = false)]
-        public bool isFavorite { set; get; }
+        public bool IsFavorite { set; get; }
+
+
+        [NotMapped]
+        [System.Web.Mvc.HiddenInput(DisplayValue = false)]
+        public bool IsOwner { set; get; }
     }
 }
