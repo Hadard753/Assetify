@@ -8,7 +8,7 @@ namespace Assetify.Service
 {
     public static class FacebookApi
     {
-        private const string facebookToken = "EAAJZBfKZCPLKwBAJZALY0txJG3OZAxDWHjXSpeJ5mSFu3eSG1Xw2YUHf7M7vzZBjLZCGwFuBXrSjZBKGeViyjKhZBnqGPmI6ZACvdwnIU0CRHsn5k1VOZAMZAEpoOcV9LkZA9CybMoRu0YZAMR0ZAfQ5e1BhUpUJpAKlvDrljwxzkS3dvolwZDZD";
+        private const string facebookToken = "EAAJ73D4PmAIBAODU23mjeUyvmbjZB0DDUu2Bp8zOo69PhtHxWKRsTOIhjtMzHZBNB5SycSrZADGaZCALd5dZAkXYr1xK07STjOyVwTWxuHuomNPznD3B5lygj38xu5ZCY4MabyZB0R67fefrsqWXRd4NA70dBlEkBijWPdqIuLBlfIRu5EoxUXe";
         public static async void PostToPage(string postContent)
         {
             var baseUrl = $"https://graph.facebook.com/102453711679698/feed?message={postContent}&access_token={facebookToken}";
