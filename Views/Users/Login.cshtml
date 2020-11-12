@@ -6,7 +6,11 @@
 
 @if (ViewBag.Message != null)
 {
-    <div class="alert alert-secondary" role="alert">@ViewBag.Message</div>
+    <div class="alert alert-dismissible alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4 class="alert-heading">Warning!</h4>
+        <p class="mb-0">@ViewBag.Message</p>
+    </div>
     ViewBag.Message = null;
 }
 
@@ -59,9 +63,9 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-md-6 col-sm-12">
-                            <button type="button" class="btn btn-outline-secondary btn-login">
-                                <a asp-controller="Users" asp-action="Create">Register</a>
-                            </button>
+                            <a asp-controller="Users" asp-action="Create">
+                                <button type="button" class="btn btn-outline-secondary btn-login">Register</button>
+                            </a>
                         </div>
                     </div>
 
