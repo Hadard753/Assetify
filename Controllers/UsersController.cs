@@ -36,12 +36,12 @@ namespace Assetify.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(String FirstName, String Password)
+        public ActionResult Login(String Email, String Password)
         {
             
             foreach (var u in _context.Users)
             {
-                if (u.FirstName == FirstName && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
+                if (u.Email == Email && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
                 {
                     if(u.ProfileImgPath!=null)
                         HttpContext.Session.SetString("ProfileImg", u.ProfileImgPath);
