@@ -4,45 +4,69 @@
 }
 
 
-<h1>Login</h1>
 @if (ViewBag.Message != null)
 {
     <div class="alert alert-secondary" role="alert">@ViewBag.Message</div>
     ViewBag.Message = null;
 }
-<form action="Login" method="post">
 
-    <table style="width:70%">
-        <tr>
-            <th>
-                <label asp-for="FirstName"><b>First Name</b></label>
-            </th>
-            <th>
-                <input type="text" placeholder="Enter First Name" name="FirstName" required />
-            </th>
-        </tr>
+<div class="row">
+    <div class="col-12">
+        <div class="row justify-content-center login-logo-wrapper">
+            <div class="col-md-4 col-sm-8 col-xs-8  h-10 justify-content-center">
+                <img class="login-logo img-responsive" src="https://pngimg.com/uploads/house/house_PNG65.png" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12  text-center">
+                <h4>Find the right home</h4>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-12  text-center">
+                <h4>For you.</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form action="Login" method="post">
 
-        <tr>
-            <th>
-                <label asp-for="Password"><b>Password</b></label>
-            </th>
-            <th>
-                <input type="Password" placeholder="Enter Password" name="Password" required />
-            </th>
-        </tr>
-    </table>
+                    <div class="row justify-content-center">
+                        <div class="form-group col-md-6 col-sm-12">
+                            <label class="form-control-label" asp-for="FirstName"><b>First Name</b></label>
+                            <input type="text" placeholder="Enter First Name" name="FirstName" required class="form-control">
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="form-group col-md-6 col-sm-12 ">
+                            <label class="form-control-label" asp-for="Password"><b>Password</b></label>
+                            <input type="Password" placeholder="Enter Password" name="Password" required class="form-control" />
+                        </div>
+                    </div>
 
 
-    @if (ViewBag.Error == null)
-    {
-        <span class="badge badge-danger">@ViewBag.error</span>
-    }
+                    @if (ViewBag.Error == null)
+                    {
+                        <div class="row text-center">
+                            <span class="badge badge-danger">@ViewBag.error</span>
+                        </div>
+                    }
 
-    <div>
-        <button type="submit" class="btn btn-secondary btn-sm">Login</button>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-sm-12">
+                            <button type="submit" class="btn btn-success btn-login">Login</button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 col-sm-12">
+                            <button type="button" class="btn btn-outline-secondary btn-login">
+                                <a asp-controller="Users" asp-action="Create">Register</a>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
-    <div>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Create">Don't have an account yet?<br />Click here to sign up</a>
-    </div>
-
-</form>
+</div>
