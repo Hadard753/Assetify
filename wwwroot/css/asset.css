@@ -22,12 +22,16 @@
     box-shadow: 3px 3px 7px #777;
     border-radius: 22px;
     transition: 0.8s;
-    height: 15%;
-    width: 90%;
-    margin-bottom: 12px;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
-#listofcards .card .card-img-top {
+#listofcards .card-header {
+    padding: 0 !important;
+}
+
+    #listofcards .card .card-img-top {
     border-radius: 22px 22px 0 0;
     box-shadow: 1px 0px 0px 0px lightslategrey;
     width: 100%;
@@ -39,12 +43,7 @@
     top: -20px;
 }
 
-.recommendation {
-    background-color: blue;
-    color: white;
-}
-
-#listofcards .card-img-overlay img {
+.card-details img {
     height: 15px;
     width: 15px;
     margin: 10px;
