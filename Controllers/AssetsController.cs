@@ -113,6 +113,7 @@ namespace Assetify.Controllers
             //Can't create if not logged in
             if ((userContext.sessionID == null))
             {
+                TempData["ReturnUrl"] = Request.GetDisplayUrl().ToString();
                 TempData["LoginMessage"] = "You have to be logged in in order to create a new asset";
                 return RedirectToAction("Login", "Users");
             }
@@ -197,7 +198,7 @@ namespace Assetify.Controllers
             if (userContext.sessionID == null)
             {
                 TempData["LoginMessage"] = "You need to login in order to edit this asset";
-                //TempData["ReturnUrl"]= Request.GetDisplayUrl().ToString();
+                TempData["ReturnUrl"]= Request.GetDisplayUrl().ToString();
                 return RedirectToAction("Login", "Users");
             }
             bool isPublisher = _context.UserAsset.Any(ua => ua.UserID == int.Parse(userContext.sessionID) && ua.AssetID == id && ua.Action == ActionType.PUBLISH);
@@ -210,6 +211,7 @@ namespace Assetify.Controllers
             }
             else
             {
+                TempData["ReturnUrl"]= Request.GetDisplayUrl().ToString();
                 TempData["LoginMessage"] = "You are not the publisher of that assert, nore or you an admin. please login with a different user";
                 return RedirectToAction("Login", "Users");
             }

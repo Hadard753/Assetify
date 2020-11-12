@@ -24,16 +24,24 @@ namespace Assetify.Controllers
             _context = context;
         }
 
-        public ActionResult Login(String returnUrl = "")
+        public ActionResult Login(String returnUrl="")
         {
-            //TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString();
+            
             if (TempData["LoginMessage"]!=null)
                 ViewBag.Message = TempData["LoginMessage"];
+            if (TempData["ReturnUrl"] != null)
+            {
+                TempData["ReturnUrl"] = TempData["ReturnUrl"];
+                /*TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString().Replace(Request.GetDisplayUrl().ToString(),null);
+                String[] param = TempData["ReturnUrl"].ToString().Split('/');
+                TempData["ReturnUrl"] = 0;
+                    foreach (String s in param) { TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString() + s + '/'; }*/
+            }
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(String FirstName, String Password)
+        public ActionResult Login(String FirstName, String Password, String returnUrl = "")
         {
             
             foreach (var u in _context.Users)
@@ -47,14 +55,16 @@ namespace Assetify.Controllers
 
                     HttpContext.Session.SetString("UserIDSession", u.UserID.ToString());
                     ViewBag.Login = true;
-
+                    if (TempData["ReturnUrl"] != null)
+                            return Redirect(TempData["ReturnUrl"].ToString());
+                    
                     return RedirectToAction("Index", "home");
                 }
             }
             //test this
             ViewBag.Message = "Login failed, name or password is incorrect!";
+            TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString();
 
-           
             return View();
         }
 
@@ -65,7 +75,8 @@ namespace Assetify.Controllers
             userContext.sessionID = null;
             userContext.isAdmin = false;
             HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Users", new { FirstName = "", Password = "", message = "You just logged out :)" });
+            TempData["LoginMessage"] = "You just logged out :)";
+            return RedirectToAction("Login", "Users");
         }
 
         // GET: Users
@@ -74,6 +85,7 @@ namespace Assetify.Controllers
             var userContext = UserContextService.GetUserContext(HttpContext);
             if (!(userContext.isAdmin))
             {
+                TempData["ReturnUrl"] = Request.GetDisplayUrl().ToString();
                 TempData["LoginMessage"] = "You have to be an Admin to see all users, please login with admin credentials";
                 return RedirectToAction("Login", "Users");
             }
