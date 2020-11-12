@@ -141,13 +141,17 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user, IFormFile file)
         {
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
             user.Password = Crypto.HashPassword(user.Password);
             if (ModelState.IsValid)
             {
                 user.ProfileImgPath = await FileUploader.UploadFile(file);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (userContext.isAdmin)
+                    return RedirectToAction("Index", "Users");
+                TempData["LoginMessage"] = "Now that you have an account, please login! :)";
+                return RedirectToAction("Login", "Users");
             }
             return View(user);
         }
