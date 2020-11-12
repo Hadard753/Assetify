@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Assetify.Models
 {
@@ -37,5 +35,12 @@ namespace Assetify.Models
         public bool IsAdmin { get; set; }
         //public Address Address { get; set; }
 
+        [NotMapped]
+        [System.Web.Mvc.HiddenInput(DisplayValue = false)]
+        public int NumOfFavorites { set; get; }
+
+        [NotMapped]
+        [System.Web.Mvc.HiddenInput(DisplayValue = false)]
+        public int NumOfPublish { set; get; }
     }
 }

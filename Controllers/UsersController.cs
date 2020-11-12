@@ -11,6 +11,7 @@ using Assetify.Service;
 using System.Web.Helpers;
 using SQLitePCL;
 using Microsoft.AspNetCore.Http.Extensions;
+using System.Collections.Generic;
 
 namespace Assetify.Controllers
 {
@@ -76,7 +77,16 @@ namespace Assetify.Controllers
                 TempData["LoginMessage"] = "You have to be an Admin to see all users, please login with admin credentials";
                 return RedirectToAction("Login", "Users");
             }
-            return View(new UserIndex() { users = await _context.Users.ToListAsync(), userSearch = new UserSearch() });
+
+            List<User> allUsers = await _context.Users.Include(u => u.Assets).ToListAsync();
+
+            foreach(User u in allUsers)
+            {
+                u.NumOfFavorites = u.Assets.Where(ua => ua.Action == ActionType.LIKE).Count();
+                u.NumOfPublish = u.Assets.Where(ua => ua.Action == ActionType.PUBLISH).Count();
+            }
+
+            return View(new UserIndex() { users = allUsers, userSearch = new UserSearch() });
         }
 
         [HttpPost]
@@ -87,9 +97,8 @@ namespace Assetify.Controllers
             if (userSearch.Email != null) filteredUsers = filteredUsers.Where(x => x.Email.Contains(userSearch.Email));
             if (userSearch.FirstName != null) filteredUsers = filteredUsers.Where(x => x.FirstName.Contains(userSearch.FirstName));
             if (userSearch.LastName != null) filteredUsers = filteredUsers.Where(x => x.LastName.Contains(userSearch.LastName));
-            var users = await filteredUsers.ToListAsync();
+            var users = await filteredUsers.Include(u => u.Assets).ToListAsync();
 
-            //.ToListAsync();
 
             return View("Index", new UserIndex() { users = users, userSearch = userSearch });
         }
