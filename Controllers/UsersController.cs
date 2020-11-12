@@ -145,7 +145,8 @@ namespace Assetify.Controllers
             user.Password = Crypto.HashPassword(user.Password);
             if (ModelState.IsValid)
             {
-                user.ProfileImgPath = await FileUploader.UploadFile(file);
+                if (file!=null)
+                    user.ProfileImgPath = await FileUploader.UploadFile(file);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 if (userContext.isAdmin)
