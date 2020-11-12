@@ -4,6 +4,7 @@
     ViewData["Title"] = "Details";
     string imgSrcUrl = "";
     int imgCounter = 0;
+    User owner = null;
 }
 <!--for google maps-->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwNtnyyfWcM_TyD7m6WImqsL2Uae-x_5M&callback=initMap&libraries=&v=weekly"
@@ -13,16 +14,32 @@
 
 <div id="assetdetailscard">
     <div class="card">
-        <div class="row ">
-
+        <div class="row">
             <div class="col-md-7 px-3">
                 <div class="card-block px-6">
                     <h4 class="card-title">@Model.Description </h4>
-                    <p class="card-text">
-                        This is a paragraph
+                    <h5 class="card-text">
+                        @Model.Address.Street, @Model.Address.City
+                        <span class="float-right font-weight-light">@Convert.ToDecimal(Model.Price).ToString("#,##0")  <img src="~/assets/shekel.png" width="15px" height="15px" /></span>
+                    </h5>
+                    <p>
+                        Paragraph with descriptive details about the asset......! :D
                     </p>
-                    <br>
-                    <a href="#" class="mt-auto btn btn-primary  ">Read More</a>
+                    <br />
+                    <div class="col-12">
+                        <div id="map" style="width:50%; height: 200px"></div>
+                    </div>
+                    <br />
+                    @foreach (var user in Model.Users)
+                    {
+                        @if (user.Action.ToString() == "PUBLISH")
+                            owner = user.User;
+                    }
+                    @if (owner != null)
+                    {
+                        <p>Contact: @owner.FirstName @owner.LastName</p>
+                        <p>Phone Number: @owner.Phone</p>
+                    }
                 </div>
             </div>
             @if (Model.Images.Count > 0)
@@ -72,8 +89,42 @@
                                 </a>
                             </div>
                         </div>
+                        <div id="assetinfo">
+                            <div class="row no-gutters">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <div class="img-container card card-block">
+                                        <img src="~/assets/floors2.png" width="18px" height="18px" title="Number of floors" />  @Model.Floor Floors
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex justify-content-center">
+                                    <div class="img-container card card-block">
+                                        <img src="~/assets/rooms2.png" width="18px" height="18px" title="Number of rooms" />  @Model.Rooms Rooms
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex justify-content-center">
+                                    <div class="img-container card card-block">
+                                        <img src="~/assets/size2.png" width="18px" height="18px" title="Square Meters" />  @Model.Size Square Meters
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex justify-content-center">
+                                    <div class="img-container card card-block">
+                                        <img src="~/assets/garden.png" width="18px" height="18px" title="Has Garden" />  @(Model.GardenSize == 0 ? "No" : "Yes") Garden
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex justify-content-center">
+                                    <div class="img-container card card-block">
+                                        <img src="~/assets/ac.png" width="18px" height="18px" title="Has A/C" />  @(Model.IsAircondition == true ? "Yes" : "No") A/C
+                                    </div>
+                                </div>
+                                <div class="col-4 d-flex justify-content-center">
+                                    <div class="img-container card card-block">
+                                        <img src="~/assets/elevator.svg" width="18px" height="18px" title="Has Elevator" />  @(Model.IsElevator == true ? "Yes" : "No") Elevator
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- End of carousel -->
+
                 }
                 else // display 1 image only
                 {
@@ -90,6 +141,7 @@
                         </div>
                     </div>
                 }
+                <!-- End of carousel -->
             }
         </div>
     </div>
@@ -97,267 +149,18 @@
 <!-- End of card -->
 
 <div id="maincontent">
-    <h4>@Model.Address.City, @Model.Address.Street</h4>
     <hr />
-    <div class="row">
-        <div class="col-8">
-            <dl class="row">
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Price)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.Price)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.EstimatedPrice)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.EstimatedPrice)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Furnished)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.Furnished)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.TypeId)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.TypeId)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Condition)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.Condition)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Size)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.Size)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.GardenSize)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.GardenSize)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.BalconySize)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.BalconySize)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Rooms)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.Rooms)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Floor)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.Floor)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.TotalFloor)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.TotalFloor)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.NumOfParking)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.NumOfParking)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Description)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.EntryDate)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.EntryDate)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.CreatedAt)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.CreatedAt)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsElevator)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsElevator)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsBalcony)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsBalcony)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsTerrace)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsTerrace)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsStorage)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsStorage)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsRenovated)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsRenovated)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsRealtyCommission)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsRealtyCommission)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsAircondition)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsAircondition)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsMamad)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsMamad)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsPandorDoors)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsPandorDoors)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsAccessible)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsAccessible)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsKosherKitchen)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsKosherKitchen)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsKosherBoiler)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsKosherBoiler)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsOnPillars)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsOnPillars)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsBars)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsBars)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsForSell)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsForSell)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsCommercial)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsCommercial)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsRoomates)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsRoomates)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsImmediate)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsImmediate)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsNearTrainStation)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsNearTrainStation)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsNearLightTrainStation)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsNearLightTrainStation)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsNearBeach)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsNearBeach)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.IsActive)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.IsActive)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.RemovedReason)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.RemovedReason)
-                </dd>
-                <dt class="col-sm-4">
-                    @Html.DisplayNameFor(model => model.Address)
-                </dt>
-                <dd class="col-sm-8">
-                    @Html.DisplayFor(model => model.Address.AddressID)
-                </dd>
-            </dl>
-            @if (Model.Images.Count > 0)
-            {
-                @foreach (var item in Model.Images)
+        <div id="articlescontent">
+            <h4>News featuring @Model.Address.City</h4>
+            @{int counter = 0;}
+            <div class="row">
+                @foreach (var article in ViewBag.articleCity)
                 {
-                    <img src="@Html.DisplayFor(modelItem => item.Path)" alt="Image not found" width="250" height="250">
-                }
-            }
-        </div>
-        <div class="col-4">
-            <div class="col-12">
-                <div id="map" style="width:100%; height: 300px"></div>
-            </div>
-            <div class="col-12">
-                <div id="articlescontent">
-                    <h4>News featuring @Model.Address.City</h4>
-                    @{int counter = 0;}
-                    @foreach (var article in ViewBag.articleCity)
-                    {
-                        @if (counter == 3)
-                            break;
-                        <div class="card" style="width: 18rem; height: 35rem;">
+                    @if (counter == 3)
+                        break;
+
+                    <div class="col-md-4">
+                        <div class="card" style="height: 35rem;">
                             <img class="card-img-top" src=@article.image_url alt="Card image cap">
                             <div class="card-body">
                                 <h5 class="card-title">@article.title</h5>
@@ -365,15 +168,12 @@
                                 <a href="@article.url" target="_blank">full article</a>
                             </div>
                         </div>
-                        counter++;
-                    }
-                    <a asp-action="cityArticals" asp-route-cityName="@Model.Address.City">For more articles</a>
-
-                </div>
+                    </div>
+                    counter++;
+                }
             </div>
-        </div>
+            <a asp-action="cityArticals" asp-route-cityName="@Model.Address.City">For more articles</a>
 
-    </div>
 
     <input id="lat" hidden value="@Model.Address.Latitude" />
     <input id="lon" hidden value="@Model.Address.Longitude" />

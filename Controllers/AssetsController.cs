@@ -95,6 +95,7 @@ namespace Assetify.Controllers
             var asset = await _context.Assets
                 .Include(a => a.Address)
                 .Include(a => a.Images)
+                .Include(a => a.Users).ThenInclude(ab => ab.User)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.AssetID == id);
             if (asset == null)

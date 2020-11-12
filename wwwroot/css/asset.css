@@ -74,6 +74,7 @@
 
 #assetdetailscard .card {
     font-size: 1em;
+    font-family: mont-bold;
     overflow: hidden;
     padding: 5;
     border: none;
@@ -82,6 +83,15 @@
     margin-top: 20px;
 }
 
+#assetdetailscard .card-block {
+    box-shadow: 0 0 black !important;
+    border: none !important;
+}
+
+#assetdetailscard #assetinfo .img-container {
+    font-size: 0.75em;
+    text-align: center;
+}
 .carousel-indicators li {
     border-radius: 12px;
     width: 12px;
@@ -127,4 +137,11 @@ lex-direction: column;
     border-radius: 25px;
     font-size: 10px;
     text-align: center;
-} 
+}
+
+/* font-face 
+-------------------------------------------------- */
+@font-face {
+    font-family: 'mont-bold';
+    src: url(~/fonts/montserrat/MontserratAlternates-SemiBold.otf)
+}

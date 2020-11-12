@@ -54,6 +54,7 @@ namespace Assetify.Data
                 new User{Email = "galhrrsa13@gmail.com", Password = "AKlBXpxayQs1JJXd6H0YmWthV0tPnXLvcXvcJFWM1DOYWVOvsHK1cwrDzsTyfbQ+MA==", FirstName = "Gala13", LastName = "Harrisa", Phone = "055-6633085", IsVerified = false, ProfileImgPath = "Happyhouse1.jpg", LastSeenFavorite = now, LastSeenMessages = now, IsAdmin = true},
                 new User{Email = "galhrrsa14@gmail.com", Password = "AKlBXpxayQs1JJXd6H0YmWthV0tPnXLvcXvcJFWM1DOYWVOvsHK1cwrDzsTyfbQ+MA==", FirstName = "Gala14", LastName = "Harrisa", Phone = "055-6633085", IsVerified = false, ProfileImgPath = "Happyhouse1.jpg", LastSeenFavorite = now, LastSeenMessages = now, IsAdmin = true},
                 new User{Email = "galhrrsa15@gmail.com", Password = "AKlBXpxayQs1JJXd6H0YmWthV0tPnXLvcXvcJFWM1DOYWVOvsHK1cwrDzsTyfbQ+MA==", FirstName = "Gala15", LastName = "Harrisa", Phone = "055-6633085", IsVerified = false, ProfileImgPath = "Happyhouse1.jpg", LastSeenFavorite = now, LastSeenMessages = now, IsAdmin = true},
+                new User{Email = "s@b.com", Password = "AECEBqBu+7PDqkFL5nLuWFgcXTmDD0J71Egn6KXMCJMhmLeCMSlEqmrUVFfLkFD9Tg==", FirstName = "Stav", LastName = "Bernaz", Phone = "0549983997", IsVerified = false, ProfileImgPath = "Happyhouse1.jpg", LastSeenFavorite = now, LastSeenMessages = now, IsAdmin = true},
             };
             foreach (User u in users)
             {
