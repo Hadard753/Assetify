@@ -11,20 +11,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title class="title">@ViewData["Title"] - Assetify</title>
+    <script name="font-awesome" src ="https://use.fontawesome.com/0ffa199bf2.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
     <link rel="stylesheet" href="/css//site.css" />
     <link rel="stylesheet" href="/css/asset.css" />
+    <link rel="stylesheet" href="/css/home.css" />
     <link rel="stylesheet" href="/css/navbar.css" />
+    <link rel="stylesheet" href="/css/auth.css" />
 </head>
 <body>
     <header>
         <div class="header">
-            <nav class="navbar navbar-light bg-light navbar-expand-sm">
-                <div class="video-container">
-                    <video autoplay loop muted id="video-clouds">
-                        <source src="~/images/clouds.mp4" type="video/mp4">
-                    </video>
-                </div>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                @*<div class="video-container">
+                        <video autoplay loop muted id="video-clouds">
+                            <source src="~/images/clouds.mp4" type="video/mp4">
+                        </video>
+                    </div>*@
                 <a class="navbar-brand" href="#">
                     Assetify
                 </a>
@@ -92,9 +97,6 @@
             @RenderBody()
         </main>
     </div>
-    <br />
-    <br />
-    <br />
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - Assetify - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -103,6 +105,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

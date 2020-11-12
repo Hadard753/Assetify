@@ -11,6 +11,7 @@ using Assetify.Service;
 using System.Web.Helpers;
 using SQLitePCL;
 using Microsoft.AspNetCore.Http.Extensions;
+using System.Collections.Generic;
 
 namespace Assetify.Controllers
 {
@@ -23,21 +24,24 @@ namespace Assetify.Controllers
             _context = context;
         }
 
-        public ActionResult Login(String returnUrl = "")
+        public ActionResult Login()
         {
-            //TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString();
+            //Message to present when login screen appears
             if (TempData["LoginMessage"]!=null)
                 ViewBag.Message = TempData["LoginMessage"];
+            //returnUrl re-initialize to survive another HttpRequest
+            if (TempData["ReturnUrl"] != null)
+                TempData["ReturnUrl"] = TempData["ReturnUrl"];
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(String FirstName, String Password)
+        public ActionResult Login(String Email, String Password)
         {
             
             foreach (var u in _context.Users)
             {
-                if (u.FirstName == FirstName && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
+                if (u.Email == Email && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
                 {
                     if(u.ProfileImgPath!=null)
                         HttpContext.Session.SetString("ProfileImg", u.ProfileImgPath);
@@ -46,14 +50,16 @@ namespace Assetify.Controllers
 
                     HttpContext.Session.SetString("UserIDSession", u.UserID.ToString());
                     ViewBag.Login = true;
-
+                    if (TempData["ReturnUrl"] != null)
+                            return Redirect(TempData["ReturnUrl"].ToString());
+                    
                     return RedirectToAction("Index", "home");
                 }
             }
             //test this
             ViewBag.Message = "Login failed, name or password is incorrect!";
+            TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString();
 
-           
             return View();
         }
 
@@ -64,7 +70,8 @@ namespace Assetify.Controllers
             userContext.sessionID = null;
             userContext.isAdmin = false;
             HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Users", new { FirstName = "", Password = "", message = "You just logged out :)" });
+            TempData["LoginMessage"] = "You just logged out :)";
+            return RedirectToAction("Login", "Users");
         }
 
         // GET: Users
@@ -73,10 +80,20 @@ namespace Assetify.Controllers
             var userContext = UserContextService.GetUserContext(HttpContext);
             if (!(userContext.isAdmin))
             {
+                TempData["ReturnUrl"] = Request.GetDisplayUrl().ToString();
                 TempData["LoginMessage"] = "You have to be an Admin to see all users, please login with admin credentials";
                 return RedirectToAction("Login", "Users");
             }
-            return View(new UserIndex() { users = await _context.Users.ToListAsync(), userSearch = new UserSearch() });
+
+            List<User> allUsers = await _context.Users.Include(u => u.Assets).ToListAsync();
+
+            foreach(User u in allUsers)
+            {
+                u.NumOfFavorites = u.Assets.Where(ua => ua.Action == ActionType.LIKE).Count();
+                u.NumOfPublish = u.Assets.Where(ua => ua.Action == ActionType.PUBLISH).Count();
+            }
+
+            return View(new UserIndex() { users = allUsers, userSearch = new UserSearch() });
         }
 
         [HttpPost]
@@ -87,9 +104,8 @@ namespace Assetify.Controllers
             if (userSearch.Email != null) filteredUsers = filteredUsers.Where(x => x.Email.Contains(userSearch.Email));
             if (userSearch.FirstName != null) filteredUsers = filteredUsers.Where(x => x.FirstName.Contains(userSearch.FirstName));
             if (userSearch.LastName != null) filteredUsers = filteredUsers.Where(x => x.LastName.Contains(userSearch.LastName));
-            var users = await filteredUsers.ToListAsync();
+            var users = await filteredUsers.Include(u => u.Assets).ToListAsync();
 
-            //.ToListAsync();
 
             return View("Index", new UserIndex() { users = users, userSearch = userSearch });
         }
@@ -125,13 +141,18 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user, IFormFile file)
         {
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
             user.Password = Crypto.HashPassword(user.Password);
             if (ModelState.IsValid)
             {
-                user.ProfileImgPath = await FileUploader.UploadFile(file);
+                if (file!=null)
+                    user.ProfileImgPath = await FileUploader.UploadFile(file);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (userContext.isAdmin)
+                    return RedirectToAction("Index", "Users");
+                TempData["LoginMessage"] = "Now that you have an account, please login! :)";
+                return RedirectToAction("Login", "Users");
             }
             return View(user);
         }

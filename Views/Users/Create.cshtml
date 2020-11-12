@@ -4,59 +4,81 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create new user acccount</h1>
-<div>
-    <a asp-action="Login">Already a member?</a>
+<div class="row">
+    <div class="col-md-10">
+        <h2 class="register-title">Ready to locate your dream home ?</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-10">
+        <a asp-action="Login">Already a member?</a>
+    </div>
 </div>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-12">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div class="row justify-content-center">
+                <div class="form-group col-md-6 col-sm-12">
+                    <label class="form-control-label" asp-for="FirstName"><b>First Name</b></label>
+                    <input type="text" placeholder="Enter First Name" asp-for="FirstName" required class="form-control">
+                    <div class="invalid-feedback"><span asp-validation-for="FirstName"></span></div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+            <div class="row justify-content-center">
+                <div class="form-group col-md-6 col-sm-12">
+                    <label class="form-control-label" asp-for="LastName"><b>Last Name</b></label>
+                    <input type="text" placeholder="Enter Last Name" asp-for="LastName" required class="form-control">
+                    <div class="invalid-feedback"><span asp-validation-for="LastName"></span></div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="row justify-content-center">
+                <div class="form-group col-md-6 col-sm-12">
+                    <label class="form-control-label" asp-for="Email"></label>
+                    <input type="email" asp-for="Email" class="form-control" />
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input type="Password" asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="row justify-content-center">
+                <div class="form-group col-md-6 col-sm-12">
+                    <label class="form-control-label" asp-for="Password"></label>
+                    <input type="Password" asp-for="Password" class="form-control" />
+                    <div class="invalid-feedback"><span asp-validation-for="Password"></span></div>
+                </div>
             </div>
-            @*<div class="form-group">
-            <label asp-for="ComparePassword" class="control-label"></label>
-            <input asp-for="ComparePassword" class="form-control" />
-            <span asp-validation-for="ComparePassword" class="text-danger"></span>
-             </div>*@
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
+            <div class="row justify-content-center">
+                <div class="form-group col-md-6 col-sm-12">
+                    <label class="form-control-label" asp-for="Phone"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <div class="invalid-feedback"><span asp-validation-for="Phone"></span></div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ProfileImgPath" class="control-label"></label>
-                <input type="file" name="file" id="file" /><br><br>
+            <div class="row justify-content-center">
+                <div class="form-group col-md-6 col-sm-12">
+                    <label for="ProfileImgPath" class="form-control-label">Profile Image</label>
+                    <input type="file" name="file" id="file" />
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-sm-12">
+                    <button type="submit" class="btn btn-success btn-login">Register</button>
+                </div>
+            </div>
+            @*TODO: Should only display for admin*@
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-sm-12">
+                    <a asp-controller="Users" asp-action="Index">
+                        <button type="button" class="btn btn-outline-secondary btn-login">Back To List</button>
+                    </a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
