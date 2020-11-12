@@ -74,6 +74,7 @@
 
 #assetdetailscard .card {
     font-size: 1em;
+    font-family: mont-bold;
     overflow: hidden;
     padding: 5;
     border: none;
@@ -136,4 +137,11 @@ lex-direction: column;
     border-radius: 25px;
     font-size: 10px;
     text-align: center;
-} 
+}
+
+/* font-face 
+-------------------------------------------------- */
+@font-face {
+    font-family: 'mont-bold';
+    src: url(~/fonts/montserrat/MontserratAlternates-SemiBold.otf)
+}
