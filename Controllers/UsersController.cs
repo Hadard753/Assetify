@@ -24,24 +24,19 @@ namespace Assetify.Controllers
             _context = context;
         }
 
-        public ActionResult Login(String returnUrl="")
+        public ActionResult Login()
         {
-            
+            //Message to present when login screen appears
             if (TempData["LoginMessage"]!=null)
                 ViewBag.Message = TempData["LoginMessage"];
+            //returnUrl re-initialize to survive another HttpRequest
             if (TempData["ReturnUrl"] != null)
-            {
                 TempData["ReturnUrl"] = TempData["ReturnUrl"];
-                /*TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString().Replace(Request.GetDisplayUrl().ToString(),null);
-                String[] param = TempData["ReturnUrl"].ToString().Split('/');
-                TempData["ReturnUrl"] = 0;
-                    foreach (String s in param) { TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString() + s + '/'; }*/
-            }
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(String FirstName, String Password, String returnUrl = "")
+        public ActionResult Login(String FirstName, String Password)
         {
             
             foreach (var u in _context.Users)
