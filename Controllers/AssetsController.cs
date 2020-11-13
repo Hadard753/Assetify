@@ -32,7 +32,7 @@ namespace Assetify.Controllers
         }
 
         // GET: Assets
-        public async Task<IActionResult> Index(bool NoSearchResults)
+        public async Task<IActionResult> Index(bool NoSearchResults, bool ShowFavs)
         {
             UserContext UserContext = UserContextService.GetUserContext(HttpContext);
             User User = _context.Users.Include(u => u.Assets).FirstOrDefault(u => u.UserID.ToString() == UserContext.sessionID);
@@ -57,12 +57,17 @@ namespace Assetify.Controllers
 
             if (NoSearchResults)
                 ViewBag.NoSearchResultsFound = true;
+
             var Assets = _context.Assets
                 .Include(a => a.Address)
                 .Include(a => a.Images)
                 .ToList();
 
             this.MarkFavoritesAndOwnership(User, Assets);
+
+            if(ShowFavs)
+                Assets.RemoveAll(item => item.IsFavorite == false);
+
             return View(Assets);
         }
 
