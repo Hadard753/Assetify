@@ -74,13 +74,16 @@
 
 #assetdetailscard .card {
     font-size: 1em;
-    font-family: mont-bold;
     overflow: hidden;
     padding: 5;
     border: none;
     border-radius: .28571429rem;
     box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
     margin-top: 20px;
+}
+
+#assetdetailscard .card-title, #assetdetailscard .card-text, #assetdetailscard p {
+    font-family: opensans-light;
 }
 
 #assetdetailscard .card-block {
@@ -142,6 +145,6 @@ lex-direction: column;
 /* font-face 
 -------------------------------------------------- */
 @font-face {
-    font-family: 'mont-bold';
-    src: url(~/fonts/montserrat/MontserratAlternates-SemiBold.otf)
+    font-family: 'opensans-light';
+    src: url(~/fonts/open-sans-condensed/OpenSans-CondLight.ttf)
 }

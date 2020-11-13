@@ -35,7 +35,7 @@
 <!-- Display all the assets -->
 <div id="listofcards">
 
-    @if (ViewBag.Recommendations != null)
+    @if (ViewBag.Recommendations != null && ViewBag.ShowFavs != true)
     {
         <div class="row">
             @foreach (Recommendation r in ViewBag.Recommendations)
@@ -47,7 +47,7 @@
                             @if (item.Images.Count > 0)
                                 imgSrcUrl = item.Images.First().Path;
                             else
-                                imgSrcUrl = "assets/default-house.jpg";
+                                imgSrcUrl = "assets/default-house.svg";
                             <a asp-action="Details" asp-route-id="@item.AssetID">
                                 <img class="card-img-top" src="@imgSrcUrl" alt="Image not found" />
                             </a>
@@ -102,7 +102,7 @@
                     @if (item.Images.Count > 0)
                         imgSrcUrl = item.Images.First().Path;
                     else
-                        imgSrcUrl = "assets/default-house.jpg";
+                        imgSrcUrl = "assets/default-house.svg";
                     <a asp-action="Details" asp-route-id="@item.AssetID">
                         <img class="card-img-top" src="@imgSrcUrl" alt="Image not found"/>
                     </a>
