@@ -46,7 +46,7 @@ namespace Assetify.Models
         public int AssetID { get; set; }
         public int AddressID { get; set; }
 
-        [Range(1, 100000000)]
+        [Range(1, int.MaxValue, ErrorMessage="Price is eaither lower than ziro or too expenssive for this site! please change your input" )]
         [Required]
         public int Price { get; set; }
         public int EstimatedPrice { get; set; }
@@ -57,27 +57,30 @@ namespace Assetify.Models
         public AssetType TypeId { get; set; }
 
         public AssetCondition Condition { get; set; }
-        [Range(1, 100000)]
-        [Required]
+        [Range(10, int.MaxValue,ErrorMessage ="Size should be larger than 10 (no dog houses here :D ), and not too big (We don't post castles)")]
+        
         public int Size { get; set; }
+        [Range(0,int.MaxValue,ErrorMessage ="Your Garden can't be smaller than 0 and shouldn't be too large (sorry no parks :D )")]
+        public int? GardenSize { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage ="Balcony size should be at least 0 M*M and not too large")]
 
-        public int GardenSize { get; set; }
-        public int BalconySize { get; set; }
-        [Range(1, 50)]
+        public int? BalconySize { get; set; }
+        [Range(1, 100,ErrorMessage ="Room number cunnot be less than 1, And we don't support houses with more than 100 rooms (No castles here :D )")]
         [Required]
         public double Rooms { get; set; }
-        [Range(1, 100)]
+        [Range(-5, 100, ErrorMessage ="Floor can be at most 100 and at least -5")]
         public int Floor { get; set; }
 
-        [Range(1, 100)]
+        [Range(1, 100, ErrorMessage ="More that 100 floors? you are in the wrong site :D, minimum value is 0! ")]
         [Display(Name = "Total Floor")]
         public int TotalFloor { get; set; }
+        [Range(0, 100, ErrorMessage ="Cant have less than 0 for parking places, and not more than 100")]
 
         [Display(Name = "Number Of Parkings")]
-        public int NumOfParking { get; set; }
+        public int? NumOfParking { get; set; }
 
-        public string Description { get; set; }
-
+        public string? Description { get; set; }
+        
         [DataType(DataType.Date)]
         [Display(Name = "Entry Date")]
         public DateTime EntryDate { get; set; }
@@ -145,7 +148,7 @@ namespace Assetify.Models
         public ICollection<UserAsset> Users { get; set; }
         public ICollection<AssetImage> Images { get; set; }
         public ICollection<AssetOrientation> Orientations { get; set; }
-
+        [Required(ErrorMessage ="Enter valid address")]
         public Address Address { get; set; }
 
         [NotMapped]

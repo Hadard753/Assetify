@@ -20,7 +20,7 @@
 {
     <div class="row">
         <div class="col-md-12">
-            <form asp-action="Create">
+            <form asp-action="Create" id="listofcards" >
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="row">
@@ -31,8 +31,9 @@
                 <div class="row">
                     <div class="form-group col-md-4 col-sm-12">
                         <label class="form-control-label" asp-for="Address"></label>
-                        <input id="searchTextField" type="text" placeholder="Enter Israeli Address.." required class="form-control">
+                        <input id="searchTextField" type="text" placeholder="Enter Israeli Address.." required class="form-control" id="Address">
                         <input asp-for="AddressID" class="form-control" id="address-id" type="text" hidden />
+                        <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-4 col-sm-12">
                         <label class="form-control-label" asp-for="Price"></label>
@@ -89,17 +90,17 @@
                 <div class="row">
                     <div class="form-group col-md-4 col-sm-12">
                         <label class="form-control-label" asp-for="GardenSize"></label>
-                        <input type="number" asp-for="GardenSize" required class="form-control">
+                        <input type="number" asp-for="GardenSize" class="form-control">
                         <span asp-validation-for="GardenSize" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-4 col-sm-12">
                         <label class="form-control-label" asp-for="BalconySize"></label>
-                        <input type="number" asp-for="BalconySize" required class="form-control">
+                        <input type="number" asp-for="BalconySize" class="form-control">
                         <span asp-validation-for="BalconySize" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-4 col-sm-12">
                         <label class="form-control-label" asp-for="NumOfParking"></label>
-                        <input type="number" asp-for="NumOfParking" required class="form-control">
+                        <input type="number" asp-for="NumOfParking" class="form-control">
                         <span asp-validation-for="NumOfParking" class="text-danger"></span>
                     </div>
                 </div>
@@ -280,6 +281,7 @@
                 },
                 error: function () {
                     console.log("Error");
+                    
                 }
 
             });

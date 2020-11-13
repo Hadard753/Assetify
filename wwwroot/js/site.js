@@ -3,7 +3,28 @@
 
 // Write your JavaScript code.
 
-$("#imgoption").click
+/*$("#imgoption").click
 (function () {
     $("#fileUp").toggle(); 
 })
+
+$("#AdvancedInfo").toggle();
+$("#AssetsFeatures").toggle();
+
+$("#AssetsFeatures").click
+    (function () {
+        $("#AdvancedInfo").toggle();
+        $("#BasicInfo").toggle();
+    })
+$("#AdvancedInfo").click
+    (function () {
+        $("#BasicInfo").toggle();
+        //$("#AssetsFeatures").toggle();
+    })
+$("#BasicInfo").click
+    (function () {
+        $("#AssetsFeatures").toggle();
+        $("#AdvancedInfo").toggle();
+    })
+*/
+    

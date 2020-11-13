@@ -108,7 +108,7 @@ namespace Assetify.Controllers
             if (search.City != null)
                 searchedAssets = searchedAssets.Where(a => a.add.City.Contains(search.City));
             if (search.Street!= null)
-                searchedAssets = searchedAssets.Where(a => a.add.Street == search.Street);
+                searchedAssets = searchedAssets.Where(a => a.add.Street == search.Street+" Street");
             if (search.Neighborhoods != null)
                 searchedAssets = searchedAssets.Where(a => a.add.Neighborhood == search.Neighborhoods);
 
