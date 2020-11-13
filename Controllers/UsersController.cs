@@ -24,19 +24,16 @@ namespace Assetify.Controllers
             _context = context;
         }
 
-        public ActionResult Login()
+        
+        public ActionResult Login(string? message, string? returnUrl)
         {
-            //Message to present when login screen appears
-            if (TempData["LoginMessage"]!=null)
-                ViewBag.Message = TempData["LoginMessage"];
-            //returnUrl re-initialize to survive another HttpRequest
-            if (TempData["ReturnUrl"] != null)
-                TempData["ReturnUrl"] = TempData["ReturnUrl"];
+                ViewBag.Message = TempData["LoginMessage"] != null ? TempData["LoginMessage"]  : message;
+                TempData["ReturnUrl"] = TempData["ReturnUrl"] != null ? TempData["ReturnUrl"] : returnUrl;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(String Email, String Password)
+        public ActionResult SignIn(String Email, String Password)
         {
             
             foreach (var u in _context.Users)

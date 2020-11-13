@@ -158,9 +158,10 @@
             data: { IsFav: isFav, AssetID: assetID },
             success: function (response) {
                 if (response.status == 401) {
-                    TempData["ReturnUrl"] = Request.GetDisplayUrl().ToString();
-                    TempData["LoginMessage"] = "You have to login in order to save assets to favorites";
-                    window.location.replace("/Users/Login")
+                    var returnUrl= "/Assets/Index";
+                    //TempData["LoginMessage"] = "You have to login in order to save assets to favorites";
+                    window.location.replace("/Users/Login?message=You have to login in order to save assets to favorites&returnUrl=" + returnUrl);
+                    return;
                 }
                 document.getElementById("fav_" + assetID).hidden = !isFav;
                 document.getElementById("not_fav_" + assetID).hidden = isFav;

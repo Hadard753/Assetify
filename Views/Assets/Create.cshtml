@@ -271,17 +271,18 @@
             var Building = building ? building.long_name : '';
             var Latitude = place.geometry.location.lat();
             var Longitude = place.geometry.location.lng();
-
+            debugger;
             $.ajax({
                 type: "POST",
                 url: "/Assets/CreateAddress",
                 data: { Street, Building, Full, City, Latitude, Longitude },
                 success: function (response) {
                     document.getElementById('address-id').value = response;
+                    debugger;
                 },
                 error: function () {
                     console.log("Error");
-                    
+                    debugger;
                 }
 
             });

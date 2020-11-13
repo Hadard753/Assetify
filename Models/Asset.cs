@@ -77,7 +77,7 @@ namespace Assetify.Models
         [Range(0, 100, ErrorMessage ="Cant have less than 0 for parking places, and not more than 100")]
 
         [Display(Name = "Number Of Parkings")]
-        public int? NumOfParking { get; set; }
+        public int;? NumOfParking { get; set; }
 
         public string? Description { get; set; }
         
@@ -148,7 +148,7 @@ namespace Assetify.Models
         public ICollection<UserAsset> Users { get; set; }
         public ICollection<AssetImage> Images { get; set; }
         public ICollection<AssetOrientation> Orientations { get; set; }
-        [Required(ErrorMessage ="Enter valid address")]
+        
         public Address Address { get; set; }
 
         [NotMapped]
