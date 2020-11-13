@@ -49,6 +49,7 @@ namespace Assetify.Controllers
                         HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
 
                     HttpContext.Session.SetString("UserIDSession", u.UserID.ToString());
+                    HttpContext.Session.SetString("name", u.FirstName.ToString());
                     ViewBag.Login = true;
                     if (TempData["ReturnUrl"] != null)
                             return Redirect(TempData["ReturnUrl"].ToString());
@@ -263,6 +264,14 @@ namespace Assetify.Controllers
             }
 
             return View(user);
+        }
+
+        public ActionResult AdminDashboard()
+        {
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
+            ViewData["AdminName"] = userContext.name.ToString();
+            return View();
+            
         }
 
         // POST: Users/Delete/5
