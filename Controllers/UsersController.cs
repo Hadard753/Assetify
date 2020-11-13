@@ -145,9 +145,9 @@ namespace Assetify.Controllers
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
             user.Password = Crypto.HashPassword(user.Password);
 
-            var emailNotExist = !isEmailExist(user.Email);
-            if (emailNotExist) ModelState.AddModelError("Email", "Email already exist");
-            if (ModelState.IsValid && emailNotExist)
+            var emailExist = isEmailExist(user.Email);
+            if (emailExist) ModelState.AddModelError("Email", $"Email {user.Email} is already in use.");
+            if (ModelState.IsValid && !emailExist)
             {
                 if (file!=null)
                     user.ProfileImgPath = await FileUploader.UploadFile(file);
