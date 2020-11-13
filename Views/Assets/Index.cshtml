@@ -14,6 +14,9 @@
     <a asp-action="Search" asp-controller="Searches">
         <button class="btn btn-success btn-circle btn-md"><img src="/assets/search-solid.svg" /></button>
     </a>
+    <a asp-action="Index" asp-controller="Assets" asp-route-ShowFavs="true">
+        <button class="btn btn-success btn-circle btn-md"><img src="/assets/icon_fav2.png" width="28px" height="28px"></button>
+    </a>
 </div>
 
 @if (ViewBag.NoSearchResultsFound == true)
