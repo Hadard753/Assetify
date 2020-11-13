@@ -66,7 +66,10 @@ namespace Assetify.Controllers
             this.MarkFavoritesAndOwnership(User, Assets);
 
             if(ShowFavs)
+            {
+                ViewBag.ShowFavs = true;
                 Assets.RemoveAll(item => item.IsFavorite == false);
+            }
 
             return View(Assets);
         }
