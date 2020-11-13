@@ -27,7 +27,6 @@ namespace Assetify.Models
         [Required, StringLength(20, ErrorMessage = "Last Name can be up to 20 chars")]
         public string LastName { get; set; }
         [Required(ErrorMessage = "You must provide a phone number")]
-        [Display(Name = "Phone number")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^05\d([-]{0,1})\d{7}$", ErrorMessage = "Not a valid phone number")]
         public string Phone { get; set; }
