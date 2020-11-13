@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,6 +10,7 @@ namespace Assetify.Models
     {
         public int UserID { get; set; }
         //public int AddressID { get; set; }
+        [Remote(action: "VerifyEmail", controller: "Users")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Please enter password")]

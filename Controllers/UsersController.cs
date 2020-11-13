@@ -143,7 +143,10 @@ namespace Assetify.Controllers
         {
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
             user.Password = Crypto.HashPassword(user.Password);
-            if (ModelState.IsValid)
+
+            var emailNotExist = !isEmailExist(user.Email);
+            if (emailNotExist) ModelState.AddModelError("Email", "Email already exist");
+            if (ModelState.IsValid && emailNotExist)
             {
                 if (file!=null)
                     user.ProfileImgPath = await FileUploader.UploadFile(file);
@@ -155,6 +158,18 @@ namespace Assetify.Controllers
                 return RedirectToAction("Login", "Users");
             }
             return View(user);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyEmail(string email)
+        {
+            var emailExist = isEmailExist(email);
+            if (emailExist)
+            {
+                return Json($"Email {email} is already in use.");
+            }
+
+            return Json(true);
         }
 
         public IActionResult EditMyProfile()
@@ -264,6 +279,11 @@ namespace Assetify.Controllers
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.UserID == id);
+        }
+
+        private bool isEmailExist(string email)
+        {
+            return _context.Users.Where(x => x.Email == email).Count() > 0;
         }
     }
 }
