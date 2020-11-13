@@ -10,7 +10,7 @@ namespace Assetify.Models
     {
         public int UserID { get; set; }
         //public int AddressID { get; set; }
-        [Remote(action: "VerifyEmail", controller: "Users")]
+        [Required,Remote(action: "VerifyEmail", controller: "Users")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Please enter password")]
@@ -24,7 +24,12 @@ namespace Assetify.Models
 
         [Required, StringLength(20, ErrorMessage = "First Name can be up to 20 chars")]
         public string FirstName { get; set; }
+        [Required, StringLength(20, ErrorMessage = "Last Name can be up to 20 chars")]
         public string LastName { get; set; }
+        [Required(ErrorMessage = "You must provide a phone number")]
+        [Display(Name = "Phone number")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^05\d([-]{0,1})\d{7}$", ErrorMessage = "Not a valid phone number")]
         public string Phone { get; set; }
         public bool IsVerified { get; set; }
 
