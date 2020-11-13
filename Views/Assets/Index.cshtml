@@ -48,18 +48,20 @@
                                 imgSrcUrl = item.Images.First().Path;
                             else
                                 imgSrcUrl = "assets/default-house.jpg";
-                            <img class="card-img-top" src="@imgSrcUrl" alt="Image not found">
+                            <a asp-action="Details" asp-route-id="@item.AssetID">
+                                <img class="card-img-top" src="@imgSrcUrl" alt="Image not found" />
+                            </a>
                         </div>
                         <div class="card-body">
                             <div class="row card-details">
                                 <div class="col-4">
-                                    <img src="~/assets/floors-icon.jpg" alt="Floor" />@item.Floor
+                                    <img src="~/assets/floors2.png" alt="Floor" title="Floor"/>@item.Floor
+                                 </div>
+                                <div class="col-4">
+                                    <img src="~/assets/rooms2.png" alt="Rooms" title="Rooms"/>@item.Rooms
                                 </div>
                                 <div class="col-4">
-                                    <img src="~/assets/rooms-icon.png" alt="Rooms" />@item.Rooms
-                                </div>
-                                <div class="col-4">
-                                    <img src="~/assets/size-icon.png" alt="Size" />@item.Size
+                                    <img src="~/assets/size2.png" alt="Size" title="Size"/>@item.Size
                                 </div>
                             </div>
                             <div class="card-subtitle">
@@ -76,7 +78,6 @@
                             </div>
 
                             <p class="card-text">@item.Address.Full</p>
-                            <a asp-action="Details" asp-route-id="@item.AssetID" class="card-link">Details</a>
                             @{
                                 if (item.IsOwner || ViewBag.IsAdmin)
                                 {
@@ -102,18 +103,20 @@
                         imgSrcUrl = item.Images.First().Path;
                     else
                         imgSrcUrl = "assets/default-house.jpg";
-                    <img class="card-img-top" src="@imgSrcUrl" alt="Image not found">
+                    <a asp-action="Details" asp-route-id="@item.AssetID">
+                        <img class="card-img-top" src="@imgSrcUrl" alt="Image not found"/>
+                    </a>
                 </div>
                 <div class="card-body">
                     <div class="row card-details">
                         <div class="col-4">
-                            <img src="~/assets/floors-icon.jpg" alt="Floor" />@item.Floor
+                            <img src="~/assets/floors2.png" alt="Floor" title="Floor"/>@item.Floor
                         </div>
                         <div class="col-4">
-                            <img src="~/assets/rooms-icon.png" alt="Rooms" />@item.Rooms
+                            <img src="~/assets/rooms2.png" alt="Rooms" title="Rooms"/>@item.Rooms
                         </div>
                         <div class="col-4">
-                            <img src="~/assets/size-icon.png" alt="Size" />@item.Size
+                            <img src="~/assets/size2.png" alt="Size" title="Size"/>@item.Size
                         </div>
                     </div>
                     <div class="card-subtitle">
@@ -130,7 +133,6 @@
                     </div>
 
                     <p class="card-text">@item.Address.Full</p>
-                    <a asp-action="Details" asp-route-id="@item.AssetID" class="card-link">Details</a>
                     @{
                         if (item.IsOwner || ViewBag.IsAdmin)
                         {
