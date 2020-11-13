@@ -22,6 +22,7 @@ namespace Assetify.Models
         [Compare("Password", ErrorMessage = "Password and confirm password does not match")]
         public string ComparePassword { get; set; }*/
 
+        [Required, StringLength(20, ErrorMessage = "First Name can be up to 20 chars")]
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Phone { get; set; }
