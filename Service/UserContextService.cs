@@ -16,7 +16,7 @@ namespace Assetify.Service
     {
         public string sessionID { get; set; }
         public bool isAdmin { get; set; }
-
+        public string name { get; set; }
         public User User { get; set; }
     }
     public static class UserContextService
@@ -34,6 +34,8 @@ namespace Assetify.Service
             {
                 userSessionID.sessionID = httpContext.Session.GetString("UserIDSession");
             }
+            userSessionID.name = httpContext.Session.GetString("name");
+
 
             return userSessionID;
         }
