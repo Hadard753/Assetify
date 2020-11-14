@@ -247,7 +247,7 @@ namespace Assetify.Controllers
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
             var isCurrentUserOwnerOfAsset = _context.UserAsset.Where(x => x.AssetID == asset.AssetID && x.UserID == int.Parse(userContext.sessionID) && x.Action == ActionType.PUBLISH).Count() >= 1;
 
-            if (!isCurrentUserOwnerOfAsset) return NotFound();
+            if (!isCurrentUserOwnerOfAsset && !userContext.isAdmin) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -269,7 +269,7 @@ namespace Assetify.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
+
             return View(asset);
 
         }
