@@ -214,8 +214,7 @@ namespace Assetify.Controllers
 
             if (userContext.isAdmin || isPublisher)
             {
-                var asset = await _context.Assets.FindAsync(id);
-                ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
+                var asset = _context.Assets.Include(a => a.Address).FirstOrDefault(a => a.AssetID == id);
                 return View(asset);
             }
             else
