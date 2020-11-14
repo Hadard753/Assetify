@@ -54,11 +54,11 @@ namespace Assetify.Controllers
                     return RedirectToAction("Index", "home");
                 }
             }
-            //test this
-            ViewBag.Message = "Login failed, name or password is incorrect!";
+
+            TempData["LoginMessage"] = "Login failed, name or password is incorrect!";
             TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString();
 
-            return View("login");
+            return RedirectToAction("Login");
         }
 
         public ActionResult Logout()
