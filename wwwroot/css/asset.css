@@ -23,8 +23,12 @@
     border-radius: 22px;
     transition: 0.8s;
     width: 100%;
-    margin-bottom: 10px;
     margin-top: 10px;
+    height: 100%;
+}
+
+.card-row {
+    margin-bottom: 10px;
 }
 
 #listofcards .card-header {
@@ -147,4 +151,8 @@ lex-direction: column;
 @font-face {
     font-family: 'opensans-light';
     src: url(~/fonts/open-sans-condensed/OpenSans-CondLight.ttf)
+}
+
+.recommendation {
+    border-width: 3.5px;
 }

@@ -1,18 +1,231 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    string imgSrcUrl = "";
 }
 
-<div class="text-center">
-    <h1>Welcome</h1>
-    <p style="font-size: 20px">
-        Welcome to Assetify, here you will be part of the best realestate community out there ;)
-        <br />
-        You can add your own assets, or just enjoy the assets we have to offer!
-        <div class="video-container-home">
-            <video autoplay loop muted id="video-clouds">
-                <source src="~/images/clouds.mp4" type="video/mp4">
-            </video>
+<div class="text-center row">
+    <div class="col-12">
+        <h1 class="">Welcome</h1>
+    </div>
+    <div class="col-12">
+        <h5>Welcome to Assetify, here you will be part of the best realestate community out there ;)</h5>
+    </div>
+    <div class="col-12">
+        <h5>You can add your own assets, or just enjoy the assets we have to offer!</h5>
+    </div>
+    <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-md-3 col-sm-12">
+                <a asp-controller="Searches" asp-action="Search">
+                    <button type="button" class="btn btn-success btn-login">Search</button>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <a asp-controller="Assets" asp-action="Create">
+                    <button type="button" class="btn btn-outline-secondary btn-login">Publish</button>
+                </a>
+            </div>
         </div>
-    </p>
+    </div>
 </div>
 
+<hr />
+
+<!-- ======= New Assets ======= -->
+<section id="newest-assets">
+    <div id="listofcards">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h4>New on Assetify</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (Asset item in ViewBag.NewestAssets)
+            {
+                <div class="col-xs-12 col-md-4">
+                    <div class="card border-success mb-3">
+                        <div class="card-header">
+                            @if (item.Images.Count > 0)
+                                imgSrcUrl = item.Images.First().Path;
+                            else
+                                imgSrcUrl = "assets/default-house.svg";
+                            <a asp-action="Details" asp-route-id="@item.AssetID">
+                                <img class="card-img-top" src="@imgSrcUrl" alt="Image not found" />
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row card-details">
+                                <div class="col-4">
+                                    <img src="~/assets/floors2.png" alt="Floor" title="Floor" />@item.Floor
+                                </div>
+                                <div class="col-4">
+                                    <img src="~/assets/rooms2.png" alt="Rooms" title="Rooms" />@item.Rooms
+                                </div>
+                                <div class="col-4">
+                                    <img src="~/assets/size2.png" alt="Size" title="Size" />@item.Size
+                                </div>
+                            </div>
+                            <div class="card-subtitle">
+                                <img src="assets/location.png" width="15" height="15">
+                                @item.Address.Street, @item.Address.City
+                                <span class="float-right font-weight-light">
+                                    <button hidden="@(!item.IsFavorite)" onclick="toggleFav(false,@item.AssetID)" class="btn-fav" id="fav_@item.AssetID">
+                                        <img src="~/assets/icon__fav-filled.png" width="30" />
+                                    </button>
+                                    <button hidden="@item.IsFavorite" onclick="toggleFav(true,@item.AssetID)" class="btn-fav" id="not_fav_@item.AssetID">
+                                        <img src="~/assets/icon__fav.png" width="30" />
+                                    </button>
+                                </span>
+                            </div>
+
+                            <p class="card-text">@item.Address.Full</p>
+                            <p class="card-text"><small class="text-muted">Created at @item.CreatedAt</small></p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!-- End New Assets -->
+
+<hr />
+
+<!-- ======= Contact Form ======= -->
+<div class="form-signup-v1">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="mb-5">
+                    <h2>Join over 1M+ people who already found their dream home.</h2>
+                </div>
+                <div class="testimonials">
+                    <div class="owl-carousel owl-single no-dots owl-loaded owl-drag">
+                        <div class="owl-stage-outer owl-height" style="height: 154px;">
+                            <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1840px;">
+                                <div class="owl-item active" style="width: 460px;">
+                                    <div class="testimonial-v2">
+                                        <blockquote>
+                                            <p>“Thanks to Assetify website I was able to find my dreasm house in an amazing price !”</p>
+                                        </blockquote>
+                                        <div class="author">
+                                            <cite class="d-block">Maria Lname</cite>
+                                        </div>
+                                    </div>
+                                </div><div class="owl-item" style="width: 460px;">
+
+                                </div>
+                            </div>
+                        </div><div class="owl-nav disabled"><div class="owl-prev">prev</div><div class="owl-next">next</div></div><div class="owl-dots"><div class="owl-dot active"><span></span></div><div class="owl-dot"><span></span></div><div class="owl-dot"><span></span></div><div class="owl-dot"><span></span></div></div>
+                    </div> <!-- END .owl -->
+                </div>
+                <div class="authors">
+                    <a href="#" class="active" data-index="0"><img src="~/assets/recomender2.png" alt="Image" class="img-fluid" data-pagespeed-url-hash="759985442" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                    <a href="#" data-index="1"><img src="/assets/recomender3.png" alt="Image" class="img-fluid" data-pagespeed-url-hash="1054485363" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                    <a href="#" data-index="2"><img src="/assets/recommender4.webp" alt="Image" class="img-fluid" data-pagespeed-url-hash="1348985284" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                    <a href="#" data-index="3"><img src="/assets/recomender1.jfif" alt="Image" class="img-fluid" data-pagespeed-url-hash="1643485205" onload="pagespeed.CriticalImages.checkImageForCriticality(this);"></a>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <form action="#" class="custom-form">
+                    <h3>Fill out the form</h3>
+                    <div class="row">
+                        <div class="col-lg-6 form-group">
+                            <input type="text" class="form-control" placeholder="First name">
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <input type="text" class="form-control" placeholder="Last name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 form-group">
+                            <input type="text" class="form-control" placeholder="Your Email">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 form-group">
+<textarea class="form-control" name="" id="" cols="30" rows="3" placeholder="Desctibe the house of your dream..."></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <input type="submit" class="btn btn-secondary btn-block" value="Send Form">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Contact Section -->
+
+<hr />
+<!-- ======= Agents Section ======= -->
+<section id="agents" class="agents">
+    <div class="container text-center">
+        <div class="section-title">
+            <h1 class="text-secondary">Who Are We ?</h1>
+            <p>“Our mession is to find your dream home.”</p>
+        </div>
+        <div class="row">
+            <!-- Agent photo & info - 1 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="member">
+                    <div class="pic"><img src="assets/hadar.jfif" class="img-fluid" alt=""></div>
+                    <div class="member-info">
+                        <h4>Hadar Dayan</h4>
+                        <span>Senior Full Stack Developer</span>
+                        <div class="social">
+                            <a href="https://www.facebook.com/hadar.dayan.31/" target="_blank"><i class="icofont-facebook"></i></a>
+                            <a href="https://www.linkedin.com/in/hadar-dayan/" target="_blank"><i class="icofont-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Agent photo & info - 2 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="member">
+                    <div class="pic"><img src="assets/doron.jfif" class="img-fluid" alt=""></div>
+                    <div class="member-info">
+                        <h4>Doron Eli</h4>
+                        <span>Senior Full Stack Developer</span>
+                        <div class="social">
+                            <a href="https://www.facebook.com/doron050" target="_blank"><i class="icofont-facebook"></i></a>
+                            <a href="https://www.linkedin.com/in/doron-eli-rachman-218595b1/" target="_blank"><i class="icofont-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Agent photo & info - 3 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="member">
+                    <div class="pic"><img src="assets/gal.jfif" class="img-fluid" alt=""></div>
+                    <div class="member-info">
+                        <h4>Gal Harris</h4>
+                        <span>QA Automation Analysis Manager</span>
+                        <div class="social">
+                            <a href="https://www.facebook.com/gal.harris.5" target="_blank"><i class="icofont-facebook"></i></a>
+                            <a href="https://www.linkedin.com/in/gal-harris-4710a2133/" target="_blank"><i class="icofont-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Agent photo & info - 4 -->
+            <div class="col-lg-3 col-md-6">
+                <div class="member">
+                    <div class="pic"><img src="assets/stav.jfif" class="img-fluid" alt=""></div>
+                    <div class="member-info">
+                        <h4>Stav Bernaz</h4>
+                        <span>DevOps Engineer</span>
+                        <div class="social">
+                            <a href="https://www.facebook.com/stav.bernaz" target="_blank"><i class="icofont-facebook"></i></a>
+                            <a href="https://www.linkedin.com/in/stav-bernaz-788141125/" target="_blank"><i class="icofont-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Agents Section -->

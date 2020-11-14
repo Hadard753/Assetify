@@ -36,6 +36,13 @@
     <None Include="wwwroot\assets\default-house.jpg" />
     <None Include="wwwroot\assets\location.png" />
     <None Include="wwwroot\assets\profile-img.jpg" />
+    <None Include="wwwroot\lib\boxicons\fonts\boxicons.svg" />
+    <None Include="wwwroot\lib\boxicons\fonts\boxicons.woff2" />
+    <None Include="wwwroot\lib\icofont\fonts\icofont.woff2" />
+    <None Include="wwwroot\lib\owl.carousel\LICENSE" />
+    <None Include="wwwroot\lib\owl.carousel\owl.carousel.js" />
+    <None Include="wwwroot\lib\owl.carousel\owl.carousel.min.js" />
+    <None Include="wwwroot\lib\owl.carousel\README.md" />
     <None Include="wwwroot\UploadedFiles\github-logo.png" />
     <None Include="wwwroot\UploadedFiles\github12.gif" />
     <None Include="wwwroot\UploadedFiles\logo.svg" />
