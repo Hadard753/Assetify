@@ -247,6 +247,11 @@ namespace Assetify.Controllers
                 return NotFound();
             }
 
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
+            var isCurrentUserOwnerOfAsset = _context.UserAsset.Where(x => x.AssetID == asset.AssetID && x.UserID == int.Parse(userContext.sessionID) && x.Action == ActionType.PUBLISH).Count() >= 1;
+
+            if (!isCurrentUserOwnerOfAsset) return NotFound();
+
             if (ModelState.IsValid)
             {
                 try
