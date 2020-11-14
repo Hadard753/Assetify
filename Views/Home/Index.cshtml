@@ -50,7 +50,7 @@
                                 imgSrcUrl = item.Images.First().Path;
                             else
                                 imgSrcUrl = "assets/default-house.svg";
-                            <a asp-action="Details" asp-route-id="@item.AssetID">
+                            <a asp-controller="Assets" asp-action="Details" asp-route-id="@item.AssetID">
                                 <img class="card-img-top" src="@imgSrcUrl" alt="Image not found" />
                             </a>
                         </div>
@@ -79,7 +79,6 @@
                                 </span>
                             </div>
 
-                            <p class="card-text">@item.Address.Full</p>
                             <p class="card-text"><small class="text-muted">Created at @item.CreatedAt</small></p>
                         </div>
                     </div>
