@@ -223,6 +223,8 @@ namespace Assetify.Controllers
             {
                 var asset = await _context.Assets.FindAsync(id);
                 ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
+                var address = _context.Addresses.First(x => x.AddressID == asset.AddressID);
+                ViewData["AddressName"] = address.Full;
                 return View(asset);
             }
             else
