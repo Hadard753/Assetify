@@ -24,217 +24,221 @@
     <div class="col-md-12 ">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="AssetID" />
-            <input type="hidden" asp-for="AddressID" />
-            <div class="row">
-                <div class="col-12 page-sub-title">
-                    <h4>Basic Info</h4>
+            <div id="wizard">
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-danger pull-right" />
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-4 col-sm-12">
-                    <label class="control-label">Asset address</label>
-                    <input disabled value="@Model.Address.Full" class="form-control" />
-                    <span asp-validation-for="AddressID" class="text-danger"></span>
+                <!-- Tabstrip-->
+                <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li role="presentation" class="nav-item">
+                        <a href="#BasicInfo" role="tab" data-toggle="tab" class="nav-link active">Basic Info</a>
+                    </li>
+                    <li role="presentation" class="nav-item">
+                        <a href="#AdvancedInfo" role="tab" data-toggle="tab" class="nav-link">Advanced Info</a>
+                    </li>
+                    <li role="presentation" class="nav-link">
+                        <a href="#AssetsFeatures" role="tab" data-toggle="tab" class="nav-link">Asset's Features</a>
+                    </li>
+                </ul>
+                <!-- Tab panes-->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="BasicInfo">
+                        <input type="hidden" asp-for="AssetID" />
+                        <input type="hidden" asp-for="AddressID" />
+                        <div class="row">
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="control-label">Asset address</label>
+                                <input disabled value="@Model.Address.Full" class="form-control" />
+                                <span asp-validation-for="AddressID" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="form-control-label" asp-for="Price"></label>
+                                <input type="number" asp-for="Price" required class="form-control">
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="form-control-label" asp-for="Rooms"></label>
+                                <input type="number" asp-for="Rooms" required class="form-control">
+                                <span asp-validation-for="Rooms" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="form-control-label" asp-for="Size"></label>
+                                <input type="number" asp-for="Size" required class="form-control">
+                                <span asp-validation-for="Size" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="form-control-label" asp-for="Floor"></label>
+                                <input type="number" asp-for="Floor" required class="form-control">
+                                <span asp-validation-for="Floor" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="form-control-label" asp-for="TotalFloor"></label>
+                                <input type="number" asp-for="TotalFloor" required class="form-control">
+                                <span asp-validation-for="TotalFloor" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 col-sm-12">
+                                @Html.LabelFor(model => model.Furnished, htmlAttributes: new { @class = "form-control-label" })
+                                @Html.DropDownListFor(model => model.Furnished, new SelectList(FurnishedType.GetValues(typeof(FurnishedType))), htmlAttributes: new { @class = "custom-select" })
+                                @Html.ValidationMessageFor(model => model.Furnished, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                @Html.LabelFor(model => model.TypeId, htmlAttributes: new { @class = "form-control-label" })
+                                @Html.DropDownListFor(model => model.TypeId, new SelectList(AssetType.GetValues(typeof(AssetType))), htmlAttributes: new { @class = "custom-select" })
+                                @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                @Html.LabelFor(model => model.Condition, htmlAttributes: new { @class = "form-control-label" })
+                                @Html.DropDownListFor(model => model.Condition, new SelectList(AssetCondition.GetValues(typeof(AssetCondition))), htmlAttributes: new { @class = "custom-select" })
+                                @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="AdvancedInfo">
+                        <div class="row">
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="form-control-label" asp-for="GardenSize"></label>
+                                <input type="number" asp-for="GardenSize" class="form-control">
+                                <span asp-validation-for="GardenSize" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="form-control-label" asp-for="BalconySize"></label>
+                                <input type="number" asp-for="BalconySize" class="form-control">
+                                <span asp-validation-for="BalconySize" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label class="form-control-label" asp-for="NumOfParking"></label>
+                                <input type="number" asp-for="NumOfParking" class="form-control">
+                                <span asp-validation-for="NumOfParking" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea asp-for="Description" rows="3" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="EntryDate" class="control-label"></label>
+                            <input asp-for="EntryDate" class="form-control" />
+                            <span asp-validation-for="EntryDate" class="text-danger"></span>
+                        </div>
+                        <hr />
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="AssetsFeatures">
+                        <div class="row">
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" id="" asp-for="IsElevator" /> @Html.DisplayNameFor(model => model.IsElevator)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsBalcony" /> @Html.DisplayNameFor(model => model.IsBalcony)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsTerrace" /> @Html.DisplayNameFor(model => model.IsTerrace)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsStorage" /> @Html.DisplayNameFor(model => model.IsStorage)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsRenovated" /> @Html.DisplayNameFor(model => model.IsRenovated)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsRealtyCommission" /> @Html.DisplayNameFor(model => model.IsRealtyCommission)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsAircondition" /> @Html.DisplayNameFor(model => model.IsAircondition)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsMamad" /> @Html.DisplayNameFor(model => model.IsMamad)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsPandorDoors" /> @Html.DisplayNameFor(model => model.IsPandorDoors)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsAccessible" /> @Html.DisplayNameFor(model => model.IsAccessible)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsKosherKitchen" /> @Html.DisplayNameFor(model => model.IsKosherKitchen)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsKosherBoiler" /> @Html.DisplayNameFor(model => model.IsKosherBoiler)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsOnPillars" /> @Html.DisplayNameFor(model => model.IsOnPillars)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsBars" /> @Html.DisplayNameFor(model => model.IsBars)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsForSell" /> @Html.DisplayNameFor(model => model.IsForSell)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsCommercial" /> @Html.DisplayNameFor(model => model.IsCommercial)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsRoomates" /> @Html.DisplayNameFor(model => model.IsRoomates)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsImmediate" /> @Html.DisplayNameFor(model => model.IsImmediate)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsNearTrainStation" /> @Html.DisplayNameFor(model => model.IsNearTrainStation)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsNearLightTrainStation" /> @Html.DisplayNameFor(model => model.IsNearLightTrainStation)
+                                </label>
+                            </div>
+                            <div class="form-group form-check col-md-2 col-sm-3">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsNearBeach" /> @Html.DisplayNameFor(model => model.IsNearBeach)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
                 </div>
-                <div class="form-group col-md-4 col-sm-12">
-                    <label class="form-control-label" asp-for="Price"></label>
-                    <input type="number" asp-for="Price" required class="form-control">
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-4 col-sm-12">
-                    <label class="form-control-label" asp-for="Rooms"></label>
-                    <input type="number" asp-for="Rooms" required class="form-control">
-                    <span asp-validation-for="Rooms" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-4 col-sm-12">
-                    <label class="form-control-label" asp-for="Size"></label>
-                    <input type="number" asp-for="Size" required class="form-control">
-                    <span asp-validation-for="Size" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-4 col-sm-12">
-                    <label class="form-control-label" asp-for="Floor"></label>
-                    <input type="number" asp-for="Floor" required class="form-control">
-                    <span asp-validation-for="Floor" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-4 col-sm-12">
-                    <label class="form-control-label" asp-for="TotalFloor"></label>
-                    <input type="number" asp-for="TotalFloor" required class="form-control">
-                    <span asp-validation-for="TotalFloor" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-4 col-sm-12">
-                    @Html.LabelFor(model => model.Furnished, htmlAttributes: new { @class = "form-control-label" })
-                    @Html.DropDownListFor(model => model.Furnished, new SelectList(FurnishedType.GetValues(typeof(FurnishedType))), htmlAttributes: new { @class = "custom-select" })
-                    @Html.ValidationMessageFor(model => model.Furnished, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group col-md-4 col-sm-12">
-                    @Html.LabelFor(model => model.TypeId, htmlAttributes: new { @class = "form-control-label" })
-                    @Html.DropDownListFor(model => model.TypeId, new SelectList(AssetType.GetValues(typeof(AssetType))), htmlAttributes: new { @class = "custom-select" })
-                    @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group col-md-4 col-sm-12">
-                    @Html.LabelFor(model => model.Condition, htmlAttributes: new { @class = "form-control-label" })
-                    @Html.DropDownListFor(model => model.Condition, new SelectList(AssetCondition.GetValues(typeof(AssetCondition))), htmlAttributes: new { @class = "custom-select" })
-                    @Html.ValidationMessageFor(model => model.Condition, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <hr />
-
-            <div class="row">
-                <div class="col-12 page-sub-title">
-                    <h4>Advanced Info</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-4 col-sm-12">
-                    <label class="form-control-label" asp-for="GardenSize"></label>
-                    <input type="number" asp-for="GardenSize" class="form-control">
-                    <span asp-validation-for="GardenSize" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-4 col-sm-12">
-                    <label class="form-control-label" asp-for="BalconySize"></label>
-                    <input type="number" asp-for="BalconySize" class="form-control">
-                    <span asp-validation-for="BalconySize" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-4 col-sm-12">
-                    <label class="form-control-label" asp-for="NumOfParking"></label>
-                    <input type="number" asp-for="NumOfParking" class="form-control">
-                    <span asp-validation-for="NumOfParking" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" rows="3" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EntryDate" class="control-label"></label>
-                <input asp-for="EntryDate" class="form-control" />
-                <span asp-validation-for="EntryDate" class="text-danger"></span>
-            </div>
-            <hr />
-
-            <div class="row">
-                <div class="col-12 page-sub-title">
-                    <h4>Asset's Features</h4>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" id="" asp-for="IsElevator" /> @Html.DisplayNameFor(model => model.IsElevator)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsBalcony" /> @Html.DisplayNameFor(model => model.IsBalcony)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsTerrace" /> @Html.DisplayNameFor(model => model.IsTerrace)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsStorage" /> @Html.DisplayNameFor(model => model.IsStorage)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsRenovated" /> @Html.DisplayNameFor(model => model.IsRenovated)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsRealtyCommission" /> @Html.DisplayNameFor(model => model.IsRealtyCommission)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsAircondition" /> @Html.DisplayNameFor(model => model.IsAircondition)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsMamad" /> @Html.DisplayNameFor(model => model.IsMamad)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsPandorDoors" /> @Html.DisplayNameFor(model => model.IsPandorDoors)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsAccessible" /> @Html.DisplayNameFor(model => model.IsAccessible)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsKosherKitchen" /> @Html.DisplayNameFor(model => model.IsKosherKitchen)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsKosherBoiler" /> @Html.DisplayNameFor(model => model.IsKosherBoiler)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsOnPillars" /> @Html.DisplayNameFor(model => model.IsOnPillars)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsBars" /> @Html.DisplayNameFor(model => model.IsBars)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsForSell" /> @Html.DisplayNameFor(model => model.IsForSell)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsCommercial" /> @Html.DisplayNameFor(model => model.IsCommercial)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsRoomates" /> @Html.DisplayNameFor(model => model.IsRoomates)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsImmediate" /> @Html.DisplayNameFor(model => model.IsImmediate)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsNearTrainStation" /> @Html.DisplayNameFor(model => model.IsNearTrainStation)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsNearLightTrainStation" /> @Html.DisplayNameFor(model => model.IsNearLightTrainStation)
-                    </label>
-                </div>
-                <div class="form-group form-check col-md-2 col-sm-3">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsNearBeach" /> @Html.DisplayNameFor(model => model.IsNearBeach)
-                    </label>
-                </div>
-            </div>
-
-            <hr />
-            <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-primary" />
-            </div>
         </form>
     </div>
 </div>
@@ -246,3 +250,8 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+<style>
+    ul.nav a:hover {
+        color: #05f5c1 !important;
+    }
+</style>

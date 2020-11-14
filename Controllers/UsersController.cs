@@ -273,6 +273,11 @@ namespace Assetify.Controllers
         public ActionResult AdminDashboard()
         {
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
+            if (!userContext.isAdmin)
+            {
+                TempData["LoginMessage"] = "Only admins can see the Admin dashboard :) Login as Admin!";
+                return RedirectToAction("Login", "Users"); 
+            }
             ViewData["AdminName"] = userContext.name.ToString();
             return View();
 
