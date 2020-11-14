@@ -24,23 +24,23 @@ namespace Assetify.Controllers
             _context = context;
         }
 
-        
+
         public ActionResult Login(string? message, string? returnUrl)
         {
-                ViewBag.Message = TempData["LoginMessage"] != null ? TempData["LoginMessage"]  : message;
-                TempData["ReturnUrl"] = TempData["ReturnUrl"] != null ? TempData["ReturnUrl"] : returnUrl;
+            ViewBag.Message = TempData["LoginMessage"] != null ? TempData["LoginMessage"] : message;
+            TempData["ReturnUrl"] = TempData["ReturnUrl"] != null ? TempData["ReturnUrl"] : returnUrl;
             return View();
         }
 
         [HttpPost]
         public ActionResult SignIn(String Email, String Password)
         {
-            
+
             foreach (var u in _context.Users)
             {
                 if (u.Email == Email && (Crypto.VerifyHashedPassword(u.Password.ToString(), Password.ToString())))
                 {
-                    if(u.ProfileImgPath!=null)
+                    if (u.ProfileImgPath != null)
                         HttpContext.Session.SetString("ProfileImg", u.ProfileImgPath);
                     if (u.IsAdmin)
                         HttpContext.Session.SetString("AdminIDSession", u.UserID.ToString());
@@ -49,8 +49,8 @@ namespace Assetify.Controllers
                     HttpContext.Session.SetString("name", u.FirstName.ToString());
                     ViewBag.Login = true;
                     if (TempData["ReturnUrl"] != null)
-                            return Redirect(TempData["ReturnUrl"].ToString());
-                    
+                        return Redirect(TempData["ReturnUrl"].ToString());
+
                     return RedirectToAction("Index", "home");
                 }
             }
@@ -85,7 +85,7 @@ namespace Assetify.Controllers
 
             List<User> allUsers = await _context.Users.Include(u => u.Assets).ToListAsync();
 
-            foreach(User u in allUsers)
+            foreach (User u in allUsers)
             {
                 u.NumOfFavorites = u.Assets.Where(ua => ua.Action == ActionType.LIKE).Count();
                 u.NumOfPublish = u.Assets.Where(ua => ua.Action == ActionType.PUBLISH).Count();
@@ -146,7 +146,7 @@ namespace Assetify.Controllers
             if (emailExist) ModelState.AddModelError("Email", $"Email {user.Email} is already in use.");
             if (ModelState.IsValid && !emailExist)
             {
-                if (file!=null)
+                if (file != null)
                     user.ProfileImgPath = await FileUploader.UploadFile(file);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
@@ -200,6 +200,7 @@ namespace Assetify.Controllers
             }
 
             ViewBag.isAdmin = userContext.isAdmin;
+            ViewBag.IsEdit = true;
             return View(user);
         }
 
@@ -210,7 +211,9 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user)
         {
-            if (id != user.UserID)
+            UserContext userContext = UserContextService.GetUserContext(HttpContext);
+            var loggedInUser = _context.Users.First(x => x.UserID == int.Parse(userContext.sessionID));
+            if (loggedInUser.UserID != id || loggedInUser.UserID != user.UserID || loggedInUser.Email != user.Email)
             {
                 return NotFound();
             }
@@ -219,12 +222,16 @@ namespace Assetify.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    loggedInUser.FirstName = user.FirstName;
+                    loggedInUser.LastName = user.LastName;
+                    loggedInUser.Phone = user.Phone;
+                    _context.Update(loggedInUser);
                     await _context.SaveChangesAsync();
+                    UserContextService.UpdateNameInContext(HttpContext, loggedInUser.FirstName);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserID))
+                    if (!UserExists(loggedInUser.UserID))
                     {
                         return NotFound();
                     }
@@ -268,7 +275,7 @@ namespace Assetify.Controllers
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
             ViewData["AdminName"] = userContext.name.ToString();
             return View();
-            
+
         }
 
         // POST: Users/Delete/5

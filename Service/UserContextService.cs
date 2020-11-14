@@ -39,5 +39,10 @@ namespace Assetify.Service
 
             return userSessionID;
         }
+
+        public static void UpdateNameInContext(HttpContext httpContext, string name)
+        {
+            httpContext.Session.SetString("name", name.ToString());
+        }
     }
 }
