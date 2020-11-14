@@ -11,7 +11,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title class="title">@ViewData["Title"] - Assetify</title>
-    <script name="font-awesome" src ="https://use.fontawesome.com/0ffa199bf2.js"></script>
+    <script name="font-awesome"  src="https://use.fontawesome.com/0ffa199bf2.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
@@ -54,6 +54,17 @@
 
                     <div class="right-side d-flex">
                         <ul class="navbar-nav">
+
+                            @{
+                                if (context.name != null)
+                                {
+                                    @: <li class="nav-item" data-doron="true">
+                                        @: <div class="nav-link">Hi @context.name</div>
+                                    @:</li>
+                                }
+
+                            }
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     @{
@@ -107,3 +118,12 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+@*@{
+    if (context.name != null)
+
+        <li class="nav-item">
+            <div class="nav-link" asp-area=">Hi @context.name</div>
+        </li>
+
+        }*@

@@ -38,6 +38,13 @@ namespace Assetify.Controllers
             User User = _context.Users.Include(u => u.Assets).FirstOrDefault(u => u.UserID.ToString() == UserContext.sessionID);
             ViewBag.IsAdmin = UserContext.isAdmin;
 
+            if (UserContext.sessionID == null && ShowFavs)
+            {
+                TempData["ReturnUrl"] = Request.GetDisplayUrl().ToString();
+                TempData["LoginMessage"] = "Login or Register to save and see you favorites";
+                return RedirectToAction("Login", "Users");
+            }
+
             // If Action was called from search page
             if (TempData["searchedAssets"] != null)
             {
