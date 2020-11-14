@@ -221,10 +221,7 @@ namespace Assetify.Controllers
 
             if (userContext.isAdmin || isPublisher)
             {
-                var asset = await _context.Assets.FindAsync(id);
-                ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
-                var address = _context.Addresses.First(x => x.AddressID == asset.AddressID);
-                ViewData["AddressName"] = address.Full;
+                var asset = _context.Assets.Include(a => a.Address).FirstOrDefault(a => a.AssetID == id);
                 return View(asset);
             }
             else
@@ -250,7 +247,7 @@ namespace Assetify.Controllers
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
             var isCurrentUserOwnerOfAsset = _context.UserAsset.Where(x => x.AssetID == asset.AssetID && x.UserID == int.Parse(userContext.sessionID) && x.Action == ActionType.PUBLISH).Count() >= 1;
 
-            if (!isCurrentUserOwnerOfAsset) return NotFound();
+            if (!isCurrentUserOwnerOfAsset && !userContext.isAdmin) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -272,7 +269,7 @@ namespace Assetify.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID", asset.AddressID);
+
             return View(asset);
 
         }
