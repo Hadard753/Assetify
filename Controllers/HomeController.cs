@@ -8,21 +8,26 @@ using Microsoft.Extensions.Logging;
 using Assetify.Models;
 using NewsAPI;
 using NewsAPI.Models;
+using Assetify.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Assetify.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AssetifyContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(AssetifyContext context, ILogger<HomeController> logger)
         {
+            _context = context;
             _logger = logger;
         }
 
-        public /*async  Task<IActionResult>*/IActionResult Index()
+        public IActionResult Index()
         {
-            /*  ViewBag.RealEstateArticles = await getArticals();*/
+            List<Asset> NewestAssets = _context.Assets.Include(a => a.Images).Include(a => a.Address).OrderByDescending(a => a.CreatedAt).Take(3).ToList();
+            ViewBag.NewestAssets = NewestAssets;
             return View();
         }
 
@@ -41,37 +46,6 @@ namespace Assetify.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
-
-        /*        public async Task<List<ArticleCity>> getArticals()
-                {
-
-                    List<ArticleCity> articles = new List<ArticleCity>();
-                    var newsApiClient = new NewsApiClient("f6395a1d8a3c469f9be70c0ec5075340");
-                    var monthStart = DateTime.Now.AddMonths(-1);
-                    var articlesResponse = await newsApiClient.GetEverythingAsync(new EverythingRequest
-                    {
-                        Q = "\"" + "Real Estate" + "\"",
-                        SortBy = NewsAPI.Constants.SortBys.Popularity,
-                        Language = NewsAPI.Constants.Languages.EN,
-                        From = monthStart
-                    });
-
-                    //Append all articles to output
-                    if (articlesResponse.Status == NewsAPI.Constants.Statuses.Ok)
-                    {
-
-                        foreach (var article in articlesResponse.Articles)
-                        {
-                            articles.Add(new ArticleCity(article.Title, article.Description, article.Url, article.UrlToImage));
-                        }
-
-                    }
-
-                    return articles;
-                }
-            }*/
     }
 }
 

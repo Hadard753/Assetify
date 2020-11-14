@@ -41,8 +41,8 @@
             @foreach (Recommendation r in ViewBag.Recommendations)
             {
                 var item = r.Asset;
-                <div class="col-xs-12 col-md-4">
-                    <div class="card border-success mb-3">
+                <div class="col-xs-12 col-md-4 card-row">
+                    <div class="card border-success mb-3 recommendation">
                         <div class="card-header">
                             @if (item.Images.Count > 0)
                                 imgSrcUrl = item.Images.First().Path;
@@ -96,7 +96,7 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-4 card-row">
             <div class="card bg-light mb-3">
                 <div class="card-header">
                     @if (item.Images.Count > 0)
