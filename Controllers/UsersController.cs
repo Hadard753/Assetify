@@ -58,7 +58,7 @@ namespace Assetify.Controllers
             ViewBag.Message = "Login failed, name or password is incorrect!";
             TempData["ReturnUrl"] = TempData["ReturnUrl"].ToString();
 
-            return View();
+            return View("login");
         }
 
         public ActionResult Logout()
