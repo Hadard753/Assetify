@@ -33,7 +33,7 @@
 <hr />
 <div class="row">
     <div class="col-md-10">
-        <form asp-action="Search">
+        <form class="js-search-assets" asp-action="Search">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="row">
@@ -86,7 +86,7 @@
                         <label asp-for="City" class="control-label"></label>
                         <input id="searchCityField" type="text" placeholder="Enter Israeli City.." class="form-control">
                         <input asp-for="City" id="city" hidden class="form-control" />
-                        <span asp-validation-for="City" class="text-danger"></span>
+                        <span asp-validation-for="City" class="text-danger js-address-search-error"></span>
                     </div>
                 </div>
                 <div class="col">
@@ -309,4 +309,21 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        const addessSearchError = $('.js-address-search-error');
+        const addessSearch = $('#searchCityField');
+
+        $('.js-search-assets').on('submit', function (event) {
+            if (!addessSearch || !addessSearch[0].value) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                addessSearchError.text('Please select a search location');
+            }
+        })
+
+        $('.js-search-assets').on('change', function () {
+            addessSearchError.text('');
+        })
+    </script>
 }
