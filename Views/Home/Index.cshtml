@@ -228,3 +228,25 @@
     </div>
 </section>
 <!-- End Agents Section -->
+
+<script>
+    const toggleFav = function (isFav, assetID) {
+        $.ajax({
+            type: "POST",
+            url: "/Assets/ToggleFav",
+            data: { IsFav: isFav, AssetID: assetID },
+            success: function (response) {
+                if (response.status == 401) {
+                    var returnUrl = "/Assets/Index";
+                    window.location.replace("/Users/Login?message=You have to login in order to save assets to favorites&returnUrl=" + returnUrl);
+                    return;
+                }
+                document.getElementById("fav_" + assetID).hidden = !isFav;
+                document.getElementById("not_fav_" + assetID).hidden = isFav;
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
+    }
+</script>

@@ -149,7 +149,6 @@
 
 <script>
     const toggleFav = function (isFav, assetID) {
-        debugger;
         $.ajax({
             type: "POST",
             url: "/Assets/ToggleFav",
@@ -157,7 +156,6 @@
             success: function (response) {
                 if (response.status == 401) {
                     var returnUrl= "/Assets/Index";
-                    //TempData["LoginMessage"] = "You have to login in order to save assets to favorites";
                     window.location.replace("/Users/Login?message=You have to login in order to save assets to favorites&returnUrl=" + returnUrl);
                     return;
                 }
