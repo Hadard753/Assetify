@@ -27,6 +27,9 @@ namespace Assetify.Controllers
 
         public ActionResult Login(string? message, string? returnUrl)
         {
+            var userContext = UserContextService.GetUserContext(HttpContext);
+            if (userContext.sessionID != null)
+                return RedirectToAction("Logout");
             ViewBag.Message = TempData["LoginMessage"] != null ? TempData["LoginMessage"] : message;
             TempData["ReturnUrl"] = TempData["ReturnUrl"] != null ? TempData["ReturnUrl"] : returnUrl;
             return View();
@@ -213,6 +216,11 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] UserWithoutPassword user)
         {
+            if (!UserExists(id))
+            {
+                TempData["UserNotFound"] = "User not found";
+                return RedirectToAction("Index", "Users"); 
+            }
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
             var loggedInUser = _context.Users.First(x => x.UserID == int.Parse(userContext.sessionID));
             if (loggedInUser.UserID != id || loggedInUser.UserID != user.UserID || loggedInUser.Email != user.Email)
