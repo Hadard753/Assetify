@@ -99,7 +99,10 @@
             <div class="card bg-light mb-3">
                 <div class="card-header">
                     @if (item.Images.Count > 0)
-                        imgSrcUrl = item.Images.First().Path;
+                    {
+                        AssetImage firstImg = item.Images.First();
+                        imgSrcUrl = firstImg.Type == "internal" ? "/UploadedFiles/" + firstImg.Path : firstImg.Path;
+                    }
                     else
                         imgSrcUrl = "assets/default-house.svg";
                     <a asp-action="Details" asp-route-id="@item.AssetID">

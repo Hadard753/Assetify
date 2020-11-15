@@ -11,6 +11,7 @@ using Assetify.Service;
 using NewsAPI;
 using NewsAPI.Models;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace Assetify.Controllers
 {
@@ -72,7 +73,7 @@ namespace Assetify.Controllers
 
             this.MarkFavoritesAndOwnership(User, Assets);
 
-            if(ShowFavs)
+            if (ShowFavs)
             {
                 ViewBag.ShowFavs = true;
                 Assets.RemoveAll(item => item.IsFavorite == false);
@@ -143,7 +144,7 @@ namespace Assetify.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AssetID, AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] CreateAssetRequest asset)
+        public async Task<IActionResult> Create(IFormFile file, [Bind("AssetID, AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] CreateAssetRequest asset)
         {
 
             var userContext = UserContextService.GetUserContext(HttpContext);
@@ -164,6 +165,12 @@ namespace Assetify.Controllers
                 _context.Add(user_asset);
                 _context.Add(asset);
                 await _context.SaveChangesAsync();
+                if (file != null)
+                {
+                    string filename = await FileUploader.UploadFile(file);
+                    _context.Images.Add(new AssetImage() { AssetID = asset.AssetID, Path = filename, Type = "internal" });
+                    await _context.SaveChangesAsync();
+                }
                 var post = buildFacebookPost(asset);
                 FacebookApi.PostToPage(post);
                 return RedirectToAction(nameof(Index));
@@ -214,7 +221,7 @@ namespace Assetify.Controllers
             if (userContext.sessionID == null)
             {
                 TempData["LoginMessage"] = "You need to login in order to edit this asset";
-                TempData["ReturnUrl"]= Request.GetDisplayUrl().ToString();
+                TempData["ReturnUrl"] = Request.GetDisplayUrl().ToString();
                 return RedirectToAction("Login", "Users");
             }
             bool isPublisher = _context.UserAsset.Any(ua => ua.UserID == int.Parse(userContext.sessionID) && ua.AssetID == id && ua.Action == ActionType.PUBLISH);
@@ -226,7 +233,7 @@ namespace Assetify.Controllers
             }
             else
             {
-                TempData["ReturnUrl"]= Request.GetDisplayUrl().ToString();
+                TempData["ReturnUrl"] = Request.GetDisplayUrl().ToString();
                 TempData["LoginMessage"] = "You are not the publisher of that assert, nore or you an admin. please login with a different user";
                 return RedirectToAction("Login", "Users");
             }

@@ -16,7 +16,7 @@
 {
     <div class="row">
         <div class="col-md-12">
-            <form asp-action="Create" id="listofcards">
+            <form asp-action="Create" id="listofcards" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div id="wizard">
                     <div class="form-group">
@@ -93,9 +93,6 @@
                             <hr />
                         </div>
                         <div role="tabpanel" class="tab-pane" id="AdvancedInfo">
-
-
-
                             <div class="row">
                                 <div class="form-group col-md-4 col-sm-12">
                                     <label class="form-control-label" asp-for="GardenSize"></label>
@@ -112,16 +109,20 @@
                                     <input type="number" asp-for="NumOfParking" class="form-control">
                                     <span asp-validation-for="NumOfParking" class="text-danger"></span>
                                 </div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label for="file" class="form-control-label">Asset Image</label>
+                                    <input type="file" name="file" id="file" />
+                                </div>
+                                <div class="form-group col-md-4 col-sm-12">
+                                    <label asp-for="EntryDate" class="control-label"></label>
+                                    <input asp-for="EntryDate" class="form-control" />
+                                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Description" class="control-label"></label>
                                 <textarea asp-for="Description" rows="5" class="form-control"></textarea>
                                 <span asp-validation-for="Description" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="EntryDate" class="control-label"></label>
-                                <input asp-for="EntryDate" class="form-control" />
-                                <span asp-validation-for="EntryDate" class="text-danger"></span>
                             </div>
                             <hr />
                         </div>
