@@ -309,21 +309,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        const addessSearchError = $('.js-address-search-error');
-        const addessSearch = $('#searchCityField');
-
-        $('.js-search-assets').on('submit', function (event) {
-            if (!addessSearch || !addessSearch[0].value) {
-                event.stopPropagation();
-                event.preventDefault();
-
-                addessSearchError.text('Please select a search location');
-            }
-        })
-
-        $('.js-search-assets').on('change', function () {
-            addessSearchError.text('');
-        })
-    </script>
 }
