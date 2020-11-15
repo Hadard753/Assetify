@@ -4,7 +4,7 @@
 @{
     var context = Assetify.Service.UserContextService.GetUserContext(HttpContextAccessor.HttpContext);
 }
-@model Assetify.Models.User
+@model Assetify.Models.UserWithoutPassword
 
 @{
     ViewData["Title"] = "Edit";
@@ -62,7 +62,6 @@
                     <button type="submit" class="btn btn-success btn-login">Edit</button>
                 </div>
             </div>
-            >>>>>>> feature/home-page
         </form>
     </div>
 </div>
