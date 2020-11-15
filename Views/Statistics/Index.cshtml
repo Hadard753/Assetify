@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Statistics Page";
 }
-    
+
 @section Scripts {
     <script src="~/lib/d3.min.js"></script>
     <script>
@@ -31,13 +31,13 @@
         const chartSvg = d3.select("svg.js-statistics-bar-chart")
             .attr("viewBox", [0, 0, width, height]);
         const bar = chartSvg.append("g")
-            .attr("fill", "steelblue")
             .selectAll("rect")
             .data(data)
             .join("rect")
             .style("mix-blend-mode", "multiply")
             .attr("x", d => x(d.name))
             .attr("y", d => y(d.value))
+            .attr("fill", function (d) { return d.value > 4 ? "#3ac18c" : "#ffce67" })
             .attr("height", d => y(0) - y(d.value))
             .attr("width", x.bandwidth());
         const gx = chartSvg.append("g")
@@ -69,71 +69,134 @@
         const order = () => { };
         const update = barChart.update(order);
 
+        // ---------------------------------------------------------------- //
+         var pieData =  @Json.Serialize(Model.pieChart.dataPoints);
+        var w = 500,                        //width
+            h = 400,                            //height
+            r = 200,                            //radius
+            color = d3.scaleOrdinal()
+                .domain(data.map(d => d.name))
+                .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())     //builtin range of colors
+        var vis = d3.select(".js-statistics-assets-per-city")
+            .append("svg:svg")              //create the SVG element inside the <body>
+            .data([pieData])                   //associate our data with the document
+            .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
+            .attr("height", h)
+            .append("svg:g")                //make a group to hold our pie chart
+            .attr("transform", "translate(" + r + "," + r + ")")    //move the center of the pie chart from 0, 0 to radius, radius
+        const svg = d3.create("svg")
+            .attr("viewBox", [-width / 2, -height / 2, width, height]);
+            const radius = Math.min(width, height) / 2;
+        var arc = d3.arc().innerRadius(radius * 0.67).outerRadius(radius - 1);
+        var pie = d3.pie()           //this will create arc data for us given a list of values
+            .value(function (d) { return d.value; });    //we must tell it out to access the value of each element in our data array
+        var arcs = vis.selectAll("g.slice")     //this selects all <g> elements with class slice (there aren't any yet)
+            .data(pie)
+            .enter()                            //this will create <g> elements for every "extra" data element that should be associated with a selection. The result is creating a <g> for every object in the data array
+            .append("svg:g")                //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
+            .attr("class", "slice")    //allow us to style things in the slices (like text)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 12)
+            .attr("text-anchor", "middle");
+        arcs.append("svg:path")
+            .attr("fill", function (d, i) { return color(i); }) //set the color for each slice to be chosen from the color function defined above
+            .attr("d", arc);                                    //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+        arcs.append("svg:text")                                     //add a label to each slice
+            .attr("transform", function (d) {                    //set the label's origin to the center of the arc
+                //we have to make sure to set these before calling arc.centroid
+                d.innerRadius = 0;
+                d.outerRadius = r;
+                return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
+            })
+            .attr("text-anchor", "middle")                          //center the text on it's origin
+            .text(function (d, i) { return pieData[i].name; });        //get the label from our original data array
 
-        // Line Chart
-        const lineChartMargin = { top: 20, right: 30, bottom: 30, left: 40 };
-        const lineChartWidth = 500;
-        const lineChartHeight = 300;
-        const lineChartData = @Json.Serialize(Model.lineChart.dataPoints);
-        lineChartData.forEach(bla => bla.date = Date.parse(bla.date))
+        // ---------------------------------------------------------------- //
 
-        const lineChartY = d3.scaleLinear()
-            .domain([0, d3.max(lineChartData, d => d.value)]).nice()
-            .range([lineChartHeight - lineChartMargin.bottom, lineChartMargin.top]);
-
-        const lineChartX = d3.scaleUtc()
-            .domain(d3.extent(lineChartData, d => d.date))
-            .range([lineChartMargin.left, lineChartWidth - lineChartMargin.right]);
-
-        const lineChartYAxis = g => g
-            .attr("transform", `translate(${lineChartMargin.left},0)`)
-            .call(d3.axisLeft(lineChartY))
-            .call(g => g.select(".domain").remove())
-            .call(g => g.select(".tick:last-of-type text").clone()
-                .attr("x", 3)
-                .attr("text-anchor", "start")
-                .attr("font-weight", "bold")
-                .text(lineChartData.y));
-
-        const lineChartXAxis = g => g
-            .attr("transform", `translate(0,${lineChartHeight - lineChartMargin.bottom})`)
-            .call(d3.axisBottom(lineChartX).ticks(lineChartWidth / 80).tickSizeOuter(0));
-
-        const lineChartLine = d3.line()
-            .defined(d => !isNaN(d.value))
-            .x(d => lineChartX(d.date))
-            .y(d => lineChartY(d.value));
-
-
-        const lineChartSvg = d3.select("svg.js-statistics-line-chart")
-            .attr("viewBox", [0, 0, lineChartWidth, lineChartHeight]);
-
-        lineChartSvg.append("g")
-            .call(lineChartXAxis);
-
-        lineChartSvg.append("g")
-            .call(lineChartYAxis);
-
-        lineChartSvg.append("path")
-            .datum(lineChartData)
-            .attr("fill", "none")
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", 1.5)
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("d", lineChartLine);
+              var pieData2 =  @Json.Serialize(Model.searchPieChart.dataPoints);
+            var color2 = d3.scaleOrdinal()
+                .domain(data.map(d => d.name))
+                .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())     //builtin range of colors
+        var vis2 = d3.select(".js-statistics-searches-per-city")
+            .append("svg:svg")              //create the SVG element inside the <body>
+            .data([pieData2])                   //associate our data with the document
+            .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
+            .attr("height", h)
+            .append("svg:g")                //make a group to hold our pie chart
+            .attr("transform", "translate(" + r + "," + r + ")")    //move the center of the pie chart from 0, 0 to radius, radius
+        const svg2 = d3.create("svg")
+            .attr("viewBox", [-width / 2, -height / 2, width, height]);
+            const radius2 = Math.min(width, height) / 2;
+        var arc2 = d3.arc().innerRadius(radius2 * 0.67).outerRadius(radius2 - 1);
+        var pie2 = d3.pie()           //this will create arc data for us given a list of values
+            .value(function (d) { return d.value; });    //we must tell it out to access the value of each element in our data array
+        var arcs = vis2.selectAll("g.slice")     //this selects all <g> elements with class slice (there aren't any yet)
+            .data(pie2)
+            .enter()                            //this will create <g> elements for every "extra" data element that should be associated with a selection. The result is creating a <g> for every object in the data array
+            .append("svg:g")                //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
+            .attr("class", "slice")    //allow us to style things in the slices (like text)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 12)
+            .attr("text-anchor", "middle");
+        arcs.append("svg:path")
+            .attr("fill", function (d, i) { return color2(i); }) //set the color for each slice to be chosen from the color function defined above
+            .attr("d", arc);                                    //this creates the actual SVG path using the associated data (pie) with the arc drawing function
+        arcs.append("svg:text")                                     //add a label to each slice
+            .attr("transform", function (d) {                    //set the label's origin to the center of the arc
+                //we have to make sure to set these before calling arc.centroid
+                d.innerRadius = 0;
+                d.outerRadius = r;
+                return "translate(" + arc2.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
+            })
+            .attr("text-anchor", "middle")                          //center the text on it's origin
+            .text(function (d, i) { return pieData2[i].name; });        //get the label from our original data array
 
     </script>
 }
 
-<div class="text-center" class="">
-    <p>Most Liked Assests</p>
-    <svg class="js-statistics-bar-chart">
-    </svg>
+
+<div class="text-center row">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-12">
+                <p>The users who posted the most assets</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <svg class="js-statistics-bar-chart">
+                </svg>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="text-center" class="">
-    <p>Assets likes over time</p>
-    <svg class="js-statistics-line-chart">
-    </svg>
+
+<div class="text-center row">
+    <div class="col-md-6 col-sm-12">
+        <div class="row">
+            <div class="col-12">
+                <p>Assets per city</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <svg class="js-statistics-assets-per-city pie-chart offset-md-2 offset-sm-0">
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+        <div class="row">
+            <div class="col-12">
+                <p>Searches per city</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <svg class="js-statistics-searches-per-city pie-chart offset-md-2 offset-sm-0">
+                </svg>
+            </div>
+        </div>
+    </div>
 </div>

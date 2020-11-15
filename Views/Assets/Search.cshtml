@@ -4,9 +4,6 @@
     ViewData["Title"] = "Search";
 }
 
-<h1>Search</h1>
-
-<h4>Search</h4>
 
 <hr />
 <div class="row">
@@ -16,10 +13,6 @@
         </button>
         <form asp-action="Search" class="collapse" id="collapseExample">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-            <label asp-for="UserID" class="control-label"></label>
-            <select asp-for="UserID" class ="form-control" asp-items="ViewBag.UserID"></select>
-        </div>*@
             <div class="row">
                 <div class="col">
                     <div class="form-group">
@@ -46,7 +39,8 @@
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="City" class="control-label"></label>
-                        <input asp-for="City" class="form-control" />
+                        <input id="searchCityField" type="text" placeholder="Enter Israeli City.." class="form-control">
+                        <input asp-for="City" id="city" hidden class="form-control" />
                         <span asp-validation-for="City" class="text-danger"></span>
                     </div>
                 </div>
@@ -57,19 +51,12 @@
                         <span asp-validation-for="Street" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label asp-for="Neighborhoods" class="control-label"></label>
-                        <input asp-for="Neighborhoods" class="form-control" />
-                        <span asp-validation-for="Neighborhoods" class="text-danger"></span>
-                    </div>
-                </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="MinPrice" class="control-label"></label>
-                        <input asp-for="MinPrice" class="form-control"/>
+                        <input asp-for="MinPrice" class="form-control" />
                         <span asp-validation-for="MinPrice" class="text-danger"></span>
                     </div>
                 </div>
@@ -158,10 +145,10 @@
 
 
             @*<div class="form-group">
-            <label asp-for="Orientations" class="control-label"></label>
-            <select asp-for="Orientations" class="form-control"></select>
-            <span asp-validation-for="Orientations" class="text-danger"></span>
-        </div>*@
+                    <label asp-for="Orientations" class="control-label"></label>
+                    <select asp-for="Orientations" class="form-control"></select>
+                    <span asp-validation-for="Orientations" class="text-danger"></span>
+                </div>*@
             <div class="form-group form-check-inline">
                 <label class="form-check-label">
                     <input class="form-check-inline-input" asp-for="IsForSell" /> @Html.DisplayNameFor(model => model.IsForSell)

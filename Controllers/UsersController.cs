@@ -51,7 +51,7 @@ namespace Assetify.Controllers
                     if (TempData["ReturnUrl"] != null)
                         return Redirect(TempData["ReturnUrl"].ToString());
 
-                    return RedirectToAction("Index", "home");
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
