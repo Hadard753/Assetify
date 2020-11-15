@@ -24,7 +24,17 @@ namespace Assetify.Controllers
 
         public IActionResult Index()
         {
+            var model = new StatisticsViewModel
+            {
+                barChart = new Chart { dataPoints = getTopPublisher() },
+                pieChart = new Chart { dataPoints = getAssetsPerCity() },
+                searchPieChart = new Chart { dataPoints = getSearchesPerCity() }
+            };
+            return View(model);
+        }
 
+        private List<ChartDataPoint> getTopPublisher()
+        {
             var TopPublishers = _context.UserAsset.Where(x => x.Action == ActionType.PUBLISH)
                 .GroupBy(y => y.UserID, y => y.User.FirstName, (userId, names) => new
                 {
@@ -33,31 +43,50 @@ namespace Assetify.Controllers
                     Description = names.Max()
                 })
                 .OrderByDescending(x => x.Count)
+                .Take(7)
                 .ToList();
 
-            var dataPoints = new List<BarDataPoint>();
-            TopPublishers.ForEach(x => dataPoints.Add(new BarDataPoint() { name = x.Description, value = x.Count }));
-            
+            var dataPoints = new List<ChartDataPoint>();
+            TopPublishers.ForEach(x => dataPoints.Add(new ChartDataPoint() { name = x.Description, value = x.Count }));
 
-            var likesForDate = _context.UserAsset.Where(x => x.Action == ActionType.LIKE)
-                .GroupBy(x => x.ActionTime, (actionTime, userAssets) => new
-            {
-                ActionTime = actionTime,
-                Count = userAssets.Count()
-            }).ToList();
+            return dataPoints;
+        }
 
+        private List<ChartDataPoint> getAssetsPerCity()
+        {
+            var AssetsPerCity = _context.Assets.Include(a => a.Address)
+               .GroupBy(y => y.Address.City, (city, records) => new
+               {
+                   Key = city,
+                   Count = records.Count(),
+                   Description = city
+               })
+               .OrderByDescending(x => x.Count)
+               .Take(7)
+               .ToList();
 
+            var dataPoints = new List<ChartDataPoint>();
+            AssetsPerCity.ForEach(x => dataPoints.Add(new ChartDataPoint() { name = x.Description, value = x.Count }));
 
-            var lineChartDataPoints = new List<LineDataPoint>();
-            likesForDate.ForEach(x => lineChartDataPoints.Add(new LineDataPoint() { date = x.ActionTime, value = x.Count }));
+            return dataPoints;
+        }
+        private List<ChartDataPoint> getSearchesPerCity()
+        {
+            var AssetsPerCity = _context.Searches
+               .GroupBy(y => y.City, (city, records) => new
+               {
+                   Key = city,
+                   Count = records.Count(),
+                   Description = city
+               })
+               .OrderByDescending(x => x.Count)
+               .Take(7)
+               .ToList();
 
+            var dataPoints = new List<ChartDataPoint>();
+            AssetsPerCity.ForEach(x => dataPoints.Add(new ChartDataPoint() { name = x.Description, value = x.Count }));
 
-            var model = new StatisticsViewModel
-            {
-                barChart = new BarChart { dataPoints = dataPoints },
-                lineChart = new LineChart { dataPoints = lineChartDataPoints },
-            };
-            return View(model);
+            return dataPoints;
         }
 
         public IActionResult Privacy()

@@ -92,3 +92,8 @@ display-4
 	/* padding: 10px; */
 	/* border-radius: 25px; */
 /* } */
+
+.pie-chart {
+	width: 100%;
+	min-height: 350px;
+}
