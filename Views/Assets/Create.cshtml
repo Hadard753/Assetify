@@ -260,6 +260,9 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
+<script defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwNtnyyfWcM_TyD7m6WImqsL2Uae-x_5M&libraries=places&&callback=initCitySearch">
+</script>
 <script>
     function initSearch() {
         var input = document.getElementById('searchTextField');
@@ -279,7 +282,7 @@
             var Building = building ? building.long_name : '';
             var Latitude = place.geometry.location.lat();
             var Longitude = place.geometry.location.lng();
-           
+
             $.ajax({
                 type: "POST",
                 url: "/Assets/CreateAddress",
