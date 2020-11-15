@@ -30,6 +30,17 @@
         </div>
     </div>
 }
+@if (TempData["AssetNotFound"] != null)
+{
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-8">
+            <div class="alert alert-dismissible alert-info">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>The asset does not exist :(</strong>
+            </div>
+        </div>
+    </div>
+}
 
 
 <!-- Display all the assets -->
@@ -55,13 +66,13 @@
                         <div class="card-body">
                             <div class="row card-details">
                                 <div class="col-4">
-                                    <img src="~/assets/floors2.png" alt="Floor" title="Floor"/>@item.Floor
-                                 </div>
-                                <div class="col-4">
-                                    <img src="~/assets/rooms2.png" alt="Rooms" title="Rooms"/>@item.Rooms
+                                    <img src="~/assets/floors2.png" alt="Floor" title="Floor" />@item.Floor
                                 </div>
                                 <div class="col-4">
-                                    <img src="~/assets/size2.png" alt="Size" title="Size"/>@item.Size
+                                    <img src="~/assets/rooms2.png" alt="Rooms" title="Rooms" />@item.Rooms
+                                </div>
+                                <div class="col-4">
+                                    <img src="~/assets/size2.png" alt="Size" title="Size" />@item.Size
                                 </div>
                             </div>
                             <div class="card-subtitle">
@@ -92,58 +103,58 @@
         </div>
         <hr />
     }
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-xs-12 col-md-4 card-row">
-            <div class="card bg-light mb-3">
-                <div class="card-header">
-                    @if (item.Images.Count > 0)
-                        imgSrcUrl = item.Images.First().Path;
-                    else
-                        imgSrcUrl = "assets/default-house.svg";
-                    <a asp-action="Details" asp-route-id="@item.AssetID">
-                        <img class="card-img-top" src="@imgSrcUrl" alt="Image not found"/>
-                    </a>
-                </div>
-                <div class="card-body">
-                    <div class="row card-details">
-                        <div class="col-4">
-                            <img src="~/assets/floors2.png" alt="Floor" title="Floor"/>@item.Floor
-                        </div>
-                        <div class="col-4">
-                            <img src="~/assets/rooms2.png" alt="Rooms" title="Rooms"/>@item.Rooms
-                        </div>
-                        <div class="col-4">
-                            <img src="~/assets/size2.png" alt="Size" title="Size"/>@item.Size
-                        </div>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-xs-12 col-md-4 card-row">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">
+                        @if (item.Images.Count > 0)
+                            imgSrcUrl = item.Images.First().Path;
+                        else
+                            imgSrcUrl = "assets/default-house.svg";
+                        <a asp-action="Details" asp-route-id="@item.AssetID">
+                            <img class="card-img-top" src="@imgSrcUrl" alt="Image not found" />
+                        </a>
                     </div>
-                    <div class="card-subtitle">
-                        <img src="assets/location.png" width="15" height="15">
-                        @item.Address.Street, @item.Address.City
-                        <span class="float-right font-weight-light">
-                            <button hidden="@(!item.IsFavorite)" onclick="toggleFav(false,@item.AssetID)" class="btn-fav" id="fav_@item.AssetID">
-                                <img src="~/assets/icon__fav-filled.png" width="30" />
-                            </button>
-                            <button hidden="@item.IsFavorite" onclick="toggleFav(true,@item.AssetID)" class="btn-fav" id="not_fav_@item.AssetID">
-                                <img src="~/assets/icon__fav.png" width="30" />
-                            </button>
-                        </span>
-                    </div>
+                    <div class="card-body">
+                        <div class="row card-details">
+                            <div class="col-4">
+                                <img src="~/assets/floors2.png" alt="Floor" title="Floor" />@item.Floor
+                            </div>
+                            <div class="col-4">
+                                <img src="~/assets/rooms2.png" alt="Rooms" title="Rooms" />@item.Rooms
+                            </div>
+                            <div class="col-4">
+                                <img src="~/assets/size2.png" alt="Size" title="Size" />@item.Size
+                            </div>
+                        </div>
+                        <div class="card-subtitle">
+                            <img src="assets/location.png" width="15" height="15">
+                            @item.Address.Street, @item.Address.City
+                            <span class="float-right font-weight-light">
+                                <button hidden="@(!item.IsFavorite)" onclick="toggleFav(false,@item.AssetID)" class="btn-fav" id="fav_@item.AssetID">
+                                    <img src="~/assets/icon__fav-filled.png" width="30" />
+                                </button>
+                                <button hidden="@item.IsFavorite" onclick="toggleFav(true,@item.AssetID)" class="btn-fav" id="not_fav_@item.AssetID">
+                                    <img src="~/assets/icon__fav.png" width="30" />
+                                </button>
+                            </span>
+                        </div>
 
-                    @{
-                        if (item.IsOwner || ViewBag.IsAdmin)
-                        {
-                            <a asp-action="Edit" asp-route-id="@item.AssetID" class="card-link">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@item.AssetID" class="card-link">Delete</a>
+                        @{
+                            if (item.IsOwner || ViewBag.IsAdmin)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.AssetID" class="card-link">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.AssetID" class="card-link">Delete</a>
+                            }
                         }
-                    }
-                    <p class="card-text"><small class="text-muted">Created at @item.CreatedAt</small></p>
+                        <p class="card-text"><small class="text-muted">Created at @item.CreatedAt</small></p>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
 
 </div>
 
@@ -155,7 +166,7 @@
             data: { IsFav: isFav, AssetID: assetID },
             success: function (response) {
                 if (response.status == 401) {
-                    var returnUrl= "/Assets/Index";
+                    var returnUrl = "/Assets/Index";
                     window.location.replace("/Users/Login?message=You have to login in order to save assets to favorites&returnUrl=" + returnUrl);
                     return;
                 }
