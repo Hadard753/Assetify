@@ -22,19 +22,22 @@
                         @Model.Address.Street, @Model.Address.City
                         <span class="float-right font-weight-light">@Convert.ToDecimal(Model.Price).ToString("#,##0")  <img src="~/assets/shekel.png" width="15px" height="15px" /></span>
                     </h5>
-                    <p>
-                        Paragraph with descriptive details about the asset......! :D
-                    </p>
                     <br />
                     <div class="col-12">
                         <div id="map" style="width:50%; height: 200px"></div>
                     </div>
-                    <br />
+                    <br /><br />
                     @foreach (var user in Model.Users)
                     {
                         @if (user.Action.ToString() == "PUBLISH")
                             owner = user.User;
                     }
+                    <div class="col-8">
+                        <img src="~/assets/floors2.png" alt="Floor" title="Floor" width="20px" height="20px" style="margin-left:0.5em;margin-right:0.5em;" />Floor: @Model.Floor
+                        <img src="~/assets/rooms2.png" alt="Rooms" title="Rooms" width="20px" height="20px" style="margin-left:0.5em;margin-right:0.5em;"/>Rooms: @Model.Rooms
+                        <img src="~/assets/size2.png" alt="Size" title="Size" width="20px" height="20px" style="margin-left:0.5em;margin-right:0.5em;" />Size: @Model.Size
+                    </div>
+                    <br /><br />
                     @if (owner != null)
                     {
                         <p>Contact: @owner.FirstName @owner.LastName</p>
