@@ -209,7 +209,7 @@ namespace Assetify.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] UserWithoutPassword user)
         {
             UserContext userContext = UserContextService.GetUserContext(HttpContext);
             var loggedInUser = _context.Users.First(x => x.UserID == int.Parse(userContext.sessionID));
@@ -217,7 +217,7 @@ namespace Assetify.Controllers
             {
                 return NotFound();
             }
-            //user.Password = _context.Users.FindAsync(id).Result.Password;
+
             if (ModelState.IsValid)
             {
                 try
