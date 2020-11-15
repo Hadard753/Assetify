@@ -68,6 +68,8 @@ namespace Assetify.Controllers
             userContext.sessionID = null;
             userContext.isAdmin = false;
             HttpContext.Session.Clear();
+
+            TempData["ReturnUrl"] = null;
             TempData["LoginMessage"] = "You just logged out :)";
             return RedirectToAction("Login", "Users");
         }

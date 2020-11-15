@@ -28,6 +28,7 @@ namespace Assetify.Controllers
         // GET: Searches/Search
         public IActionResult Search()
         {
+
             return View();
         }
 
@@ -39,8 +40,8 @@ namespace Assetify.Controllers
         public async Task<IActionResult> Search([Bind("SearchID,UserID,IsCommercial,City,Street,Neighborhoods,IsForSell,MinPrice,MaxPrice" +
             ",MinSize,MaxSize,MinGardenSize,MaxGardenSize,MinRooms,MaxRooms,MinFloor,MaxFloor,MinTotalFloor,MaxTotalFloor,TypeIdIn,MinEntryDate" +
             ",FurnishedIn,Orientations,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors" +
-            ",IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach")] Search search)
-        {
+            ",IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,Condition")] Search search, bool FurnishedCB=false, bool TypeCB=false, bool ConditionCB=false)
+            {
             var userContext = UserContextService.GetUserContext(HttpContext);
             var searchedAssets = (from ass in _context.Assets join add in _context.Addresses on ass.AddressID equals add.AddressID select new {ass, add });
             //var searchedAssets = (from ass in _context.Assets select ass);
@@ -54,7 +55,13 @@ namespace Assetify.Controllers
                 await _context.SaveChangesAsync();
             }
             //Enums
-            searchedAssets = searchedAssets.Where(a => a.ass.TypeId == search.TypeIdIn && a.ass.Furnished == search.FurnishedIn);
+            if (!FurnishedCB)
+                searchedAssets = searchedAssets.Where(a => a.ass.Furnished == search.FurnishedIn);
+            if(!TypeCB)
+                searchedAssets = searchedAssets.Where(a => a.ass.TypeId == search.TypeIdIn);
+            if (!ConditionCB)
+                searchedAssets = searchedAssets.Where(a => a.ass.Condition == search.Condition);
+
 
             //Date
             if (search.MinEntryDate != null)

@@ -55,11 +55,19 @@ namespace Assetify.Models
         [Display(Name = "Maximum total floors")]
 
         public int? MaxTotalFloor { get; set; }
+        [Display(Name = "Type")]
+
         public AssetType TypeIdIn { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? MinEntryDate { get; set; }
+        [Display(Name = "Furnished")]
+
         public FurnishedType FurnishedIn { get; set; }
+        [Display(Name = "Condition")]
+
+        public AssetCondition Condition { get; set; }
+
         public OrientationType Orientations { get; set; }
 
 
