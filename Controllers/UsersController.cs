@@ -132,8 +132,11 @@ namespace Assetify.Controllers
         }
 
         // GET: Users/Create
-        public IActionResult Create()
+        public IActionResult Create(string FirstName, string LastName, string Email)
         {
+            ViewBag.FirstName = FirstName;
+            ViewBag.LastName = LastName;
+            ViewBag.Email = Email;
             return View();
         }
 
