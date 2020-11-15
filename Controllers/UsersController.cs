@@ -216,7 +216,7 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,FirstName,LastName,Phone,IsVerified,ProfileImgPath,LastSeenFavorite,LastSeenMessages")] UserWithoutPassword user)
         {
-            if (await _context.Users.FindAsync(id) == null)
+            if (!UserExists(id))
             {
                 TempData["UserNotFound"] = "User not found";
                 return RedirectToAction("Index", "Users"); 

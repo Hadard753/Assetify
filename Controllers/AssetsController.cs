@@ -237,7 +237,7 @@ namespace Assetify.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AssetID,AddressID,Price,EstimatedPrice,Furnished,TypeId,Condition,Size,GardenSize,BalconySize,Rooms,Floor,TotalFloor,NumOfParking,Description,EntryDate,CreatedAt,IsElevator,IsBalcony,IsTerrace,IsStorage,IsRenovated,IsRealtyCommission,IsAircondition,IsMamad,IsPandorDoors,IsAccessible,IsKosherKitchen,IsKosherBoiler,IsOnPillars,IsBars,IsForSell,IsCommercial,IsRoomates,IsImmediate,IsNearTrainStation,IsNearLightTrainStation,IsNearBeach,IsActive,RemovedReason")] Asset asset)
         {
-            if (_context.Assets.Include(a => a.Address).FirstOrDefault(a => a.AssetID == id) == null)
+            if (!AssetExists(id))
             {
                 TempData["AssetNotFound"] = "Asset does not exist";
                 return RedirectToAction("Index", "Assets"); }
@@ -306,7 +306,7 @@ namespace Assetify.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+        
         private bool AssetExists(int id)
         {
             return _context.Assets.Any(e => e.AssetID == id);
