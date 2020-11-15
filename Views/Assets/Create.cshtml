@@ -4,10 +4,6 @@
     ViewData["Title"] = "Create";
 }
 
-<script defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwNtnyyfWcM_TyD7m6WImqsL2Uae-x_5M&libraries=places&&callback=initSearch">
-</script>
-
 <div class="row">
     <div class="col-12 page-title">
         <h1>Create Asset</h1>
@@ -50,7 +46,7 @@
                             <div class="row">
                                 <div class="form-group col-md-4 col-sm-12">
                                     <label class="form-control-label" asp-for="Address"></label>
-                                    <input id="searchTextField" type="text" placeholder="Enter Israeli Address.." required class="form-control" id="Address">
+                                    <input id="searchTextField" type="text" placeholder="Enter Israeli Address.." required class="form-control">
                                     <input asp-for="AddressID" class="form-control" id="address-id" type="text" hidden />
                                     <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>

@@ -4,7 +4,33 @@
     ViewData["Title"] = "Search";
 }
 
-<h1>Search</h1>
+
+
+<script defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwNtnyyfWcM_TyD7m6WImqsL2Uae-x_5M&libraries=places&&callback=initCitySearch">
+</script>
+
+<script>
+    function initCitySearch() {
+        debugger;
+        var options = {
+            types: ['(cities)'],
+            componentRestrictions: { country: "il" }
+        };
+
+        var input = document.getElementById('searchCityField');
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+
+            var City = place.vicinity;
+            document.getElementById('city').value = City;
+        });
+    }
+</script>
+
+<h1>What is your dream house like ?</h1>
 
 <hr />
 <div class="row">
@@ -37,19 +63,15 @@
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="City" class="control-label"></label>
-                        <input asp-for="City" class="form-control" />
+                        <input id="searchCityField" type="text" placeholder="Enter Israeli City.." class="form-control">
+                        <input asp-for="City" id="city" hidden class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label asp-for="Street" class="control-label"></label>
                         <input asp-for="Street" class="form-control" />
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label asp-for="Neighborhoods" class="control-label"></label>
-                        <input asp-for="Neighborhoods" class="form-control" />
                     </div>
                 </div>
             </div>
