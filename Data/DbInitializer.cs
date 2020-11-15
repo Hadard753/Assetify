@@ -30,7 +30,7 @@ namespace Assetify.Data
                 new Address{City="Kfar Saba",Street="Zetler",Building="16",Full="Zetler 16,Kvar Saba", IsPublic=true, Neighborhood="Kfar Saba Hayeruka", Latitude=32.196857, Longitude=34.888570 }, // 11
                 new Address{City="Tel Aviv",Street="Levin Kipnis",Building="11",Full="Levin Kipnis 11,Tel Aviv", IsPublic=true, Neighborhood="Hamashtela", Latitude=32.128161, Longitude=34.831489 }, // 12
                 new Address{City="Ashdod",Street="Shevet Naftali",Building="12",Full="Shevet Naftali 12, Ashdod", IsPublic=true, Neighborhood="Rova Yod-Bet", Latitude=31.776679, Longitude=34.633100 }, // 13
-                new Address{City="Haifa",Street="Hertzel",Building="2",Full="Hertzerl 2, Ashdod", IsPublic=true, Neighborhood="Hadar", Latitude=32.812981, Longitude=34.995513 }, // 14
+                new Address{City="Haifa",Street="Hertzel",Building="2",Full="Hertzel 2, Ashdod", IsPublic=true, Neighborhood="Hadar", Latitude=32.812981, Longitude=34.995513 }, // 14
               //  new Address{City="Tibiria",Street="Oranim", Building="1", Full="Oranim 1, Tibiria", IsPublic=false, Neighborhood="Ramot Tibiria", Latitude=333, Longitude=333 }
             };
 
